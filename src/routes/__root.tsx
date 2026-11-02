@@ -17,91 +17,231 @@ import { Toaster } from "../components/ui/sonner";
 function SplashScreen({ onDone }: { onDone: () => void }) {
   const [visible, setVisible] = useState(false);
   const [exiting, setExiting] = useState(false);
-  const [barWidth, setBarWidth] = useState("0%");
+  const [progress, setProgress] = useState(0);
 
   useEffect(() => {
-    // Paint hidden state first, then trigger entrance on next frame
-    const raf = requestAnimationFrame(() => {
-      setVisible(true);
-      setTimeout(() => setBarWidth("75%"), 50);
-      setTimeout(() => setBarWidth("100%"), 1600);
-      setTimeout(() => setExiting(true), 1900);
-      setTimeout(() => onDone(), 2500);
-    });
-    return () => cancelAnimationFrame(raf);
+    const raf = requestAnimationFrame(() => setVisible(true));
+
+    const start = performance.now();
+    const duration = 1450; // smooth 1.45s loading sequence
+
+    const timer = setInterval(() => {
+      const elapsed = performance.now() - start;
+      const t = Math.min(elapsed / duration, 1);
+      // Ease out cubic
+      const easedProgress = Math.round(t * 100);
+      setProgress(easedProgress);
+
+      if (t >= 1) {
+        clearInterval(timer);
+        setTimeout(() => setExiting(true), 200);
+        setTimeout(() => onDone(), 650);
+      }
+    }, 20);
+
+    return () => {
+      cancelAnimationFrame(raf);
+      clearInterval(timer);
+    };
   }, [onDone]);
+
+  const getStatusText = () => {
+    if (progress < 25) return "Initializing AI Studio...";
+    if (progress < 60) return "Loading Growth Architecture...";
+    if (progress < 92) return "Calibrating Neural Pipelines...";
+    return "Studio Ready";
+  };
 
   return (
     <div
       style={{
-        position: "fixed", inset: 0, zIndex: 9999,
+        position: "fixed",
+        inset: 0,
+        zIndex: 9999,
         background: "#faf8f5",
-        display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center",
-        transition: "opacity 0.6s cubic-bezier(0.16,1,0.3,1)",
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        justifyContent: "center",
+        transition: "opacity 0.5s cubic-bezier(0.16, 1, 0.3, 1), transform 0.5s cubic-bezier(0.16, 1, 0.3, 1)",
         opacity: exiting ? 0 : 1,
+        transform: exiting ? "scale(1.02)" : "scale(1)",
         pointerEvents: exiting ? "none" : "all",
+        userSelect: "none",
+        overflow: "hidden",
       }}
     >
-      {/* Radial glow */}
-      <div style={{
-        position: "absolute", width: 340, height: 340, borderRadius: "50%",
-        background: "radial-gradient(circle, rgba(168,85,247,0.15) 0%, transparent 70%)",
-        filter: "blur(40px)",
-        transition: "opacity 1s ease",
-        opacity: visible ? 1 : 0,
-      }} />
+      {/* Background ambient lighting & radial glow */}
+      <div
+        style={{
+          position: "absolute",
+          width: 520,
+          height: 520,
+          borderRadius: "50%",
+          background: "radial-gradient(circle, rgba(168,85,247,0.18) 0%, rgba(99,102,241,0.08) 40%, transparent 70%)",
+          filter: "blur(50px)",
+          transition: "opacity 1s ease, transform 1.2s ease",
+          opacity: visible ? 1 : 0,
+          transform: visible ? "scale(1)" : "scale(0.8)",
+          pointerEvents: "none",
+        }}
+      />
 
-      {/* Logo */}
-      <div style={{
-        position: "relative", zIndex: 1,
-        transition: "opacity 0.7s cubic-bezier(0.16,1,0.3,1), transform 0.7s cubic-bezier(0.16,1,0.3,1)",
-        opacity: visible ? 1 : 0,
-        transform: visible ? "scale(1) translateY(0)" : "scale(0.78) translateY(12px)",
-      }}>
-        <img src="/logo.png" alt="Buildicy" style={{ width: 76, height: 76, objectFit: "contain", display: "block" }} />
+      {/* Decorative orbital rings */}
+      <div
+        style={{
+          position: "absolute",
+          width: 380,
+          height: 380,
+          borderRadius: "50%",
+          border: "1px dashed rgba(168,85,247,0.15)",
+          transition: "opacity 1.2s ease",
+          opacity: visible ? 1 : 0,
+          animation: "spin 35s linear infinite",
+          pointerEvents: "none",
+        }}
+      />
+      <div
+        style={{
+          position: "absolute",
+          width: 260,
+          height: 260,
+          borderRadius: "50%",
+          border: "1px solid rgba(147,51,234,0.08)",
+          transition: "opacity 1s ease",
+          opacity: visible ? 1 : 0,
+          pointerEvents: "none",
+        }}
+      />
+
+      {/* Centerpiece Emblem with Glowing Glassmorphic Pod */}
+      <div
+        style={{
+          position: "relative",
+          zIndex: 1,
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          width: 92,
+          height: 92,
+          borderRadius: 24,
+          background: "rgba(255, 255, 255, 0.9)",
+          backdropFilter: "blur(12px)",
+          border: "1px solid rgba(168, 85, 247, 0.25)",
+          boxShadow: "0 20px 40px -10px rgba(147, 51, 234, 0.2), 0 0 0 1px rgba(255,255,255,0.8)",
+          transition: "opacity 0.7s cubic-bezier(0.16,1,0.3,1), transform 0.7s cubic-bezier(0.16,1,0.3,1)",
+          opacity: visible ? 1 : 0,
+          transform: visible ? "scale(1) translateY(0)" : "scale(0.8) translateY(14px)",
+        }}
+      >
+        <img
+          src="/logo.png"
+          alt="Buildicy"
+          style={{
+            width: 54,
+            height: 54,
+            objectFit: "contain",
+            display: "block",
+            filter: "drop-shadow(0 6px 12px rgba(147, 51, 234, 0.25))",
+          }}
+        />
       </div>
 
-      {/* Wordmark + tagline */}
-      <div style={{
-        position: "relative", zIndex: 1,
-        marginTop: 18,
-        display: "flex", flexDirection: "column", alignItems: "center", gap: 6,
-        transition: "opacity 0.65s cubic-bezier(0.16,1,0.3,1), transform 0.65s cubic-bezier(0.16,1,0.3,1)",
-        transitionDelay: "0.15s",
-        opacity: visible ? 1 : 0,
-        transform: visible ? "translateY(0)" : "translateY(16px)",
-      }}>
-        <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-          <span style={{
+      {/* Wordmark (NO blinking dot) */}
+      <div
+        style={{
+          position: "relative",
+          zIndex: 1,
+          marginTop: 20,
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          gap: 6,
+          transition: "opacity 0.65s cubic-bezier(0.16,1,0.3,1), transform 0.65s cubic-bezier(0.16,1,0.3,1)",
+          transitionDelay: "0.1s",
+          opacity: visible ? 1 : 0,
+          transform: visible ? "translateY(0)" : "translateY(12px)",
+        }}
+      >
+        <span
+          style={{
             fontFamily: "'Outfit', 'Plus Jakarta Sans', sans-serif",
-            fontSize: 30, fontWeight: 800, letterSpacing: "-0.02em", color: "#0f172a",
-          }}>Buildicy</span>
-          <span style={{
-            width: 8, height: 8, borderRadius: "50%",
-            background: "#9333ea",
-            boxShadow: "0 0 10px #9333ea",
-            display: "inline-block",
-            animation: "pulse 1.5s ease-in-out infinite",
-          }} />
-        </div>
-        <span style={{
-          fontFamily: "'Space Mono', monospace",
-          fontSize: 10, letterSpacing: "0.2em", textTransform: "uppercase",
-          color: "#9333ea", fontWeight: 700,
-        }}>AI Growth Systems Studio</span>
+            fontSize: 32,
+            fontWeight: 800,
+            letterSpacing: "-0.03em",
+            color: "#0f172a",
+          }}
+        >
+          Buildicy
+        </span>
+
+        <span
+          style={{
+            fontFamily: "'Space Mono', monospace",
+            fontSize: 10,
+            letterSpacing: "0.22em",
+            textTransform: "uppercase",
+            color: "#7c3aed",
+            fontWeight: 700,
+          }}
+        >
+          AI Growth Systems Studio
+        </span>
       </div>
 
-      {/* Progress bar */}
-      <div style={{
-        position: "absolute", bottom: 0, left: 0, right: 0, height: 2,
-        background: "#e2e8f0",
-      }}>
-        <div style={{
-          height: "100%",
-          background: "linear-gradient(90deg, #9333ea, #6366f1)",
-          transition: "width 1.5s cubic-bezier(0.16,1,0.3,1)",
-          width: barWidth,
-        }} />
+      {/* Central Improvised Progress Track & Counter */}
+      <div
+        style={{
+          position: "relative",
+          zIndex: 1,
+          marginTop: 28,
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          gap: 10,
+          transition: "opacity 0.6s ease",
+          transitionDelay: "0.2s",
+          opacity: visible ? 1 : 0,
+        }}
+      >
+        {/* Sleek Pill Progress Bar */}
+        <div
+          style={{
+            width: 210,
+            height: 4,
+            borderRadius: 999,
+            background: "rgba(15, 23, 42, 0.08)",
+            overflow: "hidden",
+            position: "relative",
+          }}
+        >
+          <div
+            style={{
+              height: "100%",
+              borderRadius: 999,
+              background: "linear-gradient(90deg, #9333ea 0%, #6366f1 50%, #a855f7 100%)",
+              transition: "width 0.15s ease-out",
+              width: `${progress}%`,
+              boxShadow: "0 0 12px rgba(147, 51, 234, 0.5)",
+            }}
+          />
+        </div>
+
+        {/* Status text + Percentage counter */}
+        <div
+          style={{
+            width: 210,
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "space-between",
+            fontSize: 11,
+            fontFamily: "'Space Mono', monospace",
+            color: "#64748b",
+          }}
+        >
+          <span style={{ fontSize: 10, color: "#94a3b8" }}>{getStatusText()}</span>
+          <span style={{ fontWeight: 700, color: "#7c3aed" }}>{progress}%</span>
+        </div>
       </div>
     </div>
   );

@@ -156,7 +156,7 @@ export function ContactPage() {
               <span className="font-display text-2xl font-bold tracking-tight text-slate-900">
                 Buildicy
               </span>
-              <span className="h-2 w-2 rounded-full bg-purple-600 shadow-[0_0_10px_#9333ea] animate-pulse" />
+
             </div>
           </Link>
 

@@ -416,7 +416,7 @@ function Nav({ onOpenAudit }: { onOpenAudit: () => void }) {
           <img src="/logo.png" alt="Buildicy Logo" className="h-10 md:h-12 w-auto object-contain transition-transform duration-300 group-hover:scale-105" />
           <div className="flex items-center gap-1.5">
             <span className="font-display text-2xl font-bold tracking-tight text-slate-900">Buildicy</span>
-            <span className="h-2 w-2 rounded-full bg-purple-600 shadow-[0_0_12px_#9333ea] animate-pulse" />
+
           </div>
         </a>
         <nav className="hidden gap-8 text-sm font-medium text-slate-700 md:flex" aria-label="Primary">
@@ -745,7 +745,7 @@ function Footer({ onOpenAudit }: { onOpenAudit?: () => void }) {
                   <span className="font-display text-xl font-bold tracking-tight text-white">
                     Buildicy
                   </span>
-                  <span className="h-1.5 w-1.5 rounded-full bg-purple-400 shadow-[0_0_8px_#c084fc] animate-pulse" />
+
                 </div>
                 <span className="text-[11px] font-mono tracking-wider text-purple-300/80 uppercase">
                   AI Growth Systems Studio
