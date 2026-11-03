@@ -4,6 +4,7 @@ import { createPortal } from "react-dom";
 import { toast } from "sonner";
 import { Work } from "../components/Work";
 import { DocsSection } from "../components/DocsSection";
+import { PORTAL_ITEMS } from "../config/links";
 
 
 
@@ -783,8 +784,56 @@ function Footer({ onOpenAudit }: { onOpenAudit?: () => void }) {
           </div>
         </div>
 
+        {/* Studio Systems & Live Ecosystem Portals */}
+        <div className="mt-16 md:mt-24 pt-12 border-t border-white/10">
+          <div className="flex flex-col sm:flex-row sm:items-end justify-between mb-8 gap-4">
+            <div>
+              <div className="inline-flex items-center gap-2 px-2.5 py-1 rounded-full bg-purple-500/10 border border-purple-500/20 text-[11px] font-mono text-purple-300 tracking-wider uppercase mb-3">
+                <span className="w-1.5 h-1.5 rounded-full bg-purple-400 animate-pulse" />
+                Live Systems & Founder Ecosystem
+              </div>
+              <h3 className="font-display text-2xl sm:text-3xl font-light text-white tracking-tight">
+                Studio Portals & Engines
+              </h3>
+            </div>
+            <p className="text-xs sm:text-sm font-mono text-white/40 max-w-md">
+              Direct access to Buildicy’s production consoles, interactive multiplayer engines, and internal operations portals.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3 sm:gap-3.5">
+            {PORTAL_ITEMS.map((portal) => (
+              <a
+                key={portal.id}
+                href={portal.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="group relative p-4 rounded-xl bg-white/[0.02] hover:bg-white/[0.06] border border-white/[0.08] hover:border-purple-500/50 transition-all duration-300 flex flex-col justify-between overflow-hidden hover:shadow-[0_0_25px_rgba(168,85,247,0.12)] hover:-translate-y-0.5"
+              >
+                <div className="absolute top-0 right-0 w-24 h-24 bg-purple-500/5 rounded-full blur-2xl group-hover:bg-purple-500/20 transition-all pointer-events-none" />
+                <div>
+                  <div className="flex items-center justify-between gap-1 mb-2.5">
+                    <span className="text-[10px] font-mono uppercase tracking-wider px-2 py-0.5 rounded-full bg-purple-500/10 text-purple-300 border border-purple-500/20 group-hover:border-purple-400/40 transition-colors">
+                      {portal.badge}
+                    </span>
+                    <span className="text-xs text-white/30 group-hover:text-purple-300 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5">
+                      ↗
+                    </span>
+                  </div>
+                  <div className="font-display text-sm sm:text-base font-medium text-white group-hover:text-purple-200 transition-colors">
+                    {portal.name}
+                  </div>
+                </div>
+                <div className="text-[11px] text-white/50 font-light leading-snug mt-2.5 group-hover:text-white/70 transition-colors">
+                  {portal.desc}
+                </div>
+              </a>
+            ))}
+          </div>
+        </div>
+
         {/* Separator Line */}
-        <div className="border-t border-white/10 mt-16 md:mt-24 pt-8 md:pt-10 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6">
+        <div className="border-t border-white/10 mt-12 md:mt-16 pt-8 md:pt-10 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6">
           {/* Based in... */}
           <div className="text-xs md:text-sm font-mono text-white/50 space-y-1">
             <div>Based in India.</div>
