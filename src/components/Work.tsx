@@ -138,18 +138,17 @@ export function Work({ onOpenAudit }: { onOpenAudit?: (pkgName?: string) => void
 
   // Lock body scroll and handle Escape key when project preview modal is open
   useEffect(() => {
-    if (selectedProject) {
-      const orig = document.body.style.overflow;
-      document.body.style.overflow = "hidden";
-      const handleKeyDown = (e: KeyboardEvent) => {
-        if (e.key === "Escape") setSelectedProject(null);
-      };
-      window.addEventListener("keydown", handleKeyDown);
-      return () => {
-        document.body.style.overflow = orig;
-        window.removeEventListener("keydown", handleKeyDown);
-      };
-    }
+    if (!selectedProject) return;
+    const orig = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setSelectedProject(null);
+    };
+    window.addEventListener("keydown", handleKeyDown);
+    return () => {
+      document.body.style.overflow = orig;
+      window.removeEventListener("keydown", handleKeyDown);
+    };
   }, [selectedProject]);
 
   const currentSystems: WorkSystem[] = PAGES[currentPage] ?? (PAGES[0] as WorkSystem[]);

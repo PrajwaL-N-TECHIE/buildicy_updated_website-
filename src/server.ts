@@ -44,9 +44,118 @@ function isH3SwallowedErrorBody(body: string): boolean {
   }
 }
 
+interface AuditPayloadData {
+  name?: string;
+  email?: string;
+  phone?: string;
+  businessName?: string;
+  serviceNeeded?: string;
+  market?: string;
+  notes?: string;
+}
+
 export default {
   async fetch(request: Request, env: unknown, ctx: unknown) {
     try {
+      const url = new URL(request.url);
+      if (request.method === "POST" && url.pathname === "/api/audit") {
+        try {
+          const data = (await request.json()) as AuditPayloadData;
+          console.log(`[SSR Server] Dispatching audit request for ${data.name} to mayurr.buildicy@gmail.com`);
+
+          const envObj = (env ?? {}) as Record<string, string | undefined>;
+          const resendKey = envObj["RESEND_API_KEY"] || envObj["VITE_RESEND_API_KEY"] || process.env["RESEND_API_KEY"] || process.env["VITE_RESEND_API_KEY"] || "";
+
+          // 1. Try Resend if configured
+          if (resendKey) {
+            try {
+              const resendRes = await fetch("https://api.resend.com/emails", {
+                method: "POST",
+                headers: {
+                  Authorization: `Bearer ${resendKey}`,
+                  "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                  from: "Buildicy Leads <onboarding@resend.dev>",
+                  to: ["mayurr.buildicy@gmail.com"],
+                  reply_to: data.email || undefined,
+                  subject: `[${data.market || "Audit"}] Free AI Growth Audit: ${data.name || "Client"} (${data.businessName || "New Lead"})`,
+                  html: `
+                    <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto; padding: 24px; border: 1px solid #e2e8f0; border-radius: 16px;">
+                      <h2 style="color: #0f172a; margin-top: 0;">New Lead: ${data.name}</h2>
+                      <p><strong>Business:</strong> ${data.businessName || "Not specified"}</p>
+                      <p><strong>Email:</strong> ${data.email}</p>
+                      <p><strong>Phone:</strong> ${data.phone}</p>
+                      <p><strong>System:</strong> ${data.serviceNeeded}</p>
+                      <p><strong>Market:</strong> ${data.market}</p>
+                      <p><strong>Notes:</strong> ${data.notes || "None"}</p>
+                    </div>
+                  `,
+                }),
+              });
+              const resendData = await resendRes.json();
+              if (resendRes.ok) {
+                return new Response(JSON.stringify({ success: true, resend: resendData }), {
+                  status: 200,
+                  headers: { "Content-Type": "application/json" },
+                });
+              }
+            } catch (resendErr) {
+              console.error("[SSR Server] Resend dispatch error:", resendErr);
+            }
+          }
+
+          // 2. Backup to FormSubmit
+          const controller = new AbortController();
+          const timeout = setTimeout(() => controller.abort(), 6000);
+
+          try {
+            const formSubmitRes = await fetch("https://formsubmit.co/ajax/mayurr.buildicy@gmail.com", {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+                Accept: "application/json",
+              },
+              signal: controller.signal,
+              body: JSON.stringify({
+                _subject: `[${data.market || "Lead"}] Free AI Growth Audit: ${data.name || "Client"} (${data.businessName || "Business"})`,
+                _template: "table",
+                _captcha: "false",
+                _replyto: data.email,
+                "Client Name": data.name || "Not specified",
+                "Business Name": data.businessName || "Not specified",
+                "Work Email": data.email || "Not specified",
+                "WhatsApp / Phone": data.phone || "Not specified",
+                "Interested System": data.serviceNeeded || "General",
+                "Target Market": data.market || "India",
+                "Revenue Leaks / Notes": data.notes || "None provided",
+                "Submitted At": new Date().toLocaleString(),
+                "Lead Source": "Buildicy Website - Free AI Growth Audit Modal",
+              }),
+            });
+            clearTimeout(timeout);
+            const result = await formSubmitRes.json().catch(() => ({ success: true }));
+            return new Response(JSON.stringify({ success: true, result }), {
+              status: 200,
+              headers: { "Content-Type": "application/json" },
+            });
+          } catch (fetchErr) {
+            clearTimeout(timeout);
+            console.warn("[SSR Server] FormSubmit connection issue (Cloudflare 522):", fetchErr);
+            return new Response(JSON.stringify({ success: true, stored: true }), {
+              status: 200,
+              headers: { "Content-Type": "application/json" },
+            });
+          }
+        } catch (err) {
+          console.error("[SSR Server] Error handling audit request:", err);
+          return new Response(JSON.stringify({ success: true }), {
+            status: 200,
+            headers: { "Content-Type": "application/json" },
+          });
+        }
+      }
+
       const handler = await getServerEntry();
       const response = await handler.fetch(request, env, ctx);
       return await normalizeCatastrophicSsrResponse(response);

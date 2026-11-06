@@ -56,18 +56,17 @@ export function DocsSection({ onOpenAudit }: { onOpenAudit?: () => void }) {
 
   // Lock body scroll and handle Escape key while preview is active
   useEffect(() => {
-    if (activePreviewDoc) {
-      const orig = document.body.style.overflow;
-      document.body.style.overflow = "hidden";
-      const handleKeyDown = (e: KeyboardEvent) => {
-        if (e.key === "Escape") setActivePreviewDoc(null);
-      };
-      window.addEventListener("keydown", handleKeyDown);
-      return () => {
-        document.body.style.overflow = orig;
-        window.removeEventListener("keydown", handleKeyDown);
-      };
-    }
+    if (!activePreviewDoc) return;
+    const orig = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setActivePreviewDoc(null);
+    };
+    window.addEventListener("keydown", handleKeyDown);
+    return () => {
+      document.body.style.overflow = orig;
+      window.removeEventListener("keydown", handleKeyDown);
+    };
   }, [activePreviewDoc]);
 
   return (

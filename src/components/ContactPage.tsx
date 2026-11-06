@@ -92,17 +92,49 @@ export function ContactPage() {
       submitted_at: new Date().toLocaleString(),
     };
 
+    const fd = new FormData();
+    fd.append("_subject", `New Inquiry from ${name} - ${selectedNeed}`);
+    fd.append("_template", "table");
+    fd.append("_captcha", "false");
+    fd.append("client_name", name);
+    fd.append("client_email", email);
+    fd.append("service_needed", selectedNeed);
+    fd.append("message", message);
+    fd.append("submitted_at", new Date().toLocaleString());
+
     try {
-      const response = await fetch(`https://formsubmit.co/ajax/${TARGET_EMAIL}`, {
+      // 1. Deliver directly via Resend
+      await fetch("https://api.resend.com/emails", {
         method: "POST",
         headers: {
+          Authorization: `Bearer ${import.meta.env.VITE_RESEND_API_KEY}`,
           "Content-Type": "application/json",
-          Accept: "application/json",
         },
-        body: JSON.stringify(payload),
-      });
+        body: JSON.stringify({
+          from: "Buildicy Contact <onboarding@resend.dev>",
+          to: [TARGET_EMAIL],
+          reply_to: email,
+          subject: `New Inquiry: ${name} (${selectedNeed})`,
+          html: `
+            <div style="font-family: sans-serif; padding: 24px; border: 1px solid #e2e8f0; border-radius: 16px;">
+              <h2 style="color: #0f172a; margin-top: 0;">New Project Inquiry</h2>
+              <p><strong>Client:</strong> ${name}</p>
+              <p><strong>Email:</strong> <a href="mailto:${email}">${email}</a></p>
+              <p><strong>Need / Service:</strong> ${selectedNeed}</p>
+              <p><strong>Message:</strong><br/>${message}</p>
+              <hr style="border: none; border-top: 1px solid #f1f5f9; margin: 16px 0;" />
+              <small style="color: #94a3b8; font-family: monospace;">Submitted at ${new Date().toLocaleString()}</small>
+            </div>
+          `,
+        }),
+      }).catch(() => null);
 
-      await response.json().catch(() => null);
+      // 2. Backup to FormSubmit
+      await fetch(`https://formsubmit.co/${TARGET_EMAIL}`, {
+        method: "POST",
+        mode: "no-cors",
+        body: fd,
+      }).catch(() => null);
 
       // Save to localStorage as backup
       try {
