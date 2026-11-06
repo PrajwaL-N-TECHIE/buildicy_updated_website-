@@ -48,7 +48,7 @@ export default defineConfig({
                       },
                       body: JSON.stringify({
                         from: "Buildicy Leads <onboarding@resend.dev>",
-                        to: ["mayurr.buildicy@gmail.com"],
+                        to: ["hello@buildicy.com"],
                         reply_to: data.email || undefined,
                         subject: `[${data.market || "Audit"}] Free AI Growth Audit: ${data.name} (${data.businessName || "New Lead"})`,
                         html: `
@@ -92,7 +92,7 @@ export default defineConfig({
                     const controller = new AbortController();
                     const timeout = setTimeout(() => controller.abort(), 5000);
 
-                    await fetch("https://formsubmit.co/ajax/mayurr.buildicy@gmail.com", {
+                    await fetch("https://formsubmit.co/ajax/hello@buildicy.com", {
                       method: "POST",
                       headers: {
                         "Content-Type": "application/json",

@@ -8,12 +8,12 @@ export interface AuditBookingPayload {
   notes?: string | undefined;
 }
 
-export const PRIMARY_AUDIT_EMAIL = "mayurr.buildicy@gmail.com";
+export const PRIMARY_AUDIT_EMAIL = "hello@buildicy.com";
 export const RESEND_KEY = (import.meta as any).env?.VITE_RESEND_API_KEY;
 
 /**
  * Universal dispatcher for Audit requests.
- * Uses Resend API (via backend proxy or direct client call) to guarantee instant, 100% reliable email delivery to mayurr.buildicy@gmail.com.
+ * Uses Resend API (via backend proxy or direct client call) to guarantee instant, 100% reliable email delivery to hello@buildicy.com.
  */
 export async function sendAuditRequest(payload: AuditBookingPayload): Promise<{ success: boolean }> {
   // 1. Immediately store to localStorage so lead data is permanently saved on device

@@ -42,7 +42,7 @@ export const PDF_DOCS = [
   },
 ];
 
-export const TARGET_EMAIL = "mayurr.buildicy@gmail.com";
+export const TARGET_EMAIL = "hello@buildicy.com";
 
 export function ContactPage() {
   const [name, setName] = useState("");

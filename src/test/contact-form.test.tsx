@@ -26,7 +26,7 @@ describe("Contact / Project Inquiry Page", () => {
     ).toBeInTheDocument();
 
     // Check destination email
-    const emailElements = screen.getAllByText(/mayurr\.buildicy@gmail\.com/i);
+    const emailElements = screen.getAllByText(/hello@buildicy\.com/i);
     expect(emailElements.length).toBeGreaterThan(0);
 
     // Check service need chips

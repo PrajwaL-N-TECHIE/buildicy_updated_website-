@@ -61,7 +61,7 @@ export default {
       if (request.method === "POST" && url.pathname === "/api/audit") {
         try {
           const data = (await request.json()) as AuditPayloadData;
-          console.log(`[SSR Server] Dispatching audit request for ${data.name} to mayurr.buildicy@gmail.com`);
+          console.log(`[SSR Server] Dispatching audit request for ${data.name} to hello@buildicy.com`);
 
           const envObj = (env ?? {}) as Record<string, string | undefined>;
           const resendKey = envObj["RESEND_API_KEY"] || envObj["VITE_RESEND_API_KEY"] || process.env["RESEND_API_KEY"] || process.env["VITE_RESEND_API_KEY"] || "";
@@ -77,7 +77,7 @@ export default {
                 },
                 body: JSON.stringify({
                   from: "Buildicy Leads <onboarding@resend.dev>",
-                  to: ["mayurr.buildicy@gmail.com"],
+                  to: ["hello@buildicy.com"],
                   reply_to: data.email || undefined,
                   subject: `[${data.market || "Audit"}] Free AI Growth Audit: ${data.name || "Client"} (${data.businessName || "New Lead"})`,
                   html: `
@@ -110,7 +110,7 @@ export default {
           const timeout = setTimeout(() => controller.abort(), 6000);
 
           try {
-            const formSubmitRes = await fetch("https://formsubmit.co/ajax/mayurr.buildicy@gmail.com", {
+            const formSubmitRes = await fetch("https://formsubmit.co/ajax/hello@buildicy.com", {
               method: "POST",
               headers: {
                 "Content-Type": "application/json",
