@@ -381,3 +381,4 @@ export function generateCareersEmailHtml(data: CareersEmailData): string {
 </html>
   `.trim();
 }
+
