@@ -521,6 +521,9 @@ export function ContactPage() {
             <span>AI Growth Systems Studio</span>
           </div>
           <div className="flex items-center gap-6">
+            <Link to="/careers" className="hover:text-purple-700 transition-colors">
+              Careers
+            </Link>
             <Link to="/privacy" className="hover:text-purple-700 transition-colors">
               Privacy Policy
             </Link>

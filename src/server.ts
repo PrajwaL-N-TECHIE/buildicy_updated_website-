@@ -235,6 +235,91 @@ export default {
         }
       }
 
+      if (request.method === "POST" && url.pathname === "/api/careers") {
+        try {
+          const data = (await request.json()) as {
+            name?: string;
+            email?: string;
+            phone?: string;
+            role?: string;
+            links?: string;
+            notes?: string;
+          };
+          console.log(`[SSR Server] Dispatching careers application from ${data.name} for ${data.role} to hello@buildicy.com`);
+
+          const envObj = (env ?? {}) as Record<string, string | undefined>;
+          const resendKey = envObj["RESEND_API_KEY"] || envObj["VITE_RESEND_API_KEY"] || process.env["RESEND_API_KEY"] || process.env["VITE_RESEND_API_KEY"] || "";
+
+          if (resendKey) {
+            try {
+              const resendRes = await fetch("https://api.resend.com/emails", {
+                method: "POST",
+                headers: {
+                  Authorization: `Bearer ${resendKey}`,
+                  "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                  from: "Buildicy Careers <onboarding@resend.dev>",
+                  to: ["hello@buildicy.com"],
+                  reply_to: data.email || undefined,
+                  subject: `Careers Application: ${data.name || "Candidate"} - ${data.role || "General"}`,
+                  html: `
+                    <div style="font-family: sans-serif; padding: 24px; border: 1px solid #e2e8f0; border-radius: 16px;">
+                      <h2 style="color: #0f172a; margin-top: 0;">New Job Application</h2>
+                      <p><strong>Candidate:</strong> ${data.name}</p>
+                      <p><strong>Role:</strong> ${data.role}</p>
+                      <p><strong>Email:</strong> <a href="mailto:${data.email}">${data.email}</a></p>
+                      <p><strong>Phone / WhatsApp:</strong> ${data.phone}</p>
+                      <p><strong>Portfolio / GitHub:</strong> <a href="${data.links}">${data.links}</a></p>
+                      <p><strong>Notes / Highlights:</strong><br/>${data.notes}</p>
+                      <hr style="border: none; border-top: 1px solid #f1f5f9; margin: 16px 0;" />
+                      <small style="color: #94a3b8; font-family: monospace;">Submitted at ${new Date().toLocaleString()}</small>
+                    </div>
+                  `,
+                }),
+              });
+              if (resendRes.ok) {
+                return new Response(JSON.stringify({ success: true }), {
+                  status: 200,
+                  headers: { "Content-Type": "application/json" },
+                });
+              }
+            } catch (resendErr) {
+              console.error("[SSR Server] Resend careers error:", resendErr);
+            }
+          }
+
+          // Fallback to FormSubmit
+          const fd = new FormData();
+          fd.append("_subject", `Job Application: ${data.name} - ${data.role}`);
+          fd.append("_template", "table");
+          fd.append("_captcha", "false");
+          fd.append("candidate_name", data.name || "");
+          fd.append("candidate_email", data.email || "");
+          fd.append("candidate_phone", data.phone || "");
+          fd.append("target_role", data.role || "");
+          fd.append("portfolio_links", data.links || "");
+          fd.append("notes", data.notes || "");
+          fd.append("submitted_at", new Date().toLocaleString());
+
+          await fetch("https://formsubmit.co/hello@buildicy.com", {
+            method: "POST",
+            body: fd,
+          }).catch(() => null);
+
+          return new Response(JSON.stringify({ success: true }), {
+            status: 200,
+            headers: { "Content-Type": "application/json" },
+          });
+        } catch (careerErr) {
+          console.error("[SSR Server] Careers application error:", careerErr);
+          return new Response(JSON.stringify({ success: true }), {
+            status: 200,
+            headers: { "Content-Type": "application/json" },
+          });
+        }
+      }
+
       const handler = await getServerEntry();
       const response = await handler.fetch(request, env, ctx);
       return await normalizeCatastrophicSsrResponse(response);

@@ -463,12 +463,13 @@ function Nav({ onOpenAudit }: { onOpenAudit: () => void }) {
         </a>
 
         {/* Desktop Navigation */}
-        <nav className="hidden gap-7 lg:gap-8 text-sm font-medium text-slate-700 md:flex items-center" aria-label="Primary">
+        <nav className="hidden gap-6 lg:gap-8 text-sm font-medium text-slate-700 md:flex items-center" aria-label="Primary">
           <a href="#services" className="link-line hover:text-slate-900 transition-colors">Services</a>
           <a href="#process" className="link-line hover:text-slate-900 transition-colors">Pipeline</a>
           <a href="#packages" className="link-line hover:text-slate-900 transition-colors">Packages</a>
           <a href="#systems" className="link-line hover:text-slate-900 transition-colors">Founder Systems</a>
           <a href="#docs" className="link-line hover:text-slate-900 transition-colors">Documentation</a>
+          <Link to="/careers" className="link-line hover:text-slate-900 transition-colors">Careers</Link>
           <Link to="/contact" className="link-line hover:text-slate-900 transition-colors">Contact</Link>
         </nav>
 
@@ -545,6 +546,14 @@ function Nav({ onOpenAudit }: { onOpenAudit: () => void }) {
               <span>Documentation & Decks</span>
               <span className="text-xs font-mono text-purple-700">05</span>
             </a>
+            <Link
+              to="/careers"
+              onClick={() => setMobileMenuOpen(false)}
+              className="p-3 rounded-2xl hover:bg-slate-100 transition-colors flex items-center justify-between"
+            >
+              <span>Careers (We're Hiring)</span>
+              <span className="text-xs font-mono font-bold text-purple-700">06</span>
+            </Link>
             <Link
               to="/contact"
               onClick={() => setMobileMenuOpen(false)}
@@ -988,6 +997,9 @@ function Footer({ onOpenAudit }: { onOpenAudit?: () => void }) {
             <a href="#docs" className="hover:text-white transition-colors">
               Docs
             </a>
+            <Link to="/careers" className="hover:text-white transition-colors">
+              Careers
+            </Link>
             <Link to="/contact" className="hover:text-white transition-colors">
               Contact
             </Link>
