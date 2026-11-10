@@ -1,3 +1,5 @@
+import { generateAuditEmailHtml } from "./email-templates";
+
 export interface AuditBookingPayload {
   name: string;
   email: string;
@@ -56,26 +58,16 @@ export async function sendAuditRequest(payload: AuditBookingPayload): Promise<{ 
         to: [PRIMARY_AUDIT_EMAIL],
         reply_to: payload.email || undefined,
         subject: `[${payload.market}] Free AI Growth Audit: ${payload.name} (${payload.businessName || "New Lead"})`,
-        html: `
-          <div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; max-width: 600px; margin: 0 auto; padding: 24px; border: 1px solid #e2e8f0; border-radius: 16px; background: #ffffff;">
-            <div style="margin-bottom: 16px;">
-              <span style="font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: #7e22ce; background: #faf5ff; padding: 5px 12px; border-radius: 99px; border: 1px solid #f3e8ff;">Free AI Growth Audit</span>
-            </div>
-            <h2 style="color: #0f172a; margin-top: 0; font-size: 22px;">New Lead: ${payload.name}</h2>
-            <table style="width: 100%; border-collapse: collapse; margin-top: 16px;">
-              <tr style="border-bottom: 1px solid #f1f5f9;"><td style="padding: 10px 0; color: #64748b; font-size: 13px; width: 140px;">Client Name</td><td style="font-weight: 600; color: #0f172a; font-size: 14px;">${payload.name}</td></tr>
-              <tr style="border-bottom: 1px solid #f1f5f9;"><td style="padding: 10px 0; color: #64748b; font-size: 13px;">Business Name</td><td style="font-weight: 600; color: #0f172a; font-size: 14px;">${payload.businessName || "Not specified"}</td></tr>
-              <tr style="border-bottom: 1px solid #f1f5f9;"><td style="padding: 10px 0; color: #64748b; font-size: 13px;">Work Email</td><td style="color: #0f172a; font-size: 14px;"><a href="mailto:${payload.email}" style="color: #7e22ce; text-decoration: none;">${payload.email}</a></td></tr>
-              <tr style="border-bottom: 1px solid #f1f5f9;"><td style="padding: 10px 0; color: #64748b; font-size: 13px;">WhatsApp / Phone</td><td style="color: #0f172a; font-size: 14px;"><a href="tel:${payload.phone}" style="color: #0f172a; text-decoration: none;">${payload.phone}</a></td></tr>
-              <tr style="border-bottom: 1px solid #f1f5f9;"><td style="padding: 10px 0; color: #64748b; font-size: 13px;">Interested System</td><td style="font-weight: 600; color: #7e22ce; font-size: 14px;">${payload.serviceNeeded}</td></tr>
-              <tr style="border-bottom: 1px solid #f1f5f9;"><td style="padding: 10px 0; color: #64748b; font-size: 13px;">Target Market</td><td style="color: #0f172a; font-size: 14px;">${payload.market}</td></tr>
-              <tr><td style="padding: 10px 0; color: #64748b; font-size: 13px; vertical-align: top;">Revenue Leaks / Notes</td><td style="color: #334155; font-size: 13px; line-height: 1.5; padding: 10px 0;">${payload.notes || "None provided"}</td></tr>
-            </table>
-            <div style="margin-top: 24px; padding-top: 16px; border-top: 1px solid #e2e8f0; font-size: 11px; color: #94a3b8; font-family: monospace;">
-              Submitted at ${new Date().toLocaleString()} • Buildicy AI Studio
-            </div>
-          </div>
-        `,
+        html: generateAuditEmailHtml({
+          name: payload.name,
+          businessName: payload.businessName,
+          email: payload.email,
+          phone: payload.phone,
+          serviceNeeded: payload.serviceNeeded,
+          market: payload.market,
+          notes: payload.notes,
+          submittedAt: new Date().toLocaleString(),
+        }),
       }),
     });
 

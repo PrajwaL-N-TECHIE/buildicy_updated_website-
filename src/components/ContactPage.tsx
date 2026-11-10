@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Link } from "@tanstack/react-router";
 import { toast } from "sonner";
+import { generateContactEmailHtml } from "../lib/email-templates";
 import {
   ArrowLeft,
   Check,
@@ -128,17 +129,13 @@ export function ContactPage() {
             to: [TARGET_EMAIL],
             reply_to: email,
             subject: `New Inquiry: ${name} (${selectedNeed})`,
-            html: `
-              <div style="font-family: sans-serif; padding: 24px; border: 1px solid #e2e8f0; border-radius: 16px;">
-                <h2 style="color: #0f172a; margin-top: 0;">New Project Inquiry</h2>
-                <p><strong>Client:</strong> ${name}</p>
-                <p><strong>Email:</strong> <a href="mailto:${email}">${email}</a></p>
-                <p><strong>Need / Service:</strong> ${selectedNeed}</p>
-                <p><strong>Message:</strong><br/>${message}</p>
-                <hr style="border: none; border-top: 1px solid #f1f5f9; margin: 16px 0;" />
-                <small style="color: #94a3b8; font-family: monospace;">Submitted at ${new Date().toLocaleString()}</small>
-              </div>
-            `,
+            html: generateContactEmailHtml({
+              name,
+              email,
+              serviceNeeded: selectedNeed,
+              message,
+              submittedAt: new Date().toLocaleString(),
+            }),
           }),
         }).catch(() => null);
 

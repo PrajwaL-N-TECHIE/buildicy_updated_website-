@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Link } from "@tanstack/react-router";
 import { toast } from "sonner";
+import { generateCareersEmailHtml } from "../lib/email-templates";
 import {
   ArrowLeft,
   ArrowRight,
@@ -215,6 +216,33 @@ export function CareersPage() {
       }).catch(() => null);
 
       if (!res?.ok) {
+        // Direct Resend client dispatch if key is configured
+        const clientResendKey = (import.meta as any).env?.VITE_RESEND_API_KEY;
+        if (clientResendKey) {
+          await fetch("https://api.resend.com/emails", {
+            method: "POST",
+            headers: {
+              Authorization: `Bearer ${clientResendKey}`,
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              from: "Buildicy Careers <onboarding@resend.dev>",
+              to: ["hello@buildicy.com"],
+              reply_to: applicantEmail || undefined,
+              subject: `Careers Application: ${applicantName} - ${roleTitle}`,
+              html: generateCareersEmailHtml({
+                name: applicantName,
+                role: roleTitle,
+                email: applicantEmail,
+                phone: applicantPhone,
+                links: applicantLinks,
+                notes: applicantNotes,
+                submittedAt: new Date().toLocaleString(),
+              }),
+            }),
+          }).catch(() => null);
+        }
+
         // Fallback to FormSubmit
         const fd = new FormData();
         fd.append("_subject", `Careers Application: ${applicantName} - ${roleTitle}`);

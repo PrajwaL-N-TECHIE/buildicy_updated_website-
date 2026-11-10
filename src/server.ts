@@ -2,6 +2,11 @@ import "./lib/error-capture";
 
 import { consumeLastCapturedError } from "./lib/error-capture";
 import { renderErrorPage } from "./lib/error-page";
+import {
+  generateAuditEmailHtml,
+  generateContactEmailHtml,
+  generateCareersEmailHtml,
+} from "./lib/email-templates";
 
 type ServerEntry = {
   fetch: (request: Request, env: unknown, ctx: unknown) => Promise<Response> | Response;
@@ -65,10 +70,23 @@ export default {
 
           const envObj = (env ?? {}) as Record<string, string | undefined>;
           const resendKey = envObj["RESEND_API_KEY"] || envObj["VITE_RESEND_API_KEY"] || process.env["RESEND_API_KEY"] || process.env["VITE_RESEND_API_KEY"] || "";
+          const notifyEmail = envObj["NOTIFY_EMAIL"] || process.env["NOTIFY_EMAIL"] || "hello@buildicy.com";
+          const fromEmail = envObj["RESEND_FROM_EMAIL"] || process.env["RESEND_FROM_EMAIL"] || "Buildicy Leads <onboarding@resend.dev>";
 
           // 1. Try Resend if configured
           if (resendKey) {
             try {
+              const emailHtml = generateAuditEmailHtml({
+                name: data.name,
+                businessName: data.businessName,
+                email: data.email,
+                phone: data.phone,
+                serviceNeeded: data.serviceNeeded,
+                market: data.market,
+                notes: data.notes,
+                submittedAt: new Date().toLocaleString(),
+              });
+
               const resendRes = await fetch("https://api.resend.com/emails", {
                 method: "POST",
                 headers: {
@@ -76,21 +94,11 @@ export default {
                   "Content-Type": "application/json",
                 },
                 body: JSON.stringify({
-                  from: "Buildicy Leads <onboarding@resend.dev>",
-                  to: ["hello@buildicy.com"],
+                  from: fromEmail,
+                  to: [notifyEmail],
                   reply_to: data.email || undefined,
                   subject: `[${data.market || "Audit"}] Free AI Growth Audit: ${data.name || "Client"} (${data.businessName || "New Lead"})`,
-                  html: `
-                    <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto; padding: 24px; border: 1px solid #e2e8f0; border-radius: 16px;">
-                      <h2 style="color: #0f172a; margin-top: 0;">New Lead: ${data.name}</h2>
-                      <p><strong>Business:</strong> ${data.businessName || "Not specified"}</p>
-                      <p><strong>Email:</strong> ${data.email}</p>
-                      <p><strong>Phone:</strong> ${data.phone}</p>
-                      <p><strong>System:</strong> ${data.serviceNeeded}</p>
-                      <p><strong>Market:</strong> ${data.market}</p>
-                      <p><strong>Notes:</strong> ${data.notes || "None"}</p>
-                    </div>
-                  `,
+                  html: emailHtml,
                 }),
               });
               const resendData = await resendRes.json();
@@ -168,9 +176,19 @@ export default {
 
           const envObj = (env ?? {}) as Record<string, string | undefined>;
           const resendKey = envObj["RESEND_API_KEY"] || envObj["VITE_RESEND_API_KEY"] || process.env["RESEND_API_KEY"] || process.env["VITE_RESEND_API_KEY"] || "";
+          const notifyEmail = envObj["NOTIFY_EMAIL"] || process.env["NOTIFY_EMAIL"] || "hello@buildicy.com";
+          const fromEmail = envObj["RESEND_FROM_EMAIL"] || process.env["RESEND_FROM_EMAIL"] || "Buildicy Contact <onboarding@resend.dev>";
 
           if (resendKey) {
             try {
+              const emailHtml = generateContactEmailHtml({
+                name: data.name,
+                email: data.email,
+                serviceNeeded: data.serviceNeeded,
+                message: data.message,
+                submittedAt: new Date().toLocaleString(),
+              });
+
               const resendRes = await fetch("https://api.resend.com/emails", {
                 method: "POST",
                 headers: {
@@ -178,21 +196,11 @@ export default {
                   "Content-Type": "application/json",
                 },
                 body: JSON.stringify({
-                  from: "Buildicy Contact <onboarding@resend.dev>",
-                  to: ["hello@buildicy.com"],
+                  from: fromEmail,
+                  to: [notifyEmail],
                   reply_to: data.email || undefined,
                   subject: `New Project Inquiry: ${data.name || "Client"} (${data.serviceNeeded || "General"})`,
-                  html: `
-                    <div style="font-family: sans-serif; padding: 24px; border: 1px solid #e2e8f0; border-radius: 16px;">
-                      <h2 style="color: #0f172a; margin-top: 0;">New Project Inquiry</h2>
-                      <p><strong>Client:</strong> ${data.name}</p>
-                      <p><strong>Email:</strong> <a href="mailto:${data.email}">${data.email}</a></p>
-                      <p><strong>Need / Service:</strong> ${data.serviceNeeded}</p>
-                      <p><strong>Message:</strong><br/>${data.message}</p>
-                      <hr style="border: none; border-top: 1px solid #f1f5f9; margin: 16px 0;" />
-                      <small style="color: #94a3b8; font-family: monospace;">Submitted at ${new Date().toLocaleString()}</small>
-                    </div>
-                  `,
+                  html: emailHtml,
                 }),
               });
               if (resendRes.ok) {
@@ -249,9 +257,21 @@ export default {
 
           const envObj = (env ?? {}) as Record<string, string | undefined>;
           const resendKey = envObj["RESEND_API_KEY"] || envObj["VITE_RESEND_API_KEY"] || process.env["RESEND_API_KEY"] || process.env["VITE_RESEND_API_KEY"] || "";
+          const notifyEmail = envObj["NOTIFY_EMAIL"] || process.env["NOTIFY_EMAIL"] || "hello@buildicy.com";
+          const fromEmail = envObj["RESEND_FROM_EMAIL"] || process.env["RESEND_FROM_EMAIL"] || "Buildicy Careers <onboarding@resend.dev>";
 
           if (resendKey) {
             try {
+              const emailHtml = generateCareersEmailHtml({
+                name: data.name,
+                role: data.role,
+                email: data.email,
+                phone: data.phone,
+                links: data.links,
+                notes: data.notes,
+                submittedAt: new Date().toLocaleString(),
+              });
+
               const resendRes = await fetch("https://api.resend.com/emails", {
                 method: "POST",
                 headers: {
@@ -259,23 +279,11 @@ export default {
                   "Content-Type": "application/json",
                 },
                 body: JSON.stringify({
-                  from: "Buildicy Careers <onboarding@resend.dev>",
-                  to: ["hello@buildicy.com"],
+                  from: fromEmail,
+                  to: [notifyEmail],
                   reply_to: data.email || undefined,
                   subject: `Careers Application: ${data.name || "Candidate"} - ${data.role || "General"}`,
-                  html: `
-                    <div style="font-family: sans-serif; padding: 24px; border: 1px solid #e2e8f0; border-radius: 16px;">
-                      <h2 style="color: #0f172a; margin-top: 0;">New Job Application</h2>
-                      <p><strong>Candidate:</strong> ${data.name}</p>
-                      <p><strong>Role:</strong> ${data.role}</p>
-                      <p><strong>Email:</strong> <a href="mailto:${data.email}">${data.email}</a></p>
-                      <p><strong>Phone / WhatsApp:</strong> ${data.phone}</p>
-                      <p><strong>Portfolio / GitHub:</strong> <a href="${data.links}">${data.links}</a></p>
-                      <p><strong>Notes / Highlights:</strong><br/>${data.notes}</p>
-                      <hr style="border: none; border-top: 1px solid #f1f5f9; margin: 16px 0;" />
-                      <small style="color: #94a3b8; font-family: monospace;">Submitted at ${new Date().toLocaleString()}</small>
-                    </div>
-                  `,
+                  html: emailHtml,
                 }),
               });
               if (resendRes.ok) {
