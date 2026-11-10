@@ -3,7 +3,7 @@ import { createPortal } from "react-dom";
 import { toast } from "sonner";
 import { sendAuditRequest, PRIMARY_AUDIT_EMAIL } from "../lib/audit";
 
-const WHATSAPP_URL = `https://wa.me/916381390205?text=${encodeURIComponent(
+const WHATSAPP_URL = `https://wa.me/919150890205?text=${encodeURIComponent(
   "Hi Buildicy, I'd like to book a free 30-minute AI Growth Audit for my business."
 )}`;
 
@@ -120,7 +120,7 @@ export function AuditBookingModal({
             </p>
             <div className="flex flex-wrap justify-center gap-3">
               <a
-                href={`https://wa.me/916381390205?text=${encodeURIComponent(
+                href={`https://wa.me/919150890205?text=${encodeURIComponent(
                   `Hi Buildicy! I just requested a Free AI Growth Audit:\n\n• Name: ${name}\n• Business: ${businessName || "Not specified"}\n• Email: ${email}\n• Phone: ${phone}\n• Service: ${serviceNeeded}\n• Market: ${market}`
                 )}`}
                 target="_blank"
@@ -203,7 +203,7 @@ export function AuditBookingModal({
                     required
                     value={phone}
                     onChange={(e) => setPhone(e.target.value)}
-                    placeholder="+91 63813 90205"
+                    placeholder="+91 91508 90205"
                     className="w-full rounded-xl border border-slate-200 bg-slate-50 px-3.5 py-2.5 text-base sm:text-sm text-slate-900 placeholder:text-slate-400 focus:outline-none focus:border-purple-600 focus:bg-white transition-colors"
                   />
                 </div>
@@ -272,7 +272,7 @@ export function AuditBookingModal({
                   rel="noopener noreferrer"
                   className="text-emerald-600 hover:text-emerald-700 font-semibold hover:underline inline-flex items-center gap-1"
                 >
-                  WhatsApp: +91 63813 90205 ↗
+                  WhatsApp: +91 91508 90205 ↗
                 </a>
               </div>
 

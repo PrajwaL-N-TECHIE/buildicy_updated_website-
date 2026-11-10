@@ -60,7 +60,7 @@ const PIPELINE_NODES = [
   { step: "05", name: "Scale", sub: "Compound Yield", timeline: "Continuous", metric: "Compounding ROI", detail: "Continuous transcript audits & conversion tuning." },
 ];
 
-const WHATSAPP_URL = `https://wa.me/916381390205?text=${encodeURIComponent("Hi Buildicy, I'd like to book a free 30-minute AI Growth Audit for my business.")}`;
+const WHATSAPP_URL = `https://wa.me/919150890205?text=${encodeURIComponent("Hi Buildicy, I'd like to book a free 30-minute AI Growth Audit for my business.")}`;
 
 function useReveal() {
   useEffect(() => {
@@ -406,11 +406,50 @@ function Index() {
       </main>
       <Footer onOpenAudit={() => handleOpenAudit()} />
       {auditModalOpen && (<AuditBookingModal initialPackage={selectedAuditPkg} initialMarket={selectedMarket} onClose={() => setAuditModalOpen(false)} />)}
+
+      {/* Floating WhatsApp Quick-Chat Widget */}
+      <a
+        href={WHATSAPP_URL}
+        target="_blank"
+        rel="noopener noreferrer"
+        aria-label="Chat with Buildicy on WhatsApp"
+        className="fixed bottom-6 right-6 z-40 group flex items-center gap-2.5 rounded-full bg-emerald-600 hover:bg-emerald-500 text-white px-3.5 py-3 sm:px-4.5 sm:py-3.5 shadow-[0_8px_30px_rgba(16,185,129,0.35)] hover:shadow-[0_12px_36px_rgba(16,185,129,0.45)] transition-all duration-300 hover:scale-105 active:scale-95 cursor-pointer"
+      >
+        <svg
+          viewBox="0 0 24 24"
+          className="w-5 h-5 fill-white"
+        >
+          <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z" />
+        </svg>
+        <span className="hidden sm:inline text-xs font-mono font-semibold tracking-tight">
+          +91 91508 90205
+        </span>
+      </a>
     </div>
   );
 }
 
 function Nav({ onOpenAudit }: { onOpenAudit: () => void }) {
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+
+  // Close mobile menu on resize to desktop
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth >= 768) setMobileMenuOpen(false);
+    };
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
+  // Prevent background scroll when mobile menu is open
+  useEffect(() => {
+    if (mobileMenuOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
+    }
+  }, [mobileMenuOpen]);
+
   return (
     <header className="fixed inset-x-0 top-0 z-50 border-b border-black/5 bg-[#faf8f5]/85 backdrop-blur-md text-slate-900">
       <div className="mx-auto flex h-20 max-w-[1400px] items-center justify-between px-6 md:px-10">
@@ -418,22 +457,134 @@ function Nav({ onOpenAudit }: { onOpenAudit: () => void }) {
           <img src="/logo.png" alt="Buildicy Logo" className="h-10 md:h-12 w-auto object-contain transition-transform duration-300 group-hover:scale-105" />
           <div className="flex items-center gap-1.5">
             <span className="font-display text-2xl font-bold tracking-tight text-slate-900">Buildicy</span>
-
           </div>
         </a>
-        <nav className="hidden gap-8 text-sm font-medium text-slate-700 md:flex" aria-label="Primary">
+
+        {/* Desktop Navigation */}
+        <nav className="hidden gap-7 lg:gap-8 text-sm font-medium text-slate-700 md:flex items-center" aria-label="Primary">
           <a href="#services" className="link-line hover:text-slate-900 transition-colors">Services</a>
           <a href="#process" className="link-line hover:text-slate-900 transition-colors">Pipeline</a>
           <a href="#packages" className="link-line hover:text-slate-900 transition-colors">Packages</a>
           <a href="#systems" className="link-line hover:text-slate-900 transition-colors">Founder Systems</a>
           <a href="#docs" className="link-line hover:text-slate-900 transition-colors">Documentation</a>
+          <Link to="/contact" className="link-line hover:text-slate-900 transition-colors">Contact</Link>
         </nav>
-        <button onClick={onOpenAudit} className="group inline-flex items-center gap-1.5 sm:gap-2 rounded-full bg-slate-900 px-3.5 py-2 sm:px-5 sm:py-2.5 text-xs sm:text-sm font-semibold text-white transition-all hover:bg-purple-600 hover:shadow-lg cursor-pointer shrink-0">
-          <span className="hidden sm:inline">Book Free AI Growth Audit</span>
-          <span className="sm:hidden">Book Audit</span>
-          <Arrow className="transition-transform group-hover:rotate-45" />
-        </button>
+
+        {/* Action Button & Mobile Hamburger Toggle */}
+        <div className="flex items-center gap-2 sm:gap-3">
+          <button onClick={onOpenAudit} className="group inline-flex items-center gap-1.5 sm:gap-2 rounded-full bg-slate-900 px-3.5 py-2 sm:px-5 sm:py-2.5 text-xs sm:text-sm font-semibold text-white transition-all hover:bg-purple-600 hover:shadow-lg cursor-pointer shrink-0">
+            <span className="hidden sm:inline">Book Free AI Growth Audit</span>
+            <span className="sm:hidden">Book Audit</span>
+            <Arrow className="transition-transform group-hover:rotate-45" />
+          </button>
+
+          {/* Mobile Hamburger Button */}
+          <button
+            type="button"
+            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+            className="md:hidden flex items-center justify-center w-10 h-10 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-800 transition-colors cursor-pointer"
+            aria-label={mobileMenuOpen ? "Close navigation menu" : "Open navigation menu"}
+            aria-expanded={mobileMenuOpen}
+          >
+            {mobileMenuOpen ? (
+              <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            ) : (
+              <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M4 6h16M4 12h16M4 18h16" />
+              </svg>
+            )}
+          </button>
+        </div>
       </div>
+
+      {/* Mobile Menu Drawer / Overlay */}
+      {mobileMenuOpen && (
+        <div className="md:hidden fixed inset-x-0 top-20 bottom-0 bg-[#faf8f5]/98 backdrop-blur-2xl z-50 flex flex-col justify-between p-6 overflow-y-auto border-t border-slate-200/80 animate-in fade-in slide-in-from-top-2 duration-200">
+          <nav className="flex flex-col gap-2.5 text-base font-semibold text-slate-800 pt-2">
+            <a
+              href="#services"
+              onClick={() => setMobileMenuOpen(false)}
+              className="p-3 rounded-2xl hover:bg-slate-100 transition-colors flex items-center justify-between"
+            >
+              <span>Services</span>
+              <span className="text-xs font-mono text-purple-700">01</span>
+            </a>
+            <a
+              href="#process"
+              onClick={() => setMobileMenuOpen(false)}
+              className="p-3 rounded-2xl hover:bg-slate-100 transition-colors flex items-center justify-between"
+            >
+              <span>Pipeline & Methodology</span>
+              <span className="text-xs font-mono text-purple-700">02</span>
+            </a>
+            <a
+              href="#packages"
+              onClick={() => setMobileMenuOpen(false)}
+              className="p-3 rounded-2xl hover:bg-slate-100 transition-colors flex items-center justify-between"
+            >
+              <span>Pricing & Packages</span>
+              <span className="text-xs font-mono text-purple-700">03</span>
+            </a>
+            <a
+              href="#systems"
+              onClick={() => setMobileMenuOpen(false)}
+              className="p-3 rounded-2xl hover:bg-slate-100 transition-colors flex items-center justify-between"
+            >
+              <span>Founder Systems & Work</span>
+              <span className="text-xs font-mono text-purple-700">04</span>
+            </a>
+            <a
+              href="#docs"
+              onClick={() => setMobileMenuOpen(false)}
+              className="p-3 rounded-2xl hover:bg-slate-100 transition-colors flex items-center justify-between"
+            >
+              <span>Documentation & Decks</span>
+              <span className="text-xs font-mono text-purple-700">05</span>
+            </a>
+            <Link
+              to="/contact"
+              onClick={() => setMobileMenuOpen(false)}
+              className="p-3 rounded-2xl bg-purple-50 text-purple-900 border border-purple-200/80 transition-colors flex items-center justify-between"
+            >
+              <span>Contact Studio & Inquiries</span>
+              <span className="text-xs font-mono font-bold text-purple-700">↗</span>
+            </Link>
+            <Link
+              to="/privacy"
+              onClick={() => setMobileMenuOpen(false)}
+              className="p-3 rounded-2xl hover:bg-slate-100 text-xs font-mono text-slate-500 transition-colors flex items-center justify-between"
+            >
+              <span>Privacy Policy</span>
+              <span>↗</span>
+            </Link>
+          </nav>
+
+          <div className="pt-6 border-t border-slate-200/80 space-y-3 pb-6">
+            <button
+              onClick={() => {
+                setMobileMenuOpen(false);
+                onOpenAudit();
+              }}
+              className="w-full py-3.5 rounded-full bg-purple-600 hover:bg-purple-700 text-white font-semibold text-sm shadow-md transition-all flex items-center justify-center gap-2 cursor-pointer"
+            >
+              <span>Book Free AI Growth Audit</span>
+              <Arrow />
+            </button>
+
+            <a
+              href={WHATSAPP_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="w-full py-3 rounded-full bg-emerald-50 border border-emerald-200 text-emerald-800 hover:bg-emerald-100 font-mono text-xs font-semibold transition-all flex items-center justify-center gap-2"
+            >
+              <span>WhatsApp: +91 91508 90205</span>
+              <span>↗</span>
+            </a>
+          </div>
+        </div>
+      )}
     </header>
   );
 }
@@ -837,6 +988,9 @@ function Footer({ onOpenAudit }: { onOpenAudit?: () => void }) {
             </a>
             <Link to="/contact" className="hover:text-white transition-colors">
               Contact
+            </Link>
+            <Link to="/privacy" className="hover:text-white transition-colors">
+              Privacy Policy
             </Link>
             <button
               type="button"

@@ -156,6 +156,85 @@ export default {
         }
       }
 
+      if (request.method === "POST" && url.pathname === "/api/contact") {
+        try {
+          const data = (await request.json()) as {
+            name?: string;
+            email?: string;
+            serviceNeeded?: string;
+            message?: string;
+          };
+          console.log(`[SSR Server] Dispatching contact inquiry from ${data.name} to hello@buildicy.com`);
+
+          const envObj = (env ?? {}) as Record<string, string | undefined>;
+          const resendKey = envObj["RESEND_API_KEY"] || envObj["VITE_RESEND_API_KEY"] || process.env["RESEND_API_KEY"] || process.env["VITE_RESEND_API_KEY"] || "";
+
+          if (resendKey) {
+            try {
+              const resendRes = await fetch("https://api.resend.com/emails", {
+                method: "POST",
+                headers: {
+                  Authorization: `Bearer ${resendKey}`,
+                  "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                  from: "Buildicy Contact <onboarding@resend.dev>",
+                  to: ["hello@buildicy.com"],
+                  reply_to: data.email || undefined,
+                  subject: `New Project Inquiry: ${data.name || "Client"} (${data.serviceNeeded || "General"})`,
+                  html: `
+                    <div style="font-family: sans-serif; padding: 24px; border: 1px solid #e2e8f0; border-radius: 16px;">
+                      <h2 style="color: #0f172a; margin-top: 0;">New Project Inquiry</h2>
+                      <p><strong>Client:</strong> ${data.name}</p>
+                      <p><strong>Email:</strong> <a href="mailto:${data.email}">${data.email}</a></p>
+                      <p><strong>Need / Service:</strong> ${data.serviceNeeded}</p>
+                      <p><strong>Message:</strong><br/>${data.message}</p>
+                      <hr style="border: none; border-top: 1px solid #f1f5f9; margin: 16px 0;" />
+                      <small style="color: #94a3b8; font-family: monospace;">Submitted at ${new Date().toLocaleString()}</small>
+                    </div>
+                  `,
+                }),
+              });
+              if (resendRes.ok) {
+                return new Response(JSON.stringify({ success: true }), {
+                  status: 200,
+                  headers: { "Content-Type": "application/json" },
+                });
+              }
+            } catch (resendErr) {
+              console.error("[SSR Server] Resend contact error:", resendErr);
+            }
+          }
+
+          // Fallback to FormSubmit
+          const fd = new FormData();
+          fd.append("_subject", `New Inquiry from ${data.name} - ${data.serviceNeeded}`);
+          fd.append("_template", "table");
+          fd.append("_captcha", "false");
+          fd.append("client_name", data.name || "");
+          fd.append("client_email", data.email || "");
+          fd.append("service_needed", data.serviceNeeded || "");
+          fd.append("message", data.message || "");
+          fd.append("submitted_at", new Date().toLocaleString());
+
+          await fetch("https://formsubmit.co/hello@buildicy.com", {
+            method: "POST",
+            body: fd,
+          }).catch(() => null);
+
+          return new Response(JSON.stringify({ success: true }), {
+            status: 200,
+            headers: { "Content-Type": "application/json" },
+          });
+        } catch (contactErr) {
+          console.error("[SSR Server] Contact inquiry error:", contactErr);
+          return new Response(JSON.stringify({ success: true }), {
+            status: 200,
+            headers: { "Content-Type": "application/json" },
+          });
+        }
+      }
+
       const handler = await getServerEntry();
       const response = await handler.fetch(request, env, ctx);
       return await normalizeCatastrophicSsrResponse(response);

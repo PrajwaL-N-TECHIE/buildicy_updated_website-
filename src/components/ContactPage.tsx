@@ -103,38 +103,52 @@ export function ContactPage() {
     fd.append("submitted_at", new Date().toLocaleString());
 
     try {
-      // 1. Deliver directly via Resend
-      await fetch("https://api.resend.com/emails", {
+      // 1. Deliver via local backend /api/contact endpoint (no CORS, server-secured Resend)
+      const localContactRes = await fetch("/api/contact", {
         method: "POST",
-        headers: {
-          Authorization: `Bearer ${import.meta.env.VITE_RESEND_API_KEY}`,
-          "Content-Type": "application/json",
-        },
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          from: "Buildicy Contact <onboarding@resend.dev>",
-          to: [TARGET_EMAIL],
-          reply_to: email,
-          subject: `New Inquiry: ${name} (${selectedNeed})`,
-          html: `
-            <div style="font-family: sans-serif; padding: 24px; border: 1px solid #e2e8f0; border-radius: 16px;">
-              <h2 style="color: #0f172a; margin-top: 0;">New Project Inquiry</h2>
-              <p><strong>Client:</strong> ${name}</p>
-              <p><strong>Email:</strong> <a href="mailto:${email}">${email}</a></p>
-              <p><strong>Need / Service:</strong> ${selectedNeed}</p>
-              <p><strong>Message:</strong><br/>${message}</p>
-              <hr style="border: none; border-top: 1px solid #f1f5f9; margin: 16px 0;" />
-              <small style="color: #94a3b8; font-family: monospace;">Submitted at ${new Date().toLocaleString()}</small>
-            </div>
-          `,
+          name,
+          email,
+          serviceNeeded: selectedNeed,
+          message,
         }),
       }).catch(() => null);
 
-      // 2. Backup to FormSubmit
-      await fetch(`https://formsubmit.co/${TARGET_EMAIL}`, {
-        method: "POST",
-        mode: "no-cors",
-        body: fd,
-      }).catch(() => null);
+      if (!localContactRes?.ok) {
+        // 2. Deliver directly via Resend client fallback
+        await fetch("https://api.resend.com/emails", {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${import.meta.env.VITE_RESEND_API_KEY}`,
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            from: "Buildicy Contact <onboarding@resend.dev>",
+            to: [TARGET_EMAIL],
+            reply_to: email,
+            subject: `New Inquiry: ${name} (${selectedNeed})`,
+            html: `
+              <div style="font-family: sans-serif; padding: 24px; border: 1px solid #e2e8f0; border-radius: 16px;">
+                <h2 style="color: #0f172a; margin-top: 0;">New Project Inquiry</h2>
+                <p><strong>Client:</strong> ${name}</p>
+                <p><strong>Email:</strong> <a href="mailto:${email}">${email}</a></p>
+                <p><strong>Need / Service:</strong> ${selectedNeed}</p>
+                <p><strong>Message:</strong><br/>${message}</p>
+                <hr style="border: none; border-top: 1px solid #f1f5f9; margin: 16px 0;" />
+                <small style="color: #94a3b8; font-family: monospace;">Submitted at ${new Date().toLocaleString()}</small>
+              </div>
+            `,
+          }),
+        }).catch(() => null);
+
+        // 3. Backup to FormSubmit
+        await fetch(`https://formsubmit.co/${TARGET_EMAIL}`, {
+          method: "POST",
+          mode: "no-cors",
+          body: fd,
+        }).catch(() => null);
+      }
 
       // Save to localStorage as backup
       try {
@@ -471,6 +485,29 @@ export function ContactPage() {
                 schedule a direct call or review your technical brief.
               </p>
             </div>
+
+            {/* Official Business WhatsApp Card */}
+            <div className="rounded-3xl border border-slate-200/90 bg-white p-6 shadow-[0_12px_40px_-15px_rgba(0,0,0,0.06)]">
+              <h4 className="text-xs font-mono font-semibold uppercase tracking-wider text-slate-500 mb-2">
+                Business WhatsApp
+              </h4>
+              <a
+                href="https://wa.me/919150890205?text=Hi%20Buildicy,%20I'd%20like%20to%20discuss%20a%20project%20for%20my%20business."
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center justify-between gap-2 p-3 rounded-2xl bg-emerald-50/80 border border-emerald-200 text-emerald-800 hover:bg-emerald-100 transition-colors mb-3 group"
+              >
+                <div className="flex items-center gap-2">
+                  <span className="text-xs font-mono font-semibold">+91 91508 90205</span>
+                </div>
+                <span className="text-xs font-mono font-semibold text-emerald-700 group-hover:translate-x-0.5 transition-transform">
+                  Chat ↗
+                </span>
+              </a>
+              <p className="text-xs text-slate-500 leading-relaxed">
+                Official company WhatsApp account. Connect directly with our engineering team for instant project scoping.
+              </p>
+            </div>
           </div>
         </div>
       </main>
@@ -483,14 +520,19 @@ export function ContactPage() {
             <span>•</span>
             <span>AI Growth Systems Studio</span>
           </div>
-          <div>
-            Direct inquiries:{" "}
-            <a
-              href={`mailto:${TARGET_EMAIL}`}
-              className="text-purple-700 hover:underline font-semibold"
-            >
-              {TARGET_EMAIL}
-            </a>
+          <div className="flex items-center gap-6">
+            <Link to="/privacy" className="hover:text-purple-700 transition-colors">
+              Privacy Policy
+            </Link>
+            <div>
+              Direct inquiries:{" "}
+              <a
+                href={`mailto:${TARGET_EMAIL}`}
+                className="text-purple-700 hover:underline font-semibold"
+              >
+                {TARGET_EMAIL}
+              </a>
+            </div>
           </div>
         </div>
       </footer>
