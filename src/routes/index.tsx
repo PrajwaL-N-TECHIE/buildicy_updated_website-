@@ -6,6 +6,7 @@ import { DocsSection } from "../components/DocsSection";
 import { PORTAL_ITEMS } from "../config/links";
 import { HeroTypewriter } from "../components/HeroTypewriter";
 import { AuditBookingModal } from "../components/AuditBookingModal";
+import { AutonomousStackShowcase } from "../components/AutonomousStackShowcase";
 
 
 
@@ -436,6 +437,7 @@ function Index() {
         <Hero onOpenAudit={() => handleOpenAudit()} />
         <Metrics />
         <Services />
+        <AutonomousStackShowcase onOpenAudit={() => handleOpenAudit()} />
         <Process />
         <Packages onSelectPkg={(pkg, market) => handleOpenAudit(pkg, market)} />
         <Work onOpenAudit={() => handleOpenAudit()} />
