@@ -47,8 +47,6 @@ export interface EcosystemPortal {
   badge: string;
   desc: string;
   tag: string;
-  tech?: string;
-  status?: string;
 }
 
 export const PORTAL_ITEMS: EcosystemPortal[] = [
@@ -59,8 +57,6 @@ export const PORTAL_ITEMS: EcosystemPortal[] = [
     badge: "Console",
     desc: "Operations & Cohort Intelligence",
     tag: "Internal",
-    tech: "Next.js • Auth0 • Analytics",
-    status: "Live Production",
   },
   {
     id: "sdr",
@@ -69,8 +65,6 @@ export const PORTAL_ITEMS: EcosystemPortal[] = [
     badge: "Outreach",
     desc: "Autonomous Lead Discovery Engine",
     tag: "Intelligence",
-    tech: "LLM Orchestration • Scoring",
-    status: "Live Production",
   },
   {
     id: "auction",
@@ -79,8 +73,6 @@ export const PORTAL_ITEMS: EcosystemPortal[] = [
     badge: "Live",
     desc: "Multiplayer Bidding & Draft Arena",
     tag: "Interactive",
-    tech: "WebSockets • State Sync",
-    status: "Live Production",
   },
   {
     id: "buzzer",
@@ -89,8 +81,6 @@ export const PORTAL_ITEMS: EcosystemPortal[] = [
     badge: "Sub-10ms",
     desc: "Realtime Precision Game Buzzer",
     tag: "Interactive",
-    tech: "Low-Latency WebSocket Mesh",
-    status: "Live Production",
   },
   {
     id: "forms",
@@ -99,8 +89,6 @@ export const PORTAL_ITEMS: EcosystemPortal[] = [
     badge: "SaaS",
     desc: "PostgreSQL & Dynamic Survey Engine",
     tag: "SaaS",
-    tech: "PostgreSQL • Schema Builder",
-    status: "Live Production",
   },
   {
     id: "qr",
@@ -109,8 +97,6 @@ export const PORTAL_ITEMS: EcosystemPortal[] = [
     badge: "Studio",
     desc: "Vector QR Branding & Stage Engine",
     tag: "Studio",
-    tech: "HTML5 Canvas • SVG Engine",
-    status: "Live Production",
   },
   {
     id: "rotator",
@@ -119,8 +105,6 @@ export const PORTAL_ITEMS: EcosystemPortal[] = [
     badge: "Engine",
     desc: "High-Capacity Wheel Selector",
     tag: "Interactive",
-    tech: "Physics Engine • Randomizer",
-    status: "Live Production",
   },
   {
     id: "arena",
@@ -129,8 +113,6 @@ export const PORTAL_ITEMS: EcosystemPortal[] = [
     badge: "Multiplayer",
     desc: "500+ Live Game Show Engine",
     tag: "Interactive",
-    tech: "500+ Concurrent Socket Hub",
-    status: "Live Production",
   },
   {
     id: "host",
@@ -139,8 +121,6 @@ export const PORTAL_ITEMS: EcosystemPortal[] = [
     badge: "Stage",
     desc: "Auditorium Presenter Console",
     tag: "Stage",
-    tech: "Broadcast Teleprompter UI",
-    status: "Live Production",
   },
   {
     id: "finance",
@@ -149,7 +129,5 @@ export const PORTAL_ITEMS: EcosystemPortal[] = [
     badge: "Ledger",
     desc: "Enterprise Runway & Revenue Ops",
     tag: "Internal",
-    tech: "Ledger Engine • Cash Runway",
-    status: "Live Production",
   },
 ];
