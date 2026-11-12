@@ -1,10 +1,8 @@
-<!-- LOVABLE:BEGIN -->
-> [!IMPORTANT]
-> This project is connected to [Lovable](https://lovable.dev). Avoid rewriting
-> published git history — force pushing, or rebasing/amending/squashing commits
-> that are already pushed — as it rewrites history on Lovable's side and the
-> user will likely lose their project history.
->
-> Commits you push to the connected branch sync back to Lovable and show up in
-> the editor, so keep the branch in a working state.
-<!-- LOVABLE:END -->
+# Buildicy Engineering Guidelines
+
+> Guidelines for autonomous coding agents and engineers working on the Buildicy Studio codebase.
+
+- **Brand Standard**: Buildicy's official brand palette uses `#faf8f5` canvas, `#0f172a` deep slate text, and vibrant purple accents (`#7c3aed`, `#9333ea`, `#a855f7`).
+- **Typography**: Display typography is `Outfit`, sans body is `Plus Jakarta Sans`, and technical data uses `Space Mono`.
+- **Forms & Leads**: All inbound leads, audits, and inquiries are routed through the backend proxy endpoints in `src/server.ts` to `hello@buildicy.com` via Resend with WhatsApp quick follow-up actions.
+- **Official Contact**: Email is `hello@buildicy.com`, WhatsApp is `+91 91508 90205`.

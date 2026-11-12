@@ -1,0 +1,28 @@
+{
+  "name": "Buildicy — AI Growth Systems Studio",
+  "short_name": "Buildicy",
+  "description": "Thoughtful AI systems engineered to capture, qualify, and convert leads 24/7. Built around your business.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#faf8f5",
+  "theme_color": "#0f172a",
+  "icons": [
+    {
+      "src": "/favicon-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/favicon-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "/favicon-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}
+

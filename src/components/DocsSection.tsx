@@ -40,9 +40,9 @@ export const STUDIO_DOCS: DocItem[] = [
     id: "company-profile",
     title: "Company Profile",
     description: "Studio background, 4 disciplines, and 9 founder-built systems.",
-    badge: "Agency Brief · DOCX",
-    type: "docx",
-    file: "/docs/Buildicy_Company_Profile.docx",
+    badge: "Agency Brief · PDF",
+    type: "pdf",
+    file: "/buildicy-company-profile.pdf",
   },
 ];
 

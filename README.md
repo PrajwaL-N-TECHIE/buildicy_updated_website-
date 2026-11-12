@@ -1,24 +1,42 @@
-# Pixel Perfect Clone
+# Buildicy — AI Growth Systems Studio
 
-Implement exactly the screenshot and nothing else
+> Thoughtful AI systems engineered to capture, qualify, and convert leads 24/7. Built around your business.
 
-This project was built with [Lovable](https://lovable.dev).
+Official website repository for **Buildicy** ([www.buildicy.com](https://www.buildicy.com)).
 
-## Build with Lovable
+---
 
-Continue developing this project in the [Lovable editor](https://lovable.dev/projects/29c8be35-489f-458a-9583-a7be7c612bfc).
+## ⚡ Core Systems & Capabilities
 
-- **Ship faster**: describe what you want to build and Lovable handles the code.
-- **Stay in sync**: every change made in Lovable is committed straight to this repository.
-- **Full ownership**: this code is yours. Push to `main` on GitHub and your changes sync back into Lovable, ready for your next prompt.
+- **AI Funnel Systems**: High-converting lead capture, intelligent qualification, and automated calendar bookings.
+- **AI Receptionists & Telephony**: 24/7 inbound/outbound voice agents answering calls and WhatsApp messages with instant human handover.
+- **AI Automation Engines**: Automated follow-ups, CRM synchronization, and elimination of manual bottlenecks.
+- **Digital Product Systems**: Automated digital product delivery, course access, and recurring billing.
 
-## Development
+---
 
-Prefer working locally? You need Node.js and npm — [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating).
+## 🚀 Development Setup
 
-```sh
-git clone <this-repository-url>
-cd <repository-name>
-npm i
+Ensure you have [Node.js](https://nodejs.org) (v18+) installed.
+
+```bash
+# Install dependencies
+npm install
+
+# Start local development server
 npm run dev
+
+# Run unit tests
+npm test
+
+# Build for production
+npm run build
 ```
+
+---
+
+## 📬 Contact & Inquiries
+
+- **Website**: [https://www.buildicy.com](https://www.buildicy.com)
+- **Direct Email**: [hello@buildicy.com](mailto:hello@buildicy.com)
+- **WhatsApp**: [+91 91508 90205](https://wa.me/919150890205)

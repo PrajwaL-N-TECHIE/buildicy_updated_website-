@@ -59,3 +59,4 @@ describe("Email Templates Generator", () => {
     expect(html).toContain("wa.me/919150890205");
   });
 });
+

@@ -13,12 +13,49 @@ export const Route = createFileRoute("/")({
   component: Index,
   head: () => ({
     meta: [
-      { title: "Buildicy — AI Growth Systems Studio" },
-      { name: "description", content: "We install AI growth systems that capture leads, respond instantly, qualify prospects, book appointments, and remove manual work." },
-      { property: "og:title", content: "Buildicy — Turn Your Business Into a Growth System" },
-      { property: "og:description", content: "AI Funnel Systems, AI Receptionists, Automation, and Digital Product Systems." },
+      { title: "Buildicy — AI Growth Systems Studio | Turn Your Business Into A Growth System" },
+      {
+        name: "description",
+        content:
+          "Thoughtful AI systems engineered to capture, qualify, and convert leads 24/7. AI Funnel Systems, AI Receptionists, Automation Engines, and Digital Product Systems built around your business.",
+      },
+      {
+        name: "keywords",
+        content:
+          "Buildicy, AI Growth Systems Studio, AI Receptionist, AI Voice Agent, AI Telephony, Autonomous Lead Generation, AI Funnel System, Workflow Automation, SaaS Product Engineering, WhatsApp AI Agent, India AI Agency",
+      },
+      { name: "author", content: "Buildicy Studio" },
+      { name: "creator", content: "Buildicy" },
+      { name: "publisher", content: "Buildicy" },
+      // Open Graph
+      { property: "og:site_name", content: "Buildicy" },
+      { property: "og:title", content: "Buildicy — AI Growth Systems Studio" },
+      {
+        property: "og:description",
+        content:
+          "Thoughtful AI systems engineered to capture, qualify, and convert leads 24/7. Built around your business.",
+      },
       { property: "og:type", content: "website" },
+      { property: "og:url", content: "https://www.buildicy.com/" },
+      { property: "og:image", content: "https://www.buildicy.com/og-image.png" },
+      { property: "og:image:width", content: "1200" },
+      { property: "og:image:height", content: "630" },
+      { property: "og:image:alt", content: "Buildicy — AI Growth Systems Studio" },
+      { property: "og:locale", content: "en_US" },
+      // Twitter
       { name: "twitter:card", content: "summary_large_image" },
+      { name: "twitter:site", content: "@buildicy" },
+      { name: "twitter:title", content: "Buildicy — AI Growth Systems Studio" },
+      {
+        name: "twitter:description",
+        content:
+          "Thoughtful AI systems engineered to capture, qualify, and convert leads 24/7. Built around your business.",
+      },
+      { name: "twitter:image", content: "https://www.buildicy.com/og-image.png" },
+      { name: "twitter:image:alt", content: "Buildicy — AI Growth Systems Studio" },
+    ],
+    links: [
+      { rel: "canonical", href: "https://www.buildicy.com/" },
     ],
   }),
 });
