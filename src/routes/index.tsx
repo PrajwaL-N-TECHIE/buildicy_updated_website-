@@ -7,6 +7,8 @@ import { PORTAL_ITEMS } from "../config/links";
 import { HeroTypewriter } from "../components/HeroTypewriter";
 import { AuditBookingModal } from "../components/AuditBookingModal";
 import { AutonomousStackShowcase } from "../components/AutonomousStackShowcase";
+import { IntegrationsMarquee } from "../components/IntegrationsMarquee";
+import { FAQSection } from "../components/FAQSection";
 
 
 
@@ -438,8 +440,10 @@ function Index() {
         <Metrics />
         <Services />
         <AutonomousStackShowcase onOpenAudit={() => handleOpenAudit()} />
+        <IntegrationsMarquee onOpenAudit={() => handleOpenAudit()} />
         <Process />
         <Packages onSelectPkg={(pkg, market) => handleOpenAudit(pkg, market)} />
+        <FAQSection onOpenAudit={() => handleOpenAudit()} />
         <Work onOpenAudit={() => handleOpenAudit()} />
         <DocsSection onOpenAudit={() => handleOpenAudit()} />
       </main>
@@ -502,12 +506,14 @@ function Nav({ onOpenAudit }: { onOpenAudit: () => void }) {
         </a>
 
         {/* Desktop Navigation */}
-        <nav className="hidden gap-6 lg:gap-8 text-sm font-medium text-slate-700 md:flex items-center" aria-label="Primary">
+        <nav className="hidden gap-5 lg:gap-7 text-sm font-medium text-slate-700 md:flex items-center" aria-label="Primary">
           <a href="#services" className="link-line hover:text-slate-900 transition-colors">Services</a>
+          <a href="#autopilot" className="link-line hover:text-slate-900 transition-colors">Autopilot</a>
+          <a href="#integrations" className="link-line hover:text-slate-900 transition-colors">Integrations</a>
           <a href="#process" className="link-line hover:text-slate-900 transition-colors">Pipeline</a>
           <a href="#packages" className="link-line hover:text-slate-900 transition-colors">Packages</a>
-          <a href="#systems" className="link-line hover:text-slate-900 transition-colors">Founder Systems</a>
-          <a href="#docs" className="link-line hover:text-slate-900 transition-colors">Documentation</a>
+          <a href="#faq" className="link-line hover:text-slate-900 transition-colors">FAQ</a>
+          <a href="#systems" className="link-line hover:text-slate-900 transition-colors">Systems</a>
           <Link to="/careers" className="link-line hover:text-slate-900 transition-colors">Careers</Link>
           <Link to="/contact" className="link-line hover:text-slate-900 transition-colors">Contact</Link>
         </nav>
@@ -544,7 +550,7 @@ function Nav({ onOpenAudit }: { onOpenAudit: () => void }) {
       {/* Mobile Menu Drawer / Overlay */}
       {mobileMenuOpen && (
         <div className="md:hidden fixed inset-x-0 top-20 bottom-0 bg-[#faf8f5]/98 backdrop-blur-2xl z-50 flex flex-col justify-between p-6 overflow-y-auto border-t border-slate-200/80 animate-in fade-in slide-in-from-top-2 duration-200">
-          <nav className="flex flex-col gap-2.5 text-base font-semibold text-slate-800 pt-2">
+          <nav className="flex flex-col gap-2 text-base font-semibold text-slate-800 pt-2">
             <a
               href="#services"
               onClick={() => setMobileMenuOpen(false)}
@@ -554,12 +560,28 @@ function Nav({ onOpenAudit }: { onOpenAudit: () => void }) {
               <span className="text-xs font-mono text-purple-700">01</span>
             </a>
             <a
+              href="#autopilot"
+              onClick={() => setMobileMenuOpen(false)}
+              className="p-3 rounded-2xl hover:bg-slate-100 transition-colors flex items-center justify-between"
+            >
+              <span>Autopilot Engine</span>
+              <span className="text-xs font-mono text-purple-700">02</span>
+            </a>
+            <a
+              href="#integrations"
+              onClick={() => setMobileMenuOpen(false)}
+              className="p-3 rounded-2xl hover:bg-slate-100 transition-colors flex items-center justify-between"
+            >
+              <span>Enterprise Integrations</span>
+              <span className="text-xs font-mono text-purple-700">03</span>
+            </a>
+            <a
               href="#process"
               onClick={() => setMobileMenuOpen(false)}
               className="p-3 rounded-2xl hover:bg-slate-100 transition-colors flex items-center justify-between"
             >
               <span>Pipeline & Methodology</span>
-              <span className="text-xs font-mono text-purple-700">02</span>
+              <span className="text-xs font-mono text-purple-700">04</span>
             </a>
             <a
               href="#packages"
@@ -567,7 +589,15 @@ function Nav({ onOpenAudit }: { onOpenAudit: () => void }) {
               className="p-3 rounded-2xl hover:bg-slate-100 transition-colors flex items-center justify-between"
             >
               <span>Pricing & Packages</span>
-              <span className="text-xs font-mono text-purple-700">03</span>
+              <span className="text-xs font-mono text-purple-700">05</span>
+            </a>
+            <a
+              href="#faq"
+              onClick={() => setMobileMenuOpen(false)}
+              className="p-3 rounded-2xl hover:bg-slate-100 transition-colors flex items-center justify-between"
+            >
+              <span>FAQ & Guardrails</span>
+              <span className="text-xs font-mono text-purple-700">06</span>
             </a>
             <a
               href="#systems"
@@ -575,7 +605,7 @@ function Nav({ onOpenAudit }: { onOpenAudit: () => void }) {
               className="p-3 rounded-2xl hover:bg-slate-100 transition-colors flex items-center justify-between"
             >
               <span>Founder Systems & Work</span>
-              <span className="text-xs font-mono text-purple-700">04</span>
+              <span className="text-xs font-mono text-purple-700">07</span>
             </a>
             <a
               href="#docs"
@@ -583,7 +613,7 @@ function Nav({ onOpenAudit }: { onOpenAudit: () => void }) {
               className="p-3 rounded-2xl hover:bg-slate-100 transition-colors flex items-center justify-between"
             >
               <span>Documentation & Decks</span>
-              <span className="text-xs font-mono text-purple-700">05</span>
+              <span className="text-xs font-mono text-purple-700">08</span>
             </a>
             <Link
               to="/careers"
@@ -591,7 +621,7 @@ function Nav({ onOpenAudit }: { onOpenAudit: () => void }) {
               className="p-3 rounded-2xl hover:bg-slate-100 transition-colors flex items-center justify-between"
             >
               <span>Careers (We're Hiring)</span>
-              <span className="text-xs font-mono font-bold text-purple-700">06</span>
+              <span className="text-xs font-mono font-bold text-purple-700">09</span>
             </Link>
             <Link
               to="/contact"

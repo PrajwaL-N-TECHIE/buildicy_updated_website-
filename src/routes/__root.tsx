@@ -205,6 +205,68 @@ const SCHEMA_ORG_JSON = {
       },
       "inLanguage": "en-US",
     },
+    {
+      "@type": "FAQPage",
+      "@id": "https://www.buildicy.com/#faq",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "How natural does the AI voice sound on real telephone calls? Does it sound robotic?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Buildicy uses neural streaming voice models (ElevenLabs & Cartesia) wired through low-latency carrier pipelines. Audio latency is sub-second (< 850ms), allowing the AI to naturally pause, handle human interruptions without speaking over the caller, and match your industry tone with over 91% conversational realism.",
+          },
+        },
+        {
+          "@type": "Question",
+          "name": "What happens if a prospect asks an unexpected question the AI doesn't know?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Buildicy systems operate with strict deterministic enterprise guardrails. The AI will never hallucinate or invent false pricing. If an inquiry exceeds its calibrated knowledge base, the system executes a graceful escalation: it validates the caller query, captures their direct contact details, and immediately dispatches an alert with the full call transcript and audio recording to the founder or sales team via WhatsApp and SMS.",
+          },
+        },
+        {
+          "@type": "Question",
+          "name": "Will Buildicy work with our existing CRM, calendar, and software stack?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes, seamlessly. We natively integrate with HubSpot, Salesforce, Zoho, Google Calendar, Calendly, Notion, Stripe, Razorpay, and WhatsApp Business API. If you run a custom internal database (PostgreSQL, Supabase, Airtable, or internal REST APIs), we engineer custom bidirectional webhooks so lead data populates directly into where your team already works.",
+          },
+        },
+        {
+          "@type": "Question",
+          "name": "Who owns the prompts, codebase, workflows, and client conversation data?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "You do — 100% full client IP and code ownership from day one. You retain full access to all prompt repositories, webhook blueprints, database schemas, and API configurations. We also implement Zero Data Retention AI policies so your customer conversations are never stored on public model servers or used to train third-party foundation models.",
+          },
+        },
+        {
+          "@type": "Question",
+          "name": "How much time is required from my internal team during the 14-day deployment?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Under 3 hours total across the entire 14-day protocol: 45 minutes for discovery and FAQ audit, 30 minutes to review conversational dialogue branches, and 45 minutes for live staging verification before going live. Buildicy engineers handle 100% of the prompt engineering, webhook wiring, audio testing, and API integration.",
+          },
+        },
+        {
+          "@type": "Question",
+          "name": "What are the ongoing operational costs after the system goes live?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Your baseline operational costs (Twilio phone numbers at ~$1.15/month, telephony minutes at ~$0.014/min, and LLM token usage) are billed directly through your own provider accounts at cost with zero hidden agency markups. Optional monthly maintenance covers 24/7 uptime monitoring, weekly transcript audits, conversation optimization, and prompt updates.",
+          },
+        },
+        {
+          "@type": "Question",
+          "name": "Can we start with one channel (like WhatsApp or AI Voice) and scale up later?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Absolutely. Many of our clients start with our AI Lead Machine (funnel + qualification form + WhatsApp missed-call auto-recovery) or an AI Front Desk for inbound voice, and then expand into a complete multi-channel autonomous growth engine as their pipeline volume expands.",
+          },
+        },
+      ],
+    },
   ],
 };
 

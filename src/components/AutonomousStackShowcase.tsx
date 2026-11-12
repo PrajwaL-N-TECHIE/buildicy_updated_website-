@@ -118,7 +118,7 @@ export function AutonomousStackShowcase({ onOpenAudit }: AutonomousStackProps) {
   ];
 
   return (
-    <section className="px-6 py-20 md:px-10 md:py-32 bg-[#faf8f5] text-slate-900 border-t border-slate-200">
+    <section id="autopilot" className="px-6 py-20 md:px-10 md:py-32 bg-[#faf8f5] text-slate-900 border-t border-slate-200">
       <div className="mx-auto max-w-[1400px]">
         {/* Section Header */}
         <div className="reveal mb-14 md:mb-18">
