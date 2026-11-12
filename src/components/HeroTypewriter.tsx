@@ -1,6 +1,10 @@
 import { useEffect, useState } from "react";
 
-const WORDS = ["Growth System.", "Lead Engine.", "Revenue System."];
+const WORDS = [
+  "Autonomous Growth System.",
+  "Instant Lead Engine.",
+  "Automated Revenue Pipeline.",
+];
 
 export function HeroTypewriter({
   words = WORDS,

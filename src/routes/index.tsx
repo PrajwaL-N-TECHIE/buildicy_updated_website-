@@ -646,15 +646,33 @@ function Hero({ onOpenAudit }: { onOpenAudit: () => void }) {
       <div className="cinematic-noise opacity-30" />
       <div className="relative z-10 mx-auto w-full max-w-[1400px] grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
         <div className="lg:col-span-8 order-1 flex flex-col justify-center items-start text-left max-w-3xl pl-0 sm:pl-8 lg:pl-12 mt-4 lg:mt-16">
-          <h1 className="font-sans text-[clamp(2.2rem,5.6vw,5.5rem)] leading-[1.12] tracking-tight text-slate-900 font-extrabold text-left animate-in fade-in duration-500">
-            Turn Your Business Into a <HeroTypewriter />
+          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-purple-100/80 border border-purple-200/90 text-purple-900 text-xs font-mono font-semibold tracking-wide uppercase mb-4 sm:mb-6 animate-in fade-in duration-300">
+            <span className="w-2 h-2 rounded-full bg-purple-600 animate-pulse" />
+            <span>Bespoke AI Growth Systems & Telephony</span>
+          </div>
+          <h1 className="font-sans text-[clamp(2.3rem,5.6vw,5.2rem)] leading-[1.1] tracking-tight text-slate-900 font-extrabold text-left animate-in fade-in duration-500">
+            Turn Your Business Into an <HeroTypewriter />
           </h1>
-          <p className="mt-4 sm:mt-6 max-w-xl text-slate-600 text-base md:text-xl leading-relaxed font-normal text-left animate-in fade-in duration-700">
-            We install AI growth systems that capture leads, respond instantly, qualify prospects, book appointments, and remove manual work.
+          <p className="mt-4 sm:mt-6 max-w-2xl text-slate-600 text-base md:text-xl leading-relaxed font-normal text-left animate-in fade-in duration-700">
+            We engineer high-converting AI lead funnels, 24/7 autonomous voice receptionists, and custom workflow engines. Built around your unit economics — zero manual bottlenecks, instant lead triage, and predictable pipeline growth.
           </p>
           <div className="mt-6 sm:mt-8 flex flex-col sm:flex-row items-stretch sm:items-center gap-3 w-full sm:w-auto animate-in fade-in duration-700">
             <button onClick={onOpenAudit} className="w-full sm:w-auto text-center rounded-full bg-purple-600 text-white px-7 py-3.5 sm:py-4 text-sm font-semibold transition-all hover:bg-purple-700 hover:shadow-lg active:scale-95 shadow-md shadow-purple-600/20 cursor-pointer">Book Free AI Growth Audit</button>
             <a href="#systems" className="w-full sm:w-auto text-center rounded-full border border-slate-300 bg-white px-6 py-3.5 sm:py-4 text-sm font-semibold text-slate-800 transition-all hover:bg-purple-50 hover:border-purple-300 shadow-2xs">View Our Systems</a>
+          </div>
+          <div className="mt-8 pt-6 border-t border-slate-200/80 flex flex-wrap items-center gap-x-6 gap-y-2 text-xs font-mono text-slate-500 animate-in fade-in duration-1000">
+            <div className="flex items-center gap-1.5">
+              <span className="text-emerald-600 font-bold">✓</span>
+              <span>24/7 Voice & WhatsApp Handover</span>
+            </div>
+            <div className="flex items-center gap-1.5">
+              <span className="text-emerald-600 font-bold">✓</span>
+              <span>100% Client Code & IP Ownership</span>
+            </div>
+            <div className="flex items-center gap-1.5">
+              <span className="text-emerald-600 font-bold">✓</span>
+              <span>14-Day Production Deployment</span>
+            </div>
           </div>
           {!isDesktop && <MobileHeroGlobe />}
         </div>
@@ -983,30 +1001,61 @@ function Footer({ onOpenAudit }: { onOpenAudit?: () => void }) {
           </div>
         </div>
 
-        {/* Studio Systems & Live Ecosystem Portals (Minimalist) */}
-        <div className="mt-14 pt-8 border-t border-white/10">
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-5">
-            <span className="text-[11px] font-mono uppercase tracking-[0.2em] text-white/40">
-              Live Systems & Portals
-            </span>
-            <span className="text-xs font-mono text-white/30 hidden sm:inline">
-              Production consoles & internal engines
-            </span>
+        {/* Studio Systems & Live Ecosystem Portals */}
+        <div className="mt-14 pt-10 border-t border-white/10">
+          <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-6">
+            <div>
+              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-purple-500/10 border border-purple-500/20 text-purple-300 text-[11px] font-mono tracking-widest uppercase mb-3">
+                <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+                <span>Proprietary Engines & Infrastructure</span>
+              </div>
+              <h3 className="font-sans text-2xl md:text-3xl font-bold text-white tracking-tight">
+                Studio Portals & Live Systems
+              </h3>
+              <p className="text-white/60 text-sm max-w-xl mt-1.5 font-light">
+                Direct access to Buildicy's active production consoles, real-time multiplayer engines, and internal operations tools.
+              </p>
+            </div>
+            <div className="flex items-center gap-2 font-mono text-xs text-emerald-400/90 bg-emerald-950/40 border border-emerald-500/30 px-3.5 py-1.5 rounded-full self-start md:self-auto">
+              <span className="inline-block w-2 h-2 rounded-full bg-emerald-400 animate-ping" />
+              <span>10 Production Nodes Online</span>
+            </div>
           </div>
 
-          <div className="flex flex-wrap items-center gap-2 sm:gap-2.5">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-3">
             {PORTAL_ITEMS.map((portal) => (
               <a
                 key={portal.id}
                 href={portal.url}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="group inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-white/[0.03] hover:bg-white/[0.07] border border-white/[0.08] hover:border-purple-500/40 text-xs font-mono text-white/70 hover:text-white transition-all duration-200"
+                className="group relative flex flex-col justify-between p-4 rounded-xl bg-white/[0.03] hover:bg-white/[0.07] border border-white/[0.08] hover:border-purple-500/40 transition-all duration-300 hover:-translate-y-1 hover:shadow-lg hover:shadow-purple-950/40"
               >
-                <span>{portal.name}</span>
-                <span className="text-[10px] text-white/30 group-hover:text-purple-400 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-all">
-                  ↗
-                </span>
+                <div>
+                  <div className="flex items-center justify-between gap-2 mb-2.5">
+                    <span className="text-[10px] font-mono font-semibold uppercase tracking-wider px-2 py-0.5 rounded bg-white/[0.06] text-purple-300 border border-purple-500/20">
+                      {portal.badge}
+                    </span>
+                    <span className="inline-flex items-center gap-1 text-[10px] font-mono text-emerald-400/80">
+                      <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
+                      <span>Live</span>
+                    </span>
+                  </div>
+                  <h4 className="font-semibold text-white text-sm group-hover:text-purple-300 transition-colors flex items-center justify-between">
+                    <span>{portal.name}</span>
+                    <span className="text-white/30 group-hover:text-purple-400 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-all text-sm">
+                      ↗
+                    </span>
+                  </h4>
+                  <p className="text-xs text-white/50 mt-1 leading-relaxed">
+                    {portal.desc}
+                  </p>
+                </div>
+                {portal.tech && (
+                  <div className="mt-3 pt-2.5 border-t border-white/[0.06] text-[10px] font-mono text-white/40">
+                    {portal.tech}
+                  </div>
+                )}
               </a>
             ))}
           </div>
