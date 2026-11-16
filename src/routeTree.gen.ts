@@ -10,8 +10,8 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
-import { Route as CareersRouteImport } from './routes/careers'
 import { Route as ContactRouteImport } from './routes/contact'
+import { Route as FoundersRouteImport } from './routes/founders'
 import { Route as PrivacyRouteImport } from './routes/privacy'
 
 const IndexRoute = IndexRouteImport.update({
@@ -19,14 +19,14 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
-const CareersRoute = CareersRouteImport.update({
-  id: '/careers',
-  path: '/careers',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const ContactRoute = ContactRouteImport.update({
   id: '/contact',
   path: '/contact',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const FoundersRoute = FoundersRouteImport.update({
+  id: '/founders',
+  path: '/founders',
   getParentRoute: () => rootRouteImport,
 } as any)
 const PrivacyRoute = PrivacyRouteImport.update({
@@ -37,35 +37,35 @@ const PrivacyRoute = PrivacyRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '/careers': typeof CareersRoute
   '/contact': typeof ContactRoute
+  '/founders': typeof FoundersRoute
   '/privacy': typeof PrivacyRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/careers': typeof CareersRoute
   '/contact': typeof ContactRoute
+  '/founders': typeof FoundersRoute
   '/privacy': typeof PrivacyRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
-  '/careers': typeof CareersRoute
   '/contact': typeof ContactRoute
+  '/founders': typeof FoundersRoute
   '/privacy': typeof PrivacyRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/careers' | '/contact' | '/privacy'
+  fullPaths: '/' | '/contact' | '/founders' | '/privacy'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/careers' | '/contact' | '/privacy'
-  id: '__root__' | '/' | '/careers' | '/contact' | '/privacy'
+  to: '/' | '/contact' | '/founders' | '/privacy'
+  id: '__root__' | '/' | '/contact' | '/founders' | '/privacy'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
-  CareersRoute: typeof CareersRoute
   ContactRoute: typeof ContactRoute
+  FoundersRoute: typeof FoundersRoute
   PrivacyRoute: typeof PrivacyRoute
 }
 
@@ -78,18 +78,18 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/careers': {
-      id: '/careers'
-      path: '/careers'
-      fullPath: '/careers'
-      preLoaderRoute: typeof CareersRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/contact': {
       id: '/contact'
       path: '/contact'
       fullPath: '/contact'
       preLoaderRoute: typeof ContactRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/founders': {
+      id: '/founders'
+      path: '/founders'
+      fullPath: '/founders'
+      preLoaderRoute: typeof FoundersRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/privacy': {
@@ -104,8 +104,8 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-  CareersRoute: CareersRoute,
   ContactRoute: ContactRoute,
+  FoundersRoute: FoundersRoute,
   PrivacyRoute: PrivacyRoute,
 }
 export const routeTree = rootRouteImport

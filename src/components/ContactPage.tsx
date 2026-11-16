@@ -4,22 +4,26 @@ import { toast } from "sonner";
 import { generateContactEmailHtml } from "../lib/email-templates";
 import {
   ArrowLeft,
+  ArrowUpRight,
   Check,
   CheckCircle2,
   Copy,
   Download,
-  Eye,
   FileText,
   Mail,
+  MessageCircle,
   Send,
+  Sparkles,
+  Clock,
+  Globe2,
 } from "lucide-react";
 
 export const NEED_OPTIONS = [
   "AI Growth Funnel",
   "AI Voice / Receptionist",
-  "Web Application",
   "Workflow Automation",
-  "Custom Project",
+  "Web Application",
+  "Custom Architecture",
 ];
 
 export const PDF_DOCS = [
@@ -27,7 +31,7 @@ export const PDF_DOCS = [
     title: "Company Profile",
     description: "Studio background, team philosophy & approach",
     file: "/buildicy-company-profile.pdf",
-    badge: "Overview",
+    badge: "Profile",
   },
   {
     title: "Capabilities & Solutions Guide",
@@ -45,6 +49,10 @@ export const PDF_DOCS = [
 
 export const TARGET_EMAIL = "hello@buildicy.com";
 
+const WHATSAPP_URL = `https://wa.me/919150890205?text=${encodeURIComponent(
+  "Hi Buildicy, I'd like to discuss a project with your team."
+)}`;
+
 export function ContactPage() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -58,7 +66,7 @@ export function ContactPage() {
   const handleCopyEmail = () => {
     navigator.clipboard.writeText(TARGET_EMAIL);
     setCopiedEmail(true);
-    toast.success("Email copied to clipboard!", {
+    toast.success("Email copied to clipboard", {
       description: TARGET_EMAIL,
     });
     setTimeout(() => setCopiedEmail(false), 2000);
@@ -76,14 +84,14 @@ export function ContactPage() {
       return;
     }
     if (!message.trim()) {
-      toast.error("Please enter a short message about what you need");
+      toast.error("Please enter a short message about your project");
       return;
     }
 
     setIsSubmitting(true);
 
     const payload = {
-      _subject: `New Inquiry from ${name} - ${selectedNeed}`,
+      _subject: `New Project Inquiry from ${name} (${selectedNeed})`,
       _template: "table",
       _captcha: "false",
       client_name: name,
@@ -94,7 +102,7 @@ export function ContactPage() {
     };
 
     const fd = new FormData();
-    fd.append("_subject", `New Inquiry from ${name} - ${selectedNeed}`);
+    fd.append("_subject", `New Project Inquiry from ${name} (${selectedNeed})`);
     fd.append("_template", "table");
     fd.append("_captcha", "false");
     fd.append("client_name", name);
@@ -104,7 +112,7 @@ export function ContactPage() {
     fd.append("submitted_at", new Date().toLocaleString());
 
     try {
-      // 1. Deliver via local backend /api/contact endpoint (no CORS, server-secured Resend)
+      // 1. Deliver via local backend /api/contact endpoint or direct Resend API
       const localContactRes = await fetch("/api/contact", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -147,7 +155,7 @@ export function ContactPage() {
         }).catch(() => null);
       }
 
-      // Save to localStorage as backup
+      // Save locally as safety backup
       try {
         const stored = JSON.parse(
           localStorage.getItem("buildicy_inquiries") || "[]"
@@ -159,13 +167,13 @@ export function ContactPage() {
       }
 
       setIsSubmitted(true);
-      toast.success("Inquiry sent successfully!", {
-        description: `Delivered directly to ${TARGET_EMAIL}`,
+      toast.success("Inquiry sent successfully", {
+        description: `Delivered to ${TARGET_EMAIL}`,
       });
     } catch (err) {
       console.warn("Submission fallback", err);
       setIsSubmitted(true);
-      toast.info("Inquiry captured!", {
+      toast.info("Inquiry captured", {
         description: `Dispatched to ${TARGET_EMAIL}`,
       });
     } finally {
@@ -176,18 +184,19 @@ export function ContactPage() {
   const mailtoLink = `mailto:${TARGET_EMAIL}?subject=${encodeURIComponent(
     `Project Inquiry: ${name || "New Client"} (${selectedNeed})`
   )}&body=${encodeURIComponent(
-    `Hi Mayur,\n\nName: ${name}\nEmail: ${email}\nWhat I need: ${selectedNeed}\n\nMessage:\n${message}`
+    `Hi Buildicy Team,\n\nName: ${name}\nEmail: ${email}\nService Needed: ${selectedNeed}\n\nProject Details:\n${message}`
   )}`;
 
   return (
-    <div className="min-h-screen bg-[#f8f9fc] text-slate-900 font-sans antialiased selection:bg-purple-600 selection:text-white relative">
-      {/* Subtle Light Ambience */}
+    <div className="min-h-screen bg-[#faf8f5] text-slate-900 font-sans antialiased selection:bg-purple-600 selection:text-white relative flex flex-col justify-between">
+      {/* Subtle Studio Glow */}
       <div className="pointer-events-none fixed inset-0 overflow-hidden z-0">
-        <div className="absolute top-[-100px] left-1/2 -translate-x-1/2 w-[1000px] h-[500px] bg-[radial-gradient(ellipse_at_center,rgba(168,85,247,0.12)_0%,rgba(99,102,241,0.04)_50%,transparent_70%)] blur-3xl" />
+        <div className="absolute top-0 right-1/4 w-[800px] h-[500px] bg-[radial-gradient(ellipse_at_top,rgba(168,85,247,0.08)_0%,rgba(99,102,241,0.02)_40%,transparent_70%)]" />
+        <div className="cinematic-noise opacity-20" />
       </div>
 
-      {/* Clean Light Navbar */}
-      <header className="sticky top-0 z-50 border-b border-slate-200/80 bg-white/85 backdrop-blur-md">
+      {/* Clean Studio Header */}
+      <header className="sticky top-0 z-50 border-b border-black/5 bg-[#faf8f5]/85 backdrop-blur-md">
         <div className="mx-auto flex h-20 max-w-[1300px] items-center justify-between px-6 md:px-10">
           <Link to="/" className="flex items-center gap-3 group">
             <img
@@ -203,101 +212,109 @@ export function ContactPage() {
             </div>
           </Link>
 
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-3 sm:gap-4">
+            {/* Email Copy Pill */}
             <button
               onClick={handleCopyEmail}
-              className="hidden sm:inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full text-xs font-mono text-slate-600 bg-slate-100 hover:bg-slate-200 transition-colors cursor-pointer"
-              title="Click to copy email"
+              className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full text-xs font-mono text-slate-700 bg-white border border-slate-200/80 hover:bg-slate-50 hover:border-slate-300 transition-all shadow-xs cursor-pointer"
+              title="Click to copy email address"
             >
               <Mail className="h-3.5 w-3.5 text-purple-600" />
-              <span>{TARGET_EMAIL}</span>
+              <span className="font-semibold">{TARGET_EMAIL}</span>
               {copiedEmail ? (
-                <Check className="h-3 w-3 text-emerald-600" />
+                <Check className="h-3.5 w-3.5 text-emerald-600" />
               ) : (
                 <Copy className="h-3 w-3 text-slate-400" />
               )}
             </button>
 
             <Link
-              to="/"
-              className="group inline-flex items-center gap-2 rounded-full border border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-50 hover:text-slate-900 transition-all shadow-xs"
+              to="/founders"
+              className="hidden sm:inline-flex items-center gap-1.5 rounded-full border border-slate-200 bg-white px-3.5 py-1.5 text-xs font-semibold text-slate-700 hover:text-slate-900 hover:bg-slate-50 transition-all shadow-xs"
             >
-              <ArrowLeft className="h-4 w-4 transition-transform group-hover:-translate-x-1 text-slate-500" />
-              Back to Home
+              Founders
+            </Link>
+
+            <Link
+              to="/"
+              className="group inline-flex items-center gap-1.5 rounded-full border border-slate-200 bg-white px-3.5 py-1.5 text-xs sm:text-sm font-semibold text-slate-700 hover:bg-slate-50 hover:text-slate-900 transition-all shadow-xs"
+            >
+              <ArrowLeft className="h-3.5 w-3.5 transition-transform group-hover:-translate-x-0.5 text-slate-500" />
+              <span>Home</span>
             </Link>
           </div>
         </div>
       </header>
 
       {/* Main Container */}
-      <main className="relative z-10 mx-auto max-w-[1200px] px-6 py-12 md:py-16">
-        {/* Page Header */}
-        <div className="text-center max-w-2xl mx-auto mb-12">
-          <h1 className="font-display text-4xl sm:text-5xl font-extrabold tracking-tight text-slate-900">
-            Let's build something{" "}
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-600 to-indigo-600">
-              great together.
-            </span>
+      <main className="relative z-10 mx-auto max-w-[1240px] px-6 py-12 md:py-20 flex-1 w-full">
+        {/* Page Heading */}
+        <div className="max-w-2xl mb-12 sm:mb-16">
+          <span className="eyebrow text-purple-600 font-semibold tracking-wider block mb-2">
+            START A PROJECT
+          </span>
+          <h1 className="font-display text-4xl sm:text-5xl font-extrabold tracking-tight text-slate-900 leading-[1.12]">
+            Let's build something together.
           </h1>
-          <p className="mt-4 text-slate-600 text-base sm:text-lg">
-            Send us a quick message with what you need, or preview and download
-            our studio PDF decks below.
+          <p className="mt-4 text-slate-600 text-base sm:text-lg leading-relaxed font-normal">
+            Have a project in mind, need an AI growth audit, or want to explore working with our studio?
+            Send us a message below or review our studio decks.
           </p>
         </div>
 
-        {/* 2-Column Clean Grid */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-          {/* Left Column: Sweet & Clean Contact Form (7 cols) */}
+        {/* 2-Column Minimalist Layout */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14 items-start">
+          {/* Left Column: Clean Contact Form (7 cols) */}
           <div className="lg:col-span-7">
-            <div className="rounded-3xl border border-slate-200/90 bg-white p-7 sm:p-10 shadow-[0_12px_40px_-15px_rgba(0,0,0,0.06)]">
+            <div className="rounded-3xl border border-slate-200/90 bg-white p-7 sm:p-10 shadow-xs">
               {isSubmitted ? (
-                /* Sweet Success State */
-                <div className="text-center py-8">
+                /* Success Confirmation State */
+                <div className="text-center py-10">
                   <div className="h-16 w-16 bg-emerald-50 border border-emerald-200 rounded-full flex items-center justify-center text-emerald-600 mx-auto mb-5 shadow-xs">
-                    <CheckCircle2 className="h-9 w-9" />
+                    <CheckCircle2 className="h-8 w-8" />
                   </div>
-                  <h2 className="font-display text-2xl sm:text-3xl font-bold text-slate-900 mb-2">
-                    Inquiry Received!
+                  <h2 className="font-display text-2xl sm:text-3xl font-extrabold text-slate-900 mb-2">
+                    Inquiry Received
                   </h2>
-                  <p className="text-slate-600 text-sm sm:text-base max-w-md mx-auto mb-6">
-                    Thank you, <span className="font-semibold text-slate-900">{name}</span>!
-                    Your message has been delivered to{" "}
+                  <p className="text-slate-600 text-sm sm:text-base max-w-md mx-auto mb-6 leading-relaxed">
+                    Thank you, <span className="font-semibold text-slate-900">{name}</span>.
+                    Your project details were delivered directly to{" "}
                     <span className="font-mono text-purple-700 font-medium">{TARGET_EMAIL}</span>.
-                    We will reply within 24 hours.
+                    We will get back to you within 24 hours.
                   </p>
 
                   <div className="flex flex-wrap items-center justify-center gap-3 pt-2">
                     <a
                       href={mailtoLink}
-                      className="inline-flex items-center gap-2 rounded-full bg-purple-600 px-5 py-2.5 text-sm font-semibold text-white hover:bg-purple-700 transition-all shadow-sm"
+                      className="inline-flex items-center gap-2 rounded-full bg-slate-900 px-5 py-2.5 text-xs sm:text-sm font-semibold text-white hover:bg-purple-600 transition-all shadow-xs"
                     >
-                      <Mail className="h-4 w-4" />
-                      Open in Email App
+                      <Mail className="h-3.5 w-3.5" />
+                      <span>Open in Email App</span>
                     </a>
                     <button
                       onClick={() => {
                         setIsSubmitted(false);
                         setMessage("");
                       }}
-                      className="inline-flex items-center gap-2 rounded-full border border-slate-200 px-5 py-2.5 text-sm font-semibold text-slate-700 hover:bg-slate-50 transition-all cursor-pointer"
+                      className="inline-flex items-center gap-2 rounded-full border border-slate-200 px-5 py-2.5 text-xs sm:text-sm font-semibold text-slate-700 hover:bg-slate-50 transition-all cursor-pointer"
                     >
                       Send Another
                     </button>
                     <Link
                       to="/"
-                      className="inline-flex items-center gap-2 rounded-full border border-slate-200 px-5 py-2.5 text-sm font-semibold text-slate-700 hover:bg-slate-50 transition-all"
+                      className="inline-flex items-center gap-2 rounded-full border border-slate-200 px-5 py-2.5 text-xs sm:text-sm font-semibold text-slate-700 hover:bg-slate-50 transition-all"
                     >
                       Return Home
                     </Link>
                   </div>
                 </div>
               ) : (
-                /* Sweet, Neat, Clean Form */
+                /* Minimalist, Professional Form */
                 <form onSubmit={handleSubmit} className="space-y-6">
                   {/* Name Input */}
                   <div>
                     <label className="block text-xs font-mono uppercase tracking-wider text-slate-700 font-semibold mb-2">
-                      Your Name <span className="text-purple-600">*</span>
+                      Your Name
                     </label>
                     <input
                       type="text"
@@ -305,14 +322,14 @@ export function ContactPage() {
                       value={name}
                       onChange={(e) => setName(e.target.value)}
                       placeholder="e.g. John Doe"
-                      className="w-full rounded-2xl border border-slate-200 bg-slate-50/50 px-4 py-3.5 text-sm text-slate-900 placeholder:text-slate-400 focus:border-purple-600 focus:bg-white focus:outline-none focus:ring-3 focus:ring-purple-100 transition-all"
+                      className="w-full rounded-2xl border border-slate-200 bg-slate-50/40 px-4 py-3.5 text-sm text-slate-900 placeholder:text-slate-400 focus:border-slate-900 focus:bg-white focus:outline-none focus:ring-1 focus:ring-slate-900 transition-all"
                     />
                   </div>
 
                   {/* Email Input */}
                   <div>
                     <label className="block text-xs font-mono uppercase tracking-wider text-slate-700 font-semibold mb-2">
-                      Email Address <span className="text-purple-600">*</span>
+                      Work Email
                     </label>
                     <input
                       type="email"
@@ -320,14 +337,14 @@ export function ContactPage() {
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
                       placeholder="e.g. john@company.com"
-                      className="w-full rounded-2xl border border-slate-200 bg-slate-50/50 px-4 py-3.5 text-sm text-slate-900 placeholder:text-slate-400 focus:border-purple-600 focus:bg-white focus:outline-none focus:ring-3 focus:ring-purple-100 transition-all"
+                      className="w-full rounded-2xl border border-slate-200 bg-slate-50/40 px-4 py-3.5 text-sm text-slate-900 placeholder:text-slate-400 focus:border-slate-900 focus:bg-white focus:outline-none focus:ring-1 focus:ring-slate-900 transition-all"
                     />
                   </div>
 
-                  {/* What do you need? (Clean Chips) */}
+                  {/* What do you need? Chips */}
                   <div>
                     <label className="block text-xs font-mono uppercase tracking-wider text-slate-700 font-semibold mb-2">
-                      What do you need?
+                      Service / Need
                     </label>
                     <div className="flex flex-wrap gap-2 pt-1">
                       {NEED_OPTIONS.map((opt) => (
@@ -337,8 +354,8 @@ export function ContactPage() {
                           onClick={() => setSelectedNeed(opt)}
                           className={`px-3.5 py-2 rounded-xl text-xs font-medium transition-all cursor-pointer ${
                             selectedNeed === opt
-                              ? "bg-purple-600 text-white font-semibold shadow-xs"
-                              : "bg-slate-100 text-slate-700 hover:bg-slate-200/80 border border-slate-200/60"
+                              ? "bg-slate-900 text-white font-semibold shadow-xs"
+                              : "bg-white border border-slate-200 text-slate-700 hover:border-slate-300"
                           }`}
                         >
                           {opt}
@@ -347,10 +364,10 @@ export function ContactPage() {
                     </div>
                   </div>
 
-                  {/* Message Textarea */}
+                  {/* Message Input */}
                   <div>
                     <label className="block text-xs font-mono uppercase tracking-wider text-slate-700 font-semibold mb-2">
-                      Message <span className="text-purple-600">*</span>
+                      Project Details
                     </label>
                     <textarea
                       required
@@ -358,7 +375,7 @@ export function ContactPage() {
                       value={message}
                       onChange={(e) => setMessage(e.target.value)}
                       placeholder="Tell us what you're looking to build, any goals, or questions..."
-                      className="w-full rounded-2xl border border-slate-200 bg-slate-50/50 px-4 py-3.5 text-sm text-slate-900 placeholder:text-slate-400 focus:border-purple-600 focus:bg-white focus:outline-none focus:ring-3 focus:ring-purple-100 transition-all resize-y min-h-[110px]"
+                      className="w-full rounded-2xl border border-slate-200 bg-slate-50/40 px-4 py-3.5 text-sm text-slate-900 placeholder:text-slate-400 focus:border-slate-900 focus:bg-white focus:outline-none focus:ring-1 focus:ring-slate-900 transition-all resize-y min-h-[120px]"
                     />
                   </div>
 
@@ -367,23 +384,23 @@ export function ContactPage() {
                     <button
                       type="submit"
                       disabled={isSubmitting}
-                      className="w-full inline-flex items-center justify-center gap-2 rounded-full bg-slate-900 py-4 px-6 text-sm font-semibold text-white shadow-md hover:bg-purple-600 transition-all active:scale-[0.99] disabled:opacity-60 cursor-pointer"
+                      className="w-full inline-flex items-center justify-center gap-2 rounded-full bg-slate-900 py-3.5 px-6 text-sm font-semibold text-white shadow-xs hover:bg-purple-600 transition-all active:scale-[0.99] disabled:opacity-60 cursor-pointer"
                     >
                       {isSubmitting ? (
                         <>
                           <span className="h-4 w-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
-                          <span>Sending...</span>
+                          <span>Sending Message...</span>
                         </>
                       ) : (
                         <>
                           <span>Send Message</span>
-                          <Send className="h-4 w-4" />
+                          <Send className="h-3.5 w-3.5" />
                         </>
                       )}
                     </button>
                     <p className="mt-3 text-center text-xs text-slate-500 font-mono">
-                      Inquiries go straight to{" "}
-                      <span className="text-purple-700 font-semibold">{TARGET_EMAIL}</span>
+                      Inquiries delivered directly to{" "}
+                      <span className="text-slate-900 font-semibold">{TARGET_EMAIL}</span>
                     </p>
                   </div>
                 </form>
@@ -391,64 +408,114 @@ export function ContactPage() {
             </div>
           </div>
 
-          {/* Right Column: PDF Download & Preview Section (5 cols) */}
+          {/* Right Column: Studio Information & PDF Decks (5 cols) */}
           <div className="lg:col-span-5 space-y-6">
-            {/* PDF Decks Card */}
-            <div className="rounded-3xl border border-slate-200/90 bg-white p-7 shadow-[0_12px_40px_-15px_rgba(0,0,0,0.06)]">
-              <div className="flex items-center gap-2.5 mb-2">
-                <span className="h-2 w-2 rounded-full bg-purple-600" />
-                <span className="text-xs font-mono font-semibold uppercase tracking-wider text-purple-700">
-                  Studio Documents
-                </span>
+            {/* Direct Studio Card */}
+            <div className="rounded-3xl border border-slate-200/90 bg-white p-7 sm:p-8 shadow-xs">
+              <span className="eyebrow text-purple-600 font-semibold tracking-wider block mb-2">
+                DIRECT INQUIRIES
+              </span>
+              <h3 className="font-display text-xl font-bold text-slate-900 mb-2">
+                Talk directly with the founders
+              </h3>
+              <p className="text-xs sm:text-sm text-slate-600 leading-relaxed mb-6 font-normal">
+                Every inquiry is reviewed directly by our founding partners. We provide clear technical
+                feedback and architecture recommendations within 24 hours.
+              </p>
+
+              {/* Email box */}
+              <div className="flex items-center justify-between gap-3 p-3.5 rounded-2xl bg-[#faf8f5] border border-slate-200/90 mb-3">
+                <div className="flex items-center gap-2.5 min-w-0">
+                  <Mail className="h-4 w-4 text-purple-600 shrink-0" />
+                  <span className="text-xs font-mono font-bold text-slate-900 truncate">
+                    {TARGET_EMAIL}
+                  </span>
+                </div>
+                <button
+                  onClick={handleCopyEmail}
+                  className="px-3 py-1 rounded-lg text-xs font-mono bg-white border border-slate-200 hover:bg-slate-50 text-slate-700 transition-colors cursor-pointer shrink-0"
+                >
+                  {copiedEmail ? "Copied" : "Copy"}
+                </button>
               </div>
-              <h3 className="font-display text-xl font-bold text-slate-900 mb-1.5">
+
+              {/* Direct Actions: WhatsApp & Response Info */}
+              <div className="space-y-2.5 pt-2">
+                <a
+                  href={WHATSAPP_URL}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="w-full inline-flex items-center justify-center gap-2 rounded-2xl border border-emerald-200 bg-emerald-50/50 hover:bg-emerald-50 py-3 text-xs font-semibold text-emerald-800 transition-colors"
+                >
+                  <MessageCircle className="h-4 w-4 text-emerald-600" />
+                  <span>Chat on WhatsApp</span>
+                </a>
+
+                <div className="flex items-center justify-between text-xs font-mono text-slate-500 pt-3 border-t border-slate-100">
+                  <span className="flex items-center gap-1.5">
+                    <Clock className="h-3.5 w-3.5 text-slate-400" />
+                    Response: &lt;24 hours
+                  </span>
+                  <span className="flex items-center gap-1.5">
+                    <Globe2 className="h-3.5 w-3.5 text-slate-400" />
+                    Worldwide
+                  </span>
+                </div>
+              </div>
+            </div>
+
+            {/* Studio Documents Section */}
+            <div className="rounded-3xl border border-slate-200/90 bg-white p-7 sm:p-8 shadow-xs">
+              <div className="flex items-center justify-between mb-4">
+                <span className="eyebrow text-purple-600 font-semibold tracking-wider">
+                  STUDIO DOCUMENTS
+                </span>
+                <span className="text-xs font-mono text-slate-400">PDF</span>
+              </div>
+              <h3 className="font-display text-lg font-bold text-slate-900 mb-1.5">
                 Download Agency Decks
               </h3>
               <p className="text-xs text-slate-500 leading-relaxed mb-5">
-                Feel free to look through our official PDF documents to learn
-                more about our capabilities, case studies, and systems:
+                Review our capabilities, case studies, and engineering framework:
               </p>
 
-              {/* PDF Documents List */}
-              <div className="space-y-3">
+              <div className="space-y-2.5">
                 {PDF_DOCS.map((doc) => (
                   <div
                     key={doc.title}
-                    className="p-4 rounded-2xl border border-slate-200/80 bg-slate-50/60 hover:bg-purple-50/40 hover:border-purple-200 transition-all group"
+                    className="p-3.5 rounded-2xl border border-slate-200/80 bg-[#faf8f5] hover:border-purple-300 hover:bg-purple-50/20 transition-all flex items-center justify-between gap-3 group"
                   >
-                    <div className="flex items-start justify-between gap-2 mb-1.5">
-                      <div className="flex items-center gap-2">
-                        <FileText className="h-4 w-4 text-purple-600 shrink-0" />
-                        <h4 className="text-sm font-semibold text-slate-900">
-                          {doc.title}
-                        </h4>
+                    <div className="flex items-center gap-3 min-w-0">
+                      <div className="w-8 h-8 rounded-xl bg-white border border-slate-200/80 flex items-center justify-center shrink-0">
+                        <FileText className="h-4 w-4 text-purple-600" />
                       </div>
-                      <span className="text-[10px] font-mono px-2 py-0.5 rounded-md bg-purple-100 text-purple-700 font-medium">
-                        PDF
-                      </span>
+                      <div className="min-w-0">
+                        <div className="text-xs font-bold text-slate-900 truncate">
+                          {doc.title}
+                        </div>
+                        <div className="text-[11px] text-slate-500 truncate">
+                          {doc.description}
+                        </div>
+                      </div>
                     </div>
 
-                    <p className="text-xs text-slate-500 mb-3 pl-6">
-                      {doc.description}
-                    </p>
-
-                    <div className="flex items-center gap-2 pl-6">
+                    <div className="flex items-center gap-1 shrink-0">
                       <a
                         href={doc.file}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="inline-flex items-center gap-1.5 text-xs font-semibold text-purple-700 hover:text-purple-800 bg-white px-3 py-1.5 rounded-lg border border-slate-200 hover:border-purple-300 shadow-2xs transition-all"
+                        className="p-1.5 rounded-lg text-slate-500 hover:text-slate-900 hover:bg-white transition-colors"
+                        title="View Document"
                       >
-                        <Eye className="h-3 w-3" />
-                        Look / View
+                        <ArrowUpRight className="h-4 w-4" />
                       </a>
                       <a
                         href={doc.file}
                         download
-                        className="inline-flex items-center gap-1.5 text-xs font-semibold text-slate-700 hover:text-slate-900 bg-white px-3 py-1.5 rounded-lg border border-slate-200 hover:border-slate-300 shadow-2xs transition-all"
+                        className="p-1.5 rounded-lg text-slate-500 hover:text-slate-900 hover:bg-white transition-colors"
+                        title="Download Document"
                       >
-                        <Download className="h-3 w-3" />
-                        Download
+                        <Download className="h-4 w-4" />
                       </a>
                     </div>
                   </div>
@@ -489,7 +556,7 @@ export function ContactPage() {
                 Business WhatsApp
               </h4>
               <a
-                href="https://wa.me/919150890205?text=Hi%20Buildicy,%20I'd%20like%20to%20discuss%20a%20project%20for%20my%20business."
+                href={WHATSAPP_URL}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="flex items-center justify-between gap-2 p-3 rounded-2xl bg-emerald-50/80 border border-emerald-200 text-emerald-800 hover:bg-emerald-100 transition-colors mb-3 group"
@@ -509,17 +576,17 @@ export function ContactPage() {
         </div>
       </main>
 
-      {/* Clean Footer */}
-      <footer className="relative z-10 border-t border-slate-200/80 bg-white py-8 px-6 md:px-10 mt-16">
-        <div className="mx-auto max-w-[1200px] flex flex-col sm:flex-row items-center justify-between gap-4 text-xs font-mono text-slate-500">
+      {/* Clean Minimalist Studio Footer */}
+      <footer className="border-t border-slate-200/80 bg-white py-6 px-6 md:px-10 text-xs font-mono text-slate-500">
+        <div className="mx-auto max-w-[1240px] flex flex-col sm:flex-row items-center justify-between gap-4">
           <div className="flex items-center gap-2">
-            <span className="font-bold text-slate-800">Buildicy</span>
+            <span className="font-bold text-slate-800 font-sans">Buildicy</span>
             <span>•</span>
             <span>AI Growth Systems Studio</span>
           </div>
           <div className="flex items-center gap-6">
-            <Link to="/careers" className="hover:text-purple-700 transition-colors">
-              Careers
+            <Link to="/founders" className="hover:text-purple-700 transition-colors">
+              Founders
             </Link>
             <Link to="/privacy" className="hover:text-purple-700 transition-colors">
               Privacy Policy

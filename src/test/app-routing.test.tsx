@@ -23,4 +23,13 @@ describe("App routing", () => {
     expect(matches.at(-1)?.routeId).not.toBe(rootRouteId);
     expect(matches.at(-1)?.pathname).toBe("/contact");
   });
+
+  it("matches a page for /founders instead of falling back to not found", () => {
+    const router = createRouter({ routeTree, context: { queryClient: new QueryClient() } });
+
+    const matches = router.matchRoutes("/founders");
+
+    expect(matches.at(-1)?.routeId).not.toBe(rootRouteId);
+    expect(matches.at(-1)?.pathname).toBe("/founders");
+  });
 });

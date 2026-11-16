@@ -505,8 +505,8 @@ function Nav({ onOpenAudit }: { onOpenAudit: () => void }) {
           <a href="#process" className="link-line hover:text-slate-900 transition-colors">Pipeline</a>
           <a href="#packages" className="link-line hover:text-slate-900 transition-colors">Packages</a>
           <a href="#systems" className="link-line hover:text-slate-900 transition-colors">Founder Systems</a>
+          <Link to="/founders" className="link-line hover:text-purple-600 transition-colors">Founders</Link>
           <a href="#docs" className="link-line hover:text-slate-900 transition-colors">Documentation</a>
-          <Link to="/careers" className="link-line hover:text-slate-900 transition-colors">Careers</Link>
           <Link to="/contact" className="link-line hover:text-slate-900 transition-colors">Contact</Link>
         </nav>
 
@@ -584,11 +584,11 @@ function Nav({ onOpenAudit }: { onOpenAudit: () => void }) {
               <span className="text-xs font-mono text-purple-700">05</span>
             </a>
             <Link
-              to="/careers"
+              to="/founders"
               onClick={() => setMobileMenuOpen(false)}
               className="p-3 rounded-2xl hover:bg-slate-100 transition-colors flex items-center justify-between"
             >
-              <span>Careers (We're Hiring)</span>
+              <span>Founders & Leadership</span>
               <span className="text-xs font-mono font-bold text-purple-700">06</span>
             </Link>
             <Link
@@ -1034,8 +1034,8 @@ function Footer({ onOpenAudit }: { onOpenAudit?: () => void }) {
             <a href="#docs" className="hover:text-white transition-colors">
               Docs
             </a>
-            <Link to="/careers" className="hover:text-white transition-colors">
-              Careers
+            <Link to="/founders" className="hover:text-white transition-colors text-purple-300 font-semibold">
+              Founders
             </Link>
             <Link to="/contact" className="hover:text-white transition-colors">
               Contact

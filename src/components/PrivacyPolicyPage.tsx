@@ -268,8 +268,8 @@ export function PrivacyPolicyPage() {
             <Link to="/contact" className="hover:text-slate-900 transition-colors">
               Contact
             </Link>
-            <Link to="/careers" className="hover:text-slate-900 transition-colors">
-              Careers
+            <Link to="/founders" className="hover:text-slate-900 transition-colors">
+              Founders
             </Link>
             <a
               href="https://wa.me/919150890205"
