@@ -1,11 +1,19 @@
 import { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
 import { toast } from "sonner";
+import { ArrowRight, CheckCircle2, MessageSquare, Sparkles, X } from "lucide-react";
 import { sendAuditRequest, PRIMARY_AUDIT_EMAIL } from "../lib/audit";
 
 const WHATSAPP_URL = `https://wa.me/919150890205?text=${encodeURIComponent(
   "Hi Buildicy, I'd like to book a free 30-minute AI Growth Audit for my business."
 )}`;
+
+const SYSTEMS = [
+  { id: "AI Lead Concierge", label: "AI Concierge (WhatsApp & Web)" },
+  { id: "AI Funnel", label: "AI Funnel System" },
+  { id: "Complete AI Growth Engine", label: "Complete Growth Engine" },
+  { id: "Buildicy Studio — Custom Build", label: "Custom Architecture" },
+];
 
 export function AuditBookingModal({
   initialPackage,
@@ -21,7 +29,7 @@ export function AuditBookingModal({
   const [phone, setPhone] = useState("");
   const [businessName, setBusinessName] = useState("");
   const [serviceNeeded, setServiceNeeded] = useState(
-    initialPackage || "AI Front Desk + Funnel"
+    initialPackage || "AI Lead Concierge"
   );
   const [market, setMarket] = useState(initialMarket || "India — INR");
   const [notes, setNotes] = useState("");
@@ -74,7 +82,7 @@ export function AuditBookingModal({
 
       setIsSubmitted(true);
       toast.success("Audit Request Received!", {
-        description: `Delivered to ${PRIMARY_AUDIT_EMAIL}. We'll reach out within 24 hours.`,
+        description: `Delivered to ${PRIMARY_AUDIT_EMAIL}. We will reach out within 24 hours.`,
       });
     } catch (err) {
       console.warn("Audit dispatch warning:", err);
@@ -91,47 +99,48 @@ export function AuditBookingModal({
 
   return createPortal(
     <div
-      className="fixed inset-0 z-[9999] flex items-center justify-center p-3 sm:p-6 bg-slate-950/80 backdrop-blur-md animate-in fade-in duration-200"
+      className="fixed inset-0 z-[9999] flex items-center justify-center p-3 sm:p-6 bg-slate-950/75 backdrop-blur-md animate-in fade-in duration-200"
       onClick={onClose}
     >
       <div
-        className="relative w-full sm:max-w-lg max-h-[88dvh] overflow-y-auto rounded-3xl bg-white border border-slate-200 p-5 sm:p-8 text-slate-900 shadow-2xl my-auto no-scrollbar"
+        className="relative w-full max-w-lg max-h-[90dvh] overflow-y-auto rounded-3xl bg-white border border-slate-200/90 p-6 sm:p-8 text-slate-900 shadow-2xl my-auto no-scrollbar"
         onClick={(e) => e.stopPropagation()}
       >
-        {/* Minimalist Close button matching site */}
+        {/* Sleek Minimalist Close button */}
         <button
           onClick={onClose}
-          className="absolute top-4 right-4 sm:top-5 sm:right-5 w-8 h-8 rounded-full bg-slate-100 hover:bg-slate-200 active:bg-slate-300 text-slate-600 hover:text-slate-900 flex items-center justify-center transition-colors cursor-pointer text-sm font-bold shadow-2xs z-10"
+          className="absolute top-5 right-5 w-8 h-8 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-500 hover:text-slate-900 flex items-center justify-center transition-colors cursor-pointer text-sm font-bold z-10"
           aria-label="Close modal"
         >
-          ✕
+          <X className="w-4 h-4" />
         </button>
 
         {isSubmitted ? (
-          <div className="text-center py-6">
-            <div className="w-14 h-14 rounded-full bg-emerald-50 border border-emerald-200 text-emerald-600 flex items-center justify-center mx-auto mb-4 text-2xl font-bold">
-              ✓
+          <div className="text-center py-8">
+            <div className="w-12 h-12 rounded-full bg-emerald-50 border border-emerald-200 text-emerald-600 flex items-center justify-center mx-auto mb-4">
+              <CheckCircle2 className="w-6 h-6" />
             </div>
             <h3 className="font-display text-2xl font-bold text-slate-900 mb-2">
-              Audit Request Received!
+              Audit Scheduled!
             </h3>
-            <p className="text-slate-600 text-sm max-w-sm mx-auto leading-relaxed mb-6">
-              Thank you, <span className="font-semibold text-slate-900">{name}</span>. Your details have been delivered to our team at <span className="font-mono text-purple-700 font-medium">{PRIMARY_AUDIT_EMAIL}</span>. We will review your business setup and reach out directly.
+            <p className="text-slate-600 text-sm max-w-sm mx-auto leading-relaxed mb-6 font-normal">
+              Thank you, <span className="font-semibold text-slate-900">{name}</span>. We've received your request and will prepare your custom AI blueprint.
             </p>
-            <div className="flex flex-wrap justify-center gap-3">
+            <div className="flex flex-col sm:flex-row justify-center gap-2.5">
               <a
                 href={`https://wa.me/919150890205?text=${encodeURIComponent(
                   `Hi Buildicy! I just requested a Free AI Growth Audit:\n\n• Name: ${name}\n• Business: ${businessName || "Not specified"}\n• Email: ${email}\n• Phone: ${phone}\n• Service: ${serviceNeeded}\n• Market: ${market}`
                 )}`}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 rounded-full bg-emerald-600 px-5 py-2.5 text-xs font-semibold text-white hover:bg-emerald-500 transition-colors shadow-sm"
+                className="inline-flex items-center justify-center gap-2 rounded-full bg-emerald-600 hover:bg-emerald-500 px-5 py-3 text-xs font-semibold text-white transition-colors shadow-xs"
               >
-                Send Summary on WhatsApp ↗
+                <span>Continue on WhatsApp</span>
+                <ArrowRight className="w-3.5 h-3.5" />
               </a>
               <button
                 onClick={onClose}
-                className="px-5 py-2.5 rounded-full bg-slate-100 hover:bg-slate-200 text-xs font-semibold text-slate-700 transition-colors cursor-pointer"
+                className="px-5 py-3 rounded-full bg-slate-100 hover:bg-slate-200 text-xs font-semibold text-slate-700 transition-colors cursor-pointer"
               >
                 Done
               </button>
@@ -139,23 +148,26 @@ export function AuditBookingModal({
           </div>
         ) : (
           <div>
-            <div className="mb-5 pr-10">
-              <span className="text-[10px] font-mono font-bold text-purple-700 bg-purple-50 border border-purple-200 px-3 py-1 rounded-full uppercase tracking-wider inline-block mb-2">
-                Free 30-Minute Session
-              </span>
-              <h3 className="font-display text-2xl sm:text-3xl font-extrabold text-slate-900 leading-tight">
-                Book Free AI Growth Audit
+            {/* Header */}
+            <div className="mb-6 pr-8">
+              <div className="inline-flex items-center gap-1.5 px-3 py-0.5 rounded-full text-[10px] font-mono font-semibold bg-purple-50 text-purple-700 border border-purple-200/70 mb-2.5">
+                <span className="w-1.5 h-1.5 rounded-full bg-purple-600 animate-pulse" />
+                FREE 30-MINUTE STRATEGY
+              </div>
+              <h3 className="font-display text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">
+                Book AI Growth Audit
               </h3>
-              <p className="text-xs sm:text-sm text-slate-500 mt-1 font-light">
-                We'll review your lead flow, follow-up gaps, and recommend the right AI system for your business.
+              <p className="text-slate-500 text-xs sm:text-sm mt-1 leading-relaxed">
+                Review your lead flow, follow-up gaps, and blueprint your 24/7 AI booking system.
               </p>
             </div>
 
-            <form onSubmit={handleSubmit} className="space-y-3.5">
+            <form onSubmit={handleSubmit} className="space-y-4">
+              {/* Row 1: Name & Business */}
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 <div>
-                  <label className="block text-xs font-mono text-slate-600 mb-1">
-                    Your Name *
+                  <label className="block text-xs font-medium text-slate-700 mb-1">
+                    Your Name <span className="text-purple-600">*</span>
                   </label>
                   <input
                     type="text"
@@ -163,40 +175,41 @@ export function AuditBookingModal({
                     value={name}
                     onChange={(e) => setName(e.target.value)}
                     placeholder="Rahul Sharma"
-                    className="w-full rounded-xl border border-slate-200 bg-slate-50 px-3.5 py-2.5 text-base sm:text-sm text-slate-900 placeholder:text-slate-400 focus:outline-none focus:border-purple-600 focus:bg-white transition-colors"
+                    className="w-full rounded-xl border border-slate-200 bg-slate-50/60 px-3.5 py-2.5 text-sm text-slate-900 placeholder:text-slate-400 focus:outline-none focus:border-purple-600 focus:bg-white transition-all"
                   />
                 </div>
                 <div>
-                  <label className="block text-xs font-mono text-slate-600 mb-1">
+                  <label className="block text-xs font-medium text-slate-700 mb-1">
                     Business Name
                   </label>
                   <input
                     type="text"
                     value={businessName}
                     onChange={(e) => setBusinessName(e.target.value)}
-                    placeholder="Company Name"
-                    className="w-full rounded-xl border border-slate-200 bg-slate-50 px-3.5 py-2.5 text-base sm:text-sm text-slate-900 placeholder:text-slate-400 focus:outline-none focus:border-purple-600 focus:bg-white transition-colors"
+                    placeholder="Acme Growth"
+                    className="w-full rounded-xl border border-slate-200 bg-slate-50/60 px-3.5 py-2.5 text-sm text-slate-900 placeholder:text-slate-400 focus:outline-none focus:border-purple-600 focus:bg-white transition-all"
                   />
                 </div>
               </div>
 
+              {/* Row 2: Email & Phone */}
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 <div>
-                  <label className="block text-xs font-mono text-slate-600 mb-1">
-                    Work Email *
+                  <label className="block text-xs font-medium text-slate-700 mb-1">
+                    Work Email <span className="text-purple-600">*</span>
                   </label>
                   <input
                     type="email"
                     required
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
-                    placeholder="name@company.com"
-                    className="w-full rounded-xl border border-slate-200 bg-slate-50 px-3.5 py-2.5 text-base sm:text-sm text-slate-900 placeholder:text-slate-400 focus:outline-none focus:border-purple-600 focus:bg-white transition-colors"
+                    placeholder="rahul@company.com"
+                    className="w-full rounded-xl border border-slate-200 bg-slate-50/60 px-3.5 py-2.5 text-sm text-slate-900 placeholder:text-slate-400 focus:outline-none focus:border-purple-600 focus:bg-white transition-all"
                   />
                 </div>
                 <div>
-                  <label className="block text-xs font-mono text-slate-600 mb-1">
-                    WhatsApp / Phone *
+                  <label className="block text-xs font-medium text-slate-700 mb-1">
+                    WhatsApp / Phone <span className="text-purple-600">*</span>
                   </label>
                   <input
                     type="tel"
@@ -204,90 +217,86 @@ export function AuditBookingModal({
                     value={phone}
                     onChange={(e) => setPhone(e.target.value)}
                     placeholder="+91 91508 90205"
-                    className="w-full rounded-xl border border-slate-200 bg-slate-50 px-3.5 py-2.5 text-base sm:text-sm text-slate-900 placeholder:text-slate-400 focus:outline-none focus:border-purple-600 focus:bg-white transition-colors"
+                    className="w-full rounded-xl border border-slate-200 bg-slate-50/60 px-3.5 py-2.5 text-sm text-slate-900 placeholder:text-slate-400 focus:outline-none focus:border-purple-600 focus:bg-white transition-all"
                   />
                 </div>
               </div>
 
+              {/* Row 3: System Selection & Currency */}
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
                 <div className="sm:col-span-2">
-                  <label className="block text-xs font-mono text-slate-600 mb-1">
-                    System / Service Interest
+                  <label className="block text-xs font-medium text-slate-700 mb-1">
+                    System Interest
                   </label>
                   <select
                     value={serviceNeeded}
                     onChange={(e) => setServiceNeeded(e.target.value)}
-                    className="w-full rounded-xl border border-slate-200 bg-slate-50 px-3.5 py-2.5 text-base sm:text-sm text-slate-900 focus:outline-none focus:border-purple-600 focus:bg-white transition-colors"
+                    className="w-full rounded-xl border border-slate-200 bg-slate-50/60 px-3 py-2.5 text-sm text-slate-900 focus:outline-none focus:border-purple-600 focus:bg-white transition-all cursor-pointer"
                   >
-                    <optgroup label="Individual Services">
-                      <option value="AI Funnel System">AI Funnel System</option>
-                      <option value="AI Receptionist">AI Receptionist</option>
-                      <option value="AI Automation">AI Automation</option>
-                      <option value="Digital Product System">Digital Product System</option>
-                      <option value="Digital Marketing">Digital Marketing</option>
-                      <option value="Website / Landing Page">Website / Landing Page</option>
-                    </optgroup>
-                    <optgroup label="Growth Packages">
-                      <option value="AI Front Desk + Funnel (Most Popular)">
-                        AI Front Desk + Funnel (Most Popular)
+                    {SYSTEMS.map((s) => (
+                      <option key={s.id} value={s.id}>
+                        {s.label}
                       </option>
-                      <option value="AI Lead Machine">AI Lead Machine</option>
-                      <option value="Complete AI Growth Engine">Complete AI Growth Engine</option>
-                    </optgroup>
+                    ))}
                   </select>
                 </div>
                 <div>
-                  <label className="block text-xs font-mono text-slate-600 mb-1">
-                    Market
+                  <label className="block text-xs font-medium text-slate-700 mb-1">
+                    Currency
                   </label>
                   <select
                     value={market}
                     onChange={(e) => setMarket(e.target.value)}
-                    className="w-full rounded-xl border border-slate-200 bg-slate-50 px-3 py-2.5 text-base sm:text-sm text-slate-900 focus:outline-none focus:border-purple-600 focus:bg-white transition-colors"
+                    className="w-full rounded-xl border border-slate-200 bg-slate-50/60 px-3 py-2.5 text-sm text-slate-900 focus:outline-none focus:border-purple-600 focus:bg-white transition-all cursor-pointer"
                   >
-                    <option value="India — INR">India (INR)</option>
-                    <option value="International — USD">Intl (USD)</option>
+                    <option value="India — INR">INR (₹)</option>
+                    <option value="International — USD">USD ($)</option>
                   </select>
                 </div>
               </div>
 
+              {/* Notes */}
               <div>
-                <label className="block text-xs font-mono text-slate-600 mb-1">
-                  Current Revenue Leak / Goal (Optional)
+                <label className="block text-xs font-medium text-slate-700 mb-1">
+                  Primary Goal or Current Bottleneck <span className="text-slate-400 font-normal">(Optional)</span>
                 </label>
-                <textarea
-                  rows={2}
+                <input
+                  type="text"
                   value={notes}
                   onChange={(e) => setNotes(e.target.value)}
-                  placeholder="e.g. Missing inbound customer calls, slow WhatsApp response, manual CRM work..."
-                  className="w-full rounded-xl border border-slate-200 bg-slate-50 p-3 text-base sm:text-sm text-slate-900 placeholder:text-slate-400 focus:outline-none focus:border-purple-600 focus:bg-white resize-none transition-colors"
+                  placeholder="e.g. Stop losing leads after-hours, automate qualification"
+                  className="w-full rounded-xl border border-slate-200 bg-slate-50/60 px-3.5 py-2.5 text-sm text-slate-900 placeholder:text-slate-400 focus:outline-none focus:border-purple-600 focus:bg-white transition-all"
                 />
               </div>
 
-              <div className="flex items-center justify-between text-xs font-mono text-slate-500 pt-0.5">
+              {/* Instant WhatsApp alternative */}
+              <div className="flex items-center justify-between text-xs text-slate-500 pt-1">
                 <span>Prefer instant chat?</span>
                 <a
                   href={WHATSAPP_URL}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-emerald-600 hover:text-emerald-700 font-semibold hover:underline inline-flex items-center gap-1"
+                  className="text-purple-700 hover:text-purple-800 font-semibold inline-flex items-center gap-1 hover:underline"
                 >
-                  WhatsApp: +91 91508 90205 ↗
+                  <MessageSquare className="w-3.5 h-3.5" />
+                  <span>WhatsApp: +91 91508 90205</span>
                 </a>
               </div>
 
+              {/* Submit Button */}
               <div className="pt-2">
                 <button
                   type="submit"
                   disabled={isSubmitting}
-                  className="w-full rounded-full bg-slate-900 hover:bg-purple-600 active:scale-[0.98] py-3.5 text-sm font-semibold text-white shadow-md transition-all cursor-pointer disabled:opacity-50"
+                  className="w-full rounded-full bg-slate-900 hover:bg-purple-600 active:scale-[0.99] py-3.5 text-sm font-semibold text-white shadow-md hover:shadow-lg transition-all cursor-pointer disabled:opacity-50 flex items-center justify-center gap-2 group"
                 >
-                  {isSubmitting ? "Dispatching Request..." : "Confirm Free AI Growth Audit"}
+                  <span>{isSubmitting ? "Dispatching..." : "Confirm Free AI Growth Audit"}</span>
+                  <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-0.5" />
                 </button>
               </div>
 
-              <p className="text-[11px] font-mono text-slate-400 text-center">
-                100% Free • Direct strategy session with Buildicy
+              <p className="text-[11px] text-slate-400 text-center font-normal">
+                100% Free • No obligation • Direct system architecture session
               </p>
             </form>
           </div>

@@ -1,12 +1,12 @@
 import { useEffect, useState } from "react";
 
-const WORDS = ["Growth System.", "Lead Engine.", "Revenue System."];
+const WORDS = ["slow follow-up.", "missed enquiries.", "manual delays."];
 
 export function HeroTypewriter({
   words = WORDS,
   typingSpeed = 75,
   deletingSpeed = 40,
-  pauseDelay = 2000,
+  pauseDelay = 2200,
 }: {
   words?: string[];
   typingSpeed?: number;
@@ -14,7 +14,7 @@ export function HeroTypewriter({
   pauseDelay?: number;
 }) {
   const [wordIndex, setWordIndex] = useState(0);
-  const [text, setText] = useState<string>(words[0] ?? "Growth System.");
+  const [text, setText] = useState<string>(words[0] ?? "slow follow-up.");
   const [isDeleting, setIsDeleting] = useState(false);
   const [isMounted, setIsMounted] = useState(false);
 
@@ -29,7 +29,7 @@ export function HeroTypewriter({
   useEffect(() => {
     if (!isMounted) return;
 
-    const currentWord = words[wordIndex % words.length] ?? "Growth System.";
+    const currentWord = words[wordIndex % words.length] ?? words[0] ?? "";
     let timer: NodeJS.Timeout;
 
     if (!isDeleting) {
@@ -50,7 +50,7 @@ export function HeroTypewriter({
       } else {
         setIsDeleting(false);
         setWordIndex((prev) => (prev + 1) % words.length);
-        timer = setTimeout(() => {}, 250);
+        timer = setTimeout(() => {}, 220);
       }
     }
 
@@ -58,11 +58,12 @@ export function HeroTypewriter({
   }, [text, isDeleting, wordIndex, words, isMounted, typingSpeed, deletingSpeed, pauseDelay]);
 
   return (
-    <span className="text-purple-700 inline-inline">
-      {text}
+    <span className="inline-flex items-baseline text-purple-700 whitespace-nowrap min-h-[1.15em] select-none">
+      <span>{text || "\u00A0"}</span>
       <span
         aria-hidden="true"
-        className="inline-block w-[3px] h-[0.82em] bg-purple-700 ml-1 align-baseline animate-pulse"
+        className="inline-block w-[3.5px] sm:w-[4.5px] h-[0.78em] bg-purple-700 ml-1.5 rounded-xs animate-pulse align-middle"
+        style={{ verticalAlign: "-0.08em" }}
       />
     </span>
   );

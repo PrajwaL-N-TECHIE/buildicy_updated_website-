@@ -1,39 +1,83 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useEffect, useRef, useState } from "react";
+import { createPortal } from "react-dom";
 import { toast } from "sonner";
-import { Work } from "../components/Work";
-import { DocsSection } from "../components/DocsSection";
-import { PORTAL_ITEMS } from "../config/links";
+import {
+  ArrowRight,
+  ArrowUpRight,
+  Clock,
+  PhoneCall,
+  Users,
+  Flame,
+  ChevronDown,
+  Sparkles,
+  CheckCircle2,
+  Calendar,
+  MessageSquare,
+  Bot,
+  Database,
+  Layers,
+  BarChart3,
+  Globe,
+  Building2,
+  Briefcase,
+  GraduationCap,
+  Home,
+  UserCheck,
+  TrendingUp,
+  Search,
+  Check,
+  ExternalLink,
+  Laptop,
+  Code2,
+  Volume2,
+  VolumeX,
+  Play,
+  Pause,
+  Maximize2,
+  X,
+} from "lucide-react";
 import { HeroTypewriter } from "../components/HeroTypewriter";
 import { AuditBookingModal } from "../components/AuditBookingModal";
-
-
+import FolderFloat from "../components/FolderFloat";
+import CircularCarousel from "../components/CircularCarousel";
 
 export const Route = createFileRoute("/")({
   component: Index,
   head: () => ({
     meta: [
-      { title: "Buildicy — AI Growth Systems Studio | Turn Your Business Into A Growth System" },
+      {
+        title:
+          "Buildicy | AI Growth Systems & Lead Recovery for B2B Service Businesses",
+      },
       {
         name: "description",
         content:
-          "Thoughtful AI systems engineered to capture, qualify, and convert leads 24/7. AI Funnel Systems, AI Receptionists, Automation Engines, and Digital Product Systems built around your business.",
+          "Buildicy installs AI Growth Systems that capture every enquiry, respond instantly, qualify prospects, and book more qualified meetings for B2B service businesses.",
       },
       {
         name: "keywords",
         content:
-          "Buildicy, AI Growth Systems Studio, AI Receptionist, AI Voice Agent, AI Telephony, Autonomous Lead Generation, AI Funnel System, Workflow Automation, SaaS Product Engineering, WhatsApp AI Agent, India AI Agency",
+          "AI Growth Systems, AI Lead Recovery, B2B Booking Systems, AI Receptionist, WhatsApp AI Lead Capture, Automated Qualification, Buildicy Studio, AI Growth Systems Studio Coimbatore India",
       },
       { name: "author", content: "Buildicy Studio" },
       { name: "creator", content: "Buildicy" },
       { name: "publisher", content: "Buildicy" },
+      { name: "geo.region", content: "IN-TN" },
+      { name: "geo.placename", content: "Coimbatore, Tamil Nadu, India" },
+      { name: "geo.position", content: "11.0168;76.9558" },
+      { name: "ICBM", content: "11.0168, 76.9558" },
       // Open Graph
       { property: "og:site_name", content: "Buildicy" },
-      { property: "og:title", content: "Buildicy — AI Growth Systems Studio" },
+      {
+        property: "og:title",
+        content:
+          "Buildicy | AI Growth Systems & Lead Recovery for B2B Service Businesses",
+      },
       {
         property: "og:description",
         content:
-          "Thoughtful AI systems engineered to capture, qualify, and convert leads 24/7. Built around your business.",
+          "Stop losing leads to slow follow-up. Buildicy installs AI Growth Systems that capture, qualify, and book meetings 24/7 across WhatsApp, Web & Calls.",
       },
       { property: "og:type", content: "website" },
       { property: "og:url", content: "https://www.buildicy.com/" },
@@ -42,7 +86,7 @@ export const Route = createFileRoute("/")({
       { property: "og:image:height", content: "630" },
       { property: "og:image:alt", content: "Buildicy — AI Growth Systems Studio" },
       { property: "og:locale", content: "en_US" },
-      // Twitter
+      { property: "og:locale:alternate", content: "en_IN" },
       { name: "twitter:card", content: "summary_large_image" },
       { name: "twitter:site", content: "@buildicy" },
       { name: "twitter:title", content: "Buildicy — AI Growth Systems Studio" },
@@ -57,47 +101,74 @@ export const Route = createFileRoute("/")({
     links: [
       { rel: "canonical", href: "https://www.buildicy.com/" },
     ],
+    scripts: [
+      {
+        type: "application/ld+json",
+        children: JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "ProfessionalService",
+          name: "Buildicy",
+          alternateName: "Buildicy AI Growth Systems Studio",
+          description:
+            "Buildicy installs AI Growth Systems that capture enquiries, qualify prospects, and book qualified meetings for B2B service businesses.",
+          url: "https://buildicy.com",
+          email: "hello@buildicy.com",
+          telephone: "+919150890205",
+          address: {
+            "@type": "PostalAddress",
+            addressLocality: "Coimbatore",
+            addressRegion: "Tamil Nadu",
+            addressCountry: "IN",
+          },
+          areaServed: [
+            { "@type": "Country", name: "India" },
+            { "@type": "Country", name: "United States" },
+            { "@type": "Country", name: "United Kingdom" },
+            { "@type": "Country", name: "United Arab Emirates" },
+            { "@type": "Country", name: "Australia" },
+            { "@type": "Country", name: "Canada" },
+          ],
+          hasOfferCatalog: {
+            "@type": "OfferCatalog",
+            name: "AI Growth Systems",
+            itemListElement: [
+              {
+                "@type": "Offer",
+                itemOffered: {
+                  "@type": "Service",
+                  name: "AI Funnel System",
+                  description: "Turn website enquiries into qualified booked calls.",
+                },
+              },
+              {
+                "@type": "Offer",
+                itemOffered: {
+                  "@type": "Service",
+                  name: "AI Lead Concierge",
+                  description:
+                    "Handle incoming enquiries and book suitable prospects 24/7 across WhatsApp, Web, and Calls.",
+                },
+              },
+              {
+                "@type": "Offer",
+                itemOffered: {
+                  "@type": "Service",
+                  name: "Complete AI Growth Engine",
+                  description:
+                    "Connect enquiries, follow-ups, sales teams, CRM, and revenue reporting.",
+                },
+              },
+            ],
+          },
+        }),
+      },
+    ],
   }),
 });
 
-const METRICS: { value: number; suffix: string; prefix?: string; label: string; decimals?: number }[] = [
-  { value: 9, suffix: "+", label: "Founder-Built AI Systems" },
-  { value: 4, suffix: "", label: "Core Growth Services" },
-  { value: 24, suffix: "/7", label: "AI Lead Response & Booking" },
-  { value: 14, suffix: "-Day", label: "Typical Launch Timeline" },
-];
-
-const SERVICES = [
-  { n: "01", title: "AI Funnel System", body: "Turn traffic into qualified leads and booked calls." },
-  { n: "02", title: "AI Receptionist", body: "Answer calls and WhatsApp 24/7, capture leads, and book appointments." },
-  { n: "03", title: "AI Automation", body: "Automate follow-ups, reminders, CRM updates, and repetitive work." },
-  { n: "04", title: "Digital Product System", body: "Sell and deliver courses, templates, and digital products automatically." },
-];
-
-const INDIVIDUAL_SERVICES = [
-  { id: "ai-funnel-system", name: "AI Funnel System", description: "Turn traffic into qualified leads and booked calls.", indiaSetup: "₹35,000", indiaMonthly: "₹7,000/month", intlSetup: "$1,500", intlMonthly: "$400/month", pricingType: "setup_monthly" as const, deliverables: ["One landing page + lead capture", "AI qualification + automated follow-up", "Calendar booking + CRM tracking"], note: null },
-  { id: "ai-receptionist", name: "AI Receptionist", description: "Answer enquiries and book appointments automatically.", indiaSetup: "₹20,000", indiaMonthly: "₹7,000/month", intlSetup: "$750", intlMonthly: "$350/month", pricingType: "setup_monthly" as const, deliverables: ["One AI voice OR WhatsApp agent", "Business FAQs + lead capture", "Booking + human handover"], note: "Additional channels quoted separately. Usage extra." },
-  { id: "ai-automation", name: "AI Automation", description: "Automate repetitive work across your business tools.", indiaSetup: "₹25,000–₹75,000", indiaMonthly: "₹5,000–₹15,000/month", intlSetup: "$1,000–$4,000", intlMonthly: "$300–$1,000/month", pricingType: "setup_monthly" as const, deliverables: ["Workflow mapping + integrations", "Follow-ups + CRM updates", "Notifications + monitoring"], note: "Final quote depends on workflow complexity." },
-  { id: "digital-product-system", name: "Digital Product System", description: "Sell and deliver your digital products automatically.", indiaSetup: "₹25,000", indiaMonthly: "₹4,000/month", intlSetup: "$1,200", intlMonthly: "$250/month", pricingType: "setup_monthly" as const, deliverables: ["One product sales page + checkout", "Automated product delivery", "Purchase confirmation + follow-up"], note: "Product content creation is not included." },
-  { id: "digital-marketing", name: "Digital Marketing", description: "Bring targeted traffic to your business.", indiaSetup: null, indiaMonthly: "₹20,000–₹50,000/month", intlSetup: null, intlMonthly: "$1,000–$2,500/month", pricingType: "monthly_only" as const, deliverables: ["Campaign strategy + ads management", "Conversion tracking", "Reporting + optimization"], note: "Ad spend and creative production are separate." },
-  { id: "website-landing-page", name: "Website / Landing Page", description: "A focused digital presence for your business.", indiaSetup: "₹15,000–₹30,000 one-time", indiaMonthly: null, intlSetup: "$500–$1,000 one-time", intlMonthly: null, pricingType: "one_time" as const, deliverables: ["Responsive design", "Enquiry form", "Basic analytics setup"], note: "Page count and functionality confirmed before quoting." },
-];
-
-const PACKAGES = [
-  { id: "lead-machine", name: "AI Lead Machine", popular: false, indiaSetup: "₹40,000", indiaMonthly: "₹8,000/month", intlSetup: "$2,000", intlMonthly: "$500/month", bestFor: "Best for businesses that want more qualified leads and bookings.", deliverables: ["Custom AI Lead Capture Landing Funnel", "Interactive Qualification & Scoring Form", "Automated Calendar Booking Integration", "Instant WhatsApp & Email Lead Notifications", "Automated Follow-up Sequences"] },
-  { id: "front-desk", name: "AI Front Desk + Funnel", popular: true, tagline: "Most Popular", indiaSetup: "₹65,000", indiaMonthly: "₹15,000/month", intlSetup: "$3,500", intlMonthly: "$900/month", bestFor: "Best for businesses that miss calls and need AI reception.", deliverables: ["Everything in AI Lead Machine", "24/7 AI Voice Receptionist for Inbound Calls", "24/7 WhatsApp AI Chat Agent for Instant Replies", "Missed Call to Text/WhatsApp Auto-Recovery", "Live Lead Triage & Calendar Booking over Voice & Chat", "CRM Contact Sync & Activity Logging"] },
-  { id: "growth-engine", name: "Complete AI Growth Engine", popular: false, indiaSetup: "₹1,25,000", indiaMonthly: "₹40,000/month", intlSetup: "$6,000", intlMonthly: "$2,000/month", bestFor: "Best for businesses ready to scale with ads, AI, and automation.", deliverables: ["Full Multi-Channel Funnel Architecture", "Autonomous Voice & WhatsApp Receptionists", "End-to-End CRM, Billing & Task Automation", "Ad Ingestion & Retargeting Lead Pipeline", "Custom Client Dashboard & Analytics", "Bi-Weekly Performance Audits & Optimization"] },
-];
-
-const PIPELINE_NODES = [
-  { step: "01", name: "Audit", sub: "Map Leaks", timeline: "Days 1–3", metric: "48h Turnaround", detail: "Audit drop-offs & blueprint system architecture." },
-  { step: "02", name: "Architect", sub: "Calibrate AI", timeline: "Days 4–6", metric: "Dialogue Trees", detail: "Script conversational agents & qualification logic." },
-  { step: "03", name: "Assemble", sub: "Wire APIs", timeline: "Days 7–10", metric: "Full-Stack Sync", detail: "Connect funnels, calendars, and CRM automation." },
-  { step: "04", name: "Deploy", sub: "Go Live", timeline: "Days 11–14", metric: "Zero Downtime", detail: "Live routing active with 24/7 instant response." },
-  { step: "05", name: "Scale", sub: "Compound Yield", timeline: "Continuous", metric: "Compounding ROI", detail: "Continuous transcript audits & conversion tuning." },
-];
-
-const WHATSAPP_URL = `https://wa.me/919150890205?text=${encodeURIComponent("Hi Buildicy, I'd like to book a free 30-minute AI Growth Audit for my business.")}`;
+const WHATSAPP_URL = `https://wa.me/919150890205?text=${encodeURIComponent(
+  "Hi Buildicy, I would like to book a free AI Growth Audit for my business."
+)}`;
 
 function useReveal() {
   useEffect(() => {
@@ -113,27 +184,49 @@ function useReveal() {
       },
       { threshold: 0.04, rootMargin: isMobile ? "0px" : "0px 0px -40px 0px" }
     );
+    const SELECTORS = [
+      ".reveal", ".reveal-zoom", ".reveal-left", ".reveal-right",
+      ".reveal-scale", ".reveal-blur", ".reveal-flip",
+    ].map((s) => `${s}:not(.is-in)`).join(", ");
     const observeAll = () => {
-      document
-        .querySelectorAll(".reveal:not(.is-in), .reveal-zoom:not(.is-in), .reveal-left:not(.is-in), .reveal-right:not(.is-in), .reveal-scale:not(.is-in), .img-reveal:not(.is-in), .word-inner:not(.is-in), .stagger-child:not(.is-in)")
-        .forEach((el) => observer.observe(el));
+      document.querySelectorAll(SELECTORS).forEach((el) => observer.observe(el));
     };
     observeAll();
     let moRaf: number | null = null;
     const mo = new MutationObserver(() => {
       if (moRaf) return;
-      moRaf = requestAnimationFrame(() => {
-        observeAll();
-        moRaf = null;
-      });
+      moRaf = requestAnimationFrame(() => { observeAll(); moRaf = null; });
     });
     mo.observe(document.body, { childList: true, subtree: true });
-    return () => {
-      observer.disconnect();
-      mo.disconnect();
-      if (moRaf) cancelAnimationFrame(moRaf);
-    };
+    return () => { observer.disconnect(); mo.disconnect(); if (moRaf) cancelAnimationFrame(moRaf); };
   }, []);
+}
+
+function ScrollProgressBar() {
+  const [progress, setProgress] = useState(0);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const total = document.documentElement.scrollHeight - window.innerHeight;
+      if (total <= 0) return;
+      setProgress(Math.min(100, Math.max(0, (window.scrollY / total) * 100)));
+    };
+
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  return (
+    <div
+      aria-hidden="true"
+      className="fixed top-0 left-0 right-0 h-[2.5px] z-[999] pointer-events-none"
+    >
+      <div
+        className="h-full bg-gradient-to-r from-purple-600 via-indigo-500 to-purple-400 transition-[width] duration-75 ease-out shadow-[0_0_8px_rgba(168,85,247,0.5)]"
+        style={{ width: `${progress}%` }}
+      />
+    </div>
+  );
 }
 
 function useIsDesktop() {
@@ -147,46 +240,29 @@ function useIsDesktop() {
   return isDesktop;
 }
 
-function Counter({ value, suffix, prefix = "", decimals = 0 }: { value: number; suffix: string; prefix?: string; decimals?: number }) {
-  const ref = useRef<HTMLSpanElement>(null);
-  const [n, setN] = useState(0);
-  useEffect(() => {
-    const el = ref.current; if (!el) return;
-    const io = new IntersectionObserver(([e]) => {
-      if (!e?.isIntersecting) return; io.disconnect();
-      const start = performance.now();
-      const tick = (t: number) => { const p = Math.min((t - start) / 1600, 1); setN(value * (1 - Math.pow(1 - p, 3))); if (p < 1) requestAnimationFrame(tick); };
-      requestAnimationFrame(tick);
-    });
-    io.observe(el); return () => io.disconnect();
-  }, [value]);
-  return <span ref={ref}>{prefix}{n.toFixed(decimals)}<span className="text-purple-600">{suffix}</span></span>;
-}
-
 function Arrow({ className = "" }: { className?: string }) {
   return (
-    <svg viewBox="0 0 24 24" className={`h-4 w-4 ${className}`} fill="none" stroke="currentColor" strokeWidth="1.5" aria-hidden>
+    <svg
+      viewBox="0 0 24 24"
+      className={`h-4 w-4 ${className}`}
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.75"
+      aria-hidden
+    >
       <path d="M5 19 19 5M8 5h11v11" />
     </svg>
   );
 }
 
-function MobileHeroGlobe() {
-  return (
-    <div className="lg:hidden w-full flex justify-center mt-8 mb-2">
-      <div className="w-[280px] h-[280px] sm:w-[320px] sm:h-[320px] relative">
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(168,85,247,0.22)_0%,transparent_70%)] rounded-full" />
-        <WebGLParticleGlobe />
-      </div>
-    </div>
-  );
-}
-
+/* =========================================================================
+   ORIGINAL THREE.JS WEBGL PARTICLE GLOBE
+   ========================================================================= */
 
 const GLOBAL_HUBS = [
   { id: "delhi", name: "New Delhi", lat: 28.6139, lng: 77.209, color: "#ffffff", size: 0.95 },
   { id: "bangalore", name: "Bangalore", lat: 12.9716, lng: 77.5946, color: "#ffffff", size: 0.95 },
-  { id: "mumbai", name: "Mumbai", lat: 19.0760, lng: 72.8777, color: "#ffffff", size: 0.9 },
+  { id: "mumbai", name: "Mumbai", lat: 19.076, lng: 72.8777, color: "#ffffff", size: 0.9 },
   { id: "dubai", name: "Dubai", lat: 25.2048, lng: 55.2708, color: "#ffffff", size: 0.9 },
   { id: "singapore", name: "Singapore", lat: 1.3521, lng: 103.8198, color: "#ffffff", size: 0.9 },
   { id: "london", name: "London", lat: 51.5072, lng: -0.1276, color: "#ffffff", size: 0.9 },
@@ -199,7 +275,7 @@ const GLOBAL_HUBS = [
 
 const SAMPLE_ARCS = [
   { order: 1, startLat: 28.6139, startLng: 77.209, endLat: 25.2048, endLng: 55.2708, arcAlt: 0.22, color: "#e879f9" },
-  { order: 2, startLat: 25.2048, startLng: 55.2708, endLat: 51.5072, endLng: -0.1276, arcAlt: 0.30, color: "#c084fc" },
+  { order: 2, startLat: 25.2048, startLng: 55.2708, endLat: 51.5072, endLng: -0.1276, arcAlt: 0.3, color: "#c084fc" },
   { order: 3, startLat: 51.5072, startLng: -0.1276, endLat: 40.7128, endLng: -74.006, arcAlt: 0.32, color: "#a855f7" },
   { order: 4, startLat: 40.7128, startLng: -74.006, endLat: 37.7749, endLng: -122.4194, arcAlt: 0.25, color: "#c084fc" },
   { order: 5, startLat: 37.7749, startLng: -122.4194, endLat: 35.6762, endLng: 139.6503, arcAlt: 0.36, color: "#8b5cf6" },
@@ -220,7 +296,6 @@ function WebGLParticleGlobe() {
     let cleanup: (() => void) | undefined;
     let isVisible = true;
 
-    // Pause WebGL rendering loop when scrolled off-screen to save 100% of mobile CPU/GPU
     const visibilityObserver = new IntersectionObserver(
       ([entry]) => {
         isVisible = entry?.isIntersecting ?? false;
@@ -251,12 +326,12 @@ function WebGLParticleGlobe() {
           camera.position.set(0, 0, 310);
 
           const renderer = new THREE.WebGLRenderer({
-            antialias: !isMobile,
+            antialias: true,
             alpha: true,
             powerPreference: "high-performance",
           });
           renderer.setSize(width, height);
-          renderer.setPixelRatio(isMobile ? 1 : Math.min(window.devicePixelRatio, 1.5));
+          renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2.5));
           renderer.setClearColor(0x000000, 0);
           container.appendChild(renderer.domElement);
 
@@ -272,11 +347,10 @@ function WebGLParticleGlobe() {
           pointLight.position.set(200, 300, 400);
           scene.add(pointLight);
 
-          // Globe with clearly visible beacon dots and synchronized flight arcs
           const globe = new ThreeGlobe()
             .showAtmosphere(true)
             .atmosphereColor("#c084fc")
-            .atmosphereAltitude(0.20)
+            .atmosphereAltitude(0.2)
             .arcsData(SAMPLE_ARCS)
             .arcColor((e: any) => e.color)
             .arcAltitude((e: any) => e.arcAlt)
@@ -285,7 +359,6 @@ function WebGLParticleGlobe() {
             .arcDashGap(2.2)
             .arcDashInitialGap((e: any) => e.order * 0.7)
             .arcDashAnimateTime(1100)
-            // Visible City Beacon Dots
             .pointsData(GLOBAL_HUBS)
             .pointLat((d: any) => d.lat)
             .pointLng((d: any) => d.lng)
@@ -293,7 +366,6 @@ function WebGLParticleGlobe() {
             .pointAltitude(0.028)
             .pointRadius((d: any) => d.size || 0.9);
 
-          // Concentric Wave Rings Originating Directly From the City Dots
           if (typeof (globe as any).ringsData === "function") {
             (globe as any)
               .ringsData(GLOBAL_HUBS)
@@ -320,10 +392,10 @@ function WebGLParticleGlobe() {
               if (countries?.features) {
                 globe
                   .hexPolygonsData(countries.features)
-                  .hexPolygonResolution(isMobile ? 2 : 3)
-                  .hexPolygonMargin(0.35)
-                  .hexPolygonAltitude(0.005)
-                  .hexPolygonColor(() => "rgba(255,255,255,0.92)");
+                  .hexPolygonResolution(3)
+                  .hexPolygonMargin(0.3)
+                  .hexPolygonAltitude(0.006)
+                  .hexPolygonColor(() => "rgba(255,255,255,0.96)");
               }
             })
             .catch(() => {});
@@ -332,10 +404,11 @@ function WebGLParticleGlobe() {
           globeGroup.add(globe);
           scene.add(globeGroup);
 
-          // --- Interactive Drag & Fast Dynamic Rotation Like Before ---
           let isDragging = false;
-          let prevX = 0, prevY = 0;
-          let userRotY = 0, userRotX = 0.08;
+          let prevX = 0,
+            prevY = 0;
+          let userRotY = 0,
+            userRotX = 0.08;
           let t = 0;
 
           const onPointerDown = (e: PointerEvent) => {
@@ -366,7 +439,7 @@ function WebGLParticleGlobe() {
 
           function animate() {
             animId = requestAnimationFrame(animate);
-            if (!isVisible) return; // Skip rendering when off-screen!
+            if (!isVisible) return;
             t += 0.007;
             globe.rotation.y = userRotY + t;
             globe.rotation.x = userRotX + Math.sin(t * 0.35) * 0.1;
@@ -380,6 +453,7 @@ function WebGLParticleGlobe() {
             camera.aspect = w / h;
             camera.updateProjectionMatrix();
             renderer.setSize(w, h);
+            renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2.5));
           };
           window.addEventListener("resize", handleResize);
 
@@ -414,7 +488,7 @@ function WebGLParticleGlobe() {
 
   return (
     <div className="relative flex items-center justify-center w-full h-full select-none touch-none">
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(192,132,252,0.35)_0%,rgba(168,85,247,0.18)_55%,transparent_80%)] rounded-full filter blur-2xl pointer-events-none" />
+      <div className="absolute inset-4 bg-[radial-gradient(circle_at_center,rgba(168,85,247,0.18)_0%,rgba(147,51,234,0.06)_50%,transparent_75%)] rounded-full pointer-events-none" />
       <div
         ref={mountRef}
         className="relative z-10 w-full h-full cursor-grab active:cursor-grabbing touch-none"
@@ -423,26 +497,58 @@ function WebGLParticleGlobe() {
   );
 }
 
+function MobileHeroGlobe() {
+  return (
+    <div className="lg:hidden w-full flex justify-center mt-8 mb-2">
+      <div className="w-[300px] h-[300px] sm:w-[340px] sm:h-[340px] relative">
+        <div className="absolute inset-4 bg-[radial-gradient(circle_at_center,rgba(168,85,247,0.15)_0%,transparent_70%)] rounded-full pointer-events-none" />
+        <WebGLParticleGlobe />
+      </div>
+    </div>
+  );
+}
+
+/* =========================================================================
+   MAIN CONTROLLER
+   ========================================================================= */
+
 function Index() {
   useReveal();
   const [auditModalOpen, setAuditModalOpen] = useState(false);
   const [selectedAuditPkg, setSelectedAuditPkg] = useState<string | null>(null);
   const [selectedMarket, setSelectedMarket] = useState<string>("India — INR");
-  const handleOpenAudit = (pkg?: string, market?: string) => { setSelectedAuditPkg(pkg || null); if (market) setSelectedMarket(market); setAuditModalOpen(true); };
+
+  const handleOpenAudit = (pkg?: string, market?: string) => {
+    setSelectedAuditPkg(pkg || null);
+    if (market) setSelectedMarket(market);
+    setAuditModalOpen(true);
+  };
+
   return (
-    <div className="bg-background text-foreground relative selection:bg-purple-600 selection:text-white page-enter">
+    <div className="bg-[#faf8f5] text-slate-900 selection:bg-purple-600 selection:text-white page-enter min-h-screen font-sans">
+      <ScrollProgressBar />
       <Nav onOpenAudit={() => handleOpenAudit()} />
       <main className="relative">
         <Hero onOpenAudit={() => handleOpenAudit()} />
-        <Metrics />
-        <Services />
-        <Process />
-        <Packages onSelectPkg={(pkg, market) => handleOpenAudit(pkg, market)} />
-        <Work onOpenAudit={() => handleOpenAudit()} />
-        <DocsSection onOpenAudit={() => handleOpenAudit()} />
+        <FollowUpBottleneck />
+        <VideoDashboardSection onOpenAudit={() => handleOpenAudit()} />
+        <AIGrowthSystemsPackages onSelectPkg={(pkg, market) => handleOpenAudit(pkg, market)} />
+        <FeaturedProjectsSection onOpenAudit={(pkgName) => handleOpenAudit(pkgName)} />
+        <DeploymentProtocol onOpenAudit={() => handleOpenAudit()} />
+        <RealEstateProofOfImpact onOpenAudit={() => handleOpenAudit()} />
+        <BuildicyStudioSection onOpenAudit={() => handleOpenAudit("Buildicy Studio — Custom Build")} />
+        <MinimalistFAQ onOpenAudit={() => handleOpenAudit()} />
+        <ResourcesSection />
+        <FinalCTA onOpenAudit={() => handleOpenAudit()} />
       </main>
       <Footer onOpenAudit={() => handleOpenAudit()} />
-      {auditModalOpen && (<AuditBookingModal initialPackage={selectedAuditPkg} initialMarket={selectedMarket} onClose={() => setAuditModalOpen(false)} />)}
+      {auditModalOpen && (
+        <AuditBookingModal
+          initialPackage={selectedAuditPkg}
+          initialMarket={selectedMarket}
+          onClose={() => setAuditModalOpen(false)}
+        />
+      )}
 
       {/* Floating WhatsApp Action Button */}
       <a
@@ -468,19 +574,21 @@ function Index() {
   );
 }
 
+/* =========================================================================
+   NAVIGATION (Clean, Minimalist, Original Rhythm)
+   ========================================================================= */
+
 function Nav({ onOpenAudit }: { onOpenAudit: () => void }) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
-  // Close mobile menu on resize to desktop
   useEffect(() => {
     const handleResize = () => {
-      if (window.innerWidth >= 768) setMobileMenuOpen(false);
+      if (window.innerWidth >= 1024) setMobileMenuOpen(false);
     };
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
-  // Prevent background scroll when mobile menu is open
   useEffect(() => {
     if (mobileMenuOpen) {
       document.body.style.overflow = "hidden";
@@ -493,36 +601,54 @@ function Nav({ onOpenAudit }: { onOpenAudit: () => void }) {
     <header className="fixed inset-x-0 top-0 z-50 border-b border-black/5 bg-[#faf8f5]/85 backdrop-blur-md text-slate-900">
       <div className="mx-auto flex h-20 max-w-[1400px] items-center justify-between px-6 md:px-10">
         <a href="#top" className="flex items-center gap-3 group">
-          <img src="/logo.png" alt="Buildicy Logo" className="h-10 md:h-12 w-auto object-contain transition-transform duration-300 group-hover:scale-105" />
+          <img
+            src="/logo.png"
+            alt="Buildicy Logo"
+            className="h-10 md:h-12 w-auto object-contain transition-transform duration-300 group-hover:scale-105"
+          />
           <div className="flex items-center gap-1.5">
-            <span className="font-display text-2xl font-bold tracking-tight text-slate-900">Buildicy</span>
+            <span className="font-display text-2xl font-bold tracking-tight text-slate-900">
+              Buildicy
+            </span>
+            <span className="h-2 w-2 rounded-full bg-purple-600 shadow-[0_0_12px_#9333ea] animate-pulse" />
           </div>
         </a>
-
-        {/* Desktop Navigation */}
-        <nav className="hidden gap-6 lg:gap-8 text-sm font-medium text-slate-700 md:flex items-center" aria-label="Primary">
-          <a href="#services" className="link-line hover:text-slate-900 transition-colors">Services</a>
-          <a href="#process" className="link-line hover:text-slate-900 transition-colors">Pipeline</a>
-          <a href="#packages" className="link-line hover:text-slate-900 transition-colors">Packages</a>
-          <a href="#systems" className="link-line hover:text-slate-900 transition-colors">Founder Systems</a>
-          <Link to="/founders" className="link-line hover:text-purple-600 transition-colors">Founders</Link>
-          <a href="#docs" className="link-line hover:text-slate-900 transition-colors">Documentation</a>
-          <Link to="/contact" className="link-line hover:text-slate-900 transition-colors">Contact</Link>
+        <nav
+          className="hidden gap-7 text-xs font-semibold text-slate-700 lg:flex items-center"
+          aria-label="Primary"
+        >
+          <a href="#dashboard" className="link-line hover:text-slate-900 transition-colors">
+            Engine
+          </a>
+          <a href="#systems" className="link-line hover:text-slate-900 transition-colors">
+            Systems
+          </a>
+          <a href="#projects" className="link-line hover:text-slate-900 transition-colors">
+            Projects
+          </a>
+          <a href="#proof" className="link-line hover:text-slate-900 transition-colors">
+            Case Study
+          </a>
+          <Link to="/founders" className="link-line hover:text-purple-600 transition-colors">
+            Founders
+          </Link>
+          <a href="#faq" className="link-line hover:text-slate-900 transition-colors">
+            FAQ
+          </a>
         </nav>
-
-        {/* Action Button & Mobile Hamburger Toggle */}
         <div className="flex items-center gap-2 sm:gap-3">
-          <button onClick={onOpenAudit} className="group inline-flex items-center gap-1.5 sm:gap-2 rounded-full bg-slate-900 px-3.5 py-2 sm:px-5 sm:py-2.5 text-xs sm:text-sm font-semibold text-white transition-all hover:bg-purple-600 hover:shadow-lg cursor-pointer shrink-0">
+          <button
+            onClick={onOpenAudit}
+            className="group inline-flex items-center gap-1.5 sm:gap-2 rounded-full bg-slate-900 px-3.5 py-2 sm:px-5 sm:py-2.5 text-xs sm:text-sm font-semibold text-white transition-all hover:bg-purple-600 hover:shadow-lg cursor-pointer shrink-0"
+          >
             <span className="hidden sm:inline">Book Free AI Growth Audit</span>
             <span className="sm:hidden">Book Audit</span>
             <Arrow className="transition-transform group-hover:rotate-45" />
           </button>
-
-          {/* Mobile Hamburger Button */}
           <button
             type="button"
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="md:hidden flex items-center justify-center w-10 h-10 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-800 transition-colors cursor-pointer"
+            className="lg:hidden flex items-center justify-center w-10 h-10 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-800 transition-colors cursor-pointer"
             aria-label={mobileMenuOpen ? "Close navigation menu" : "Open navigation menu"}
             aria-expanded={mobileMenuOpen}
           >
@@ -539,49 +665,40 @@ function Nav({ onOpenAudit }: { onOpenAudit: () => void }) {
         </div>
       </div>
 
-      {/* Mobile Menu Drawer / Overlay */}
       {mobileMenuOpen && (
-        <div className="md:hidden fixed inset-x-0 top-20 bottom-0 bg-[#faf8f5]/98 backdrop-blur-2xl z-50 flex flex-col justify-between p-6 overflow-y-auto border-t border-slate-200/80 animate-in fade-in slide-in-from-top-2 duration-200">
+        <div className="lg:hidden fixed inset-x-0 top-20 bottom-0 bg-[#faf8f5]/98 backdrop-blur-2xl z-50 flex flex-col justify-between p-6 overflow-y-auto border-t border-slate-200/80 animate-in fade-in slide-in-from-top-2 duration-200">
           <nav className="flex flex-col gap-2.5 text-base font-semibold text-slate-800 pt-2">
             <a
-              href="#services"
+              href="#dashboard"
               onClick={() => setMobileMenuOpen(false)}
               className="p-3 rounded-2xl hover:bg-slate-100 transition-colors flex items-center justify-between"
             >
-              <span>Services</span>
+              <span>Engine</span>
               <span className="text-xs font-mono text-purple-700">01</span>
-            </a>
-            <a
-              href="#process"
-              onClick={() => setMobileMenuOpen(false)}
-              className="p-3 rounded-2xl hover:bg-slate-100 transition-colors flex items-center justify-between"
-            >
-              <span>Pipeline & Methodology</span>
-              <span className="text-xs font-mono text-purple-700">02</span>
-            </a>
-            <a
-              href="#packages"
-              onClick={() => setMobileMenuOpen(false)}
-              className="p-3 rounded-2xl hover:bg-slate-100 transition-colors flex items-center justify-between"
-            >
-              <span>Pricing & Packages</span>
-              <span className="text-xs font-mono text-purple-700">03</span>
             </a>
             <a
               href="#systems"
               onClick={() => setMobileMenuOpen(false)}
               className="p-3 rounded-2xl hover:bg-slate-100 transition-colors flex items-center justify-between"
             >
-              <span>Founder Systems & Work</span>
-              <span className="text-xs font-mono text-purple-700">04</span>
+              <span>Systems</span>
+              <span className="text-xs font-mono text-purple-700">02</span>
             </a>
             <a
-              href="#docs"
+              href="#projects"
               onClick={() => setMobileMenuOpen(false)}
               className="p-3 rounded-2xl hover:bg-slate-100 transition-colors flex items-center justify-between"
             >
-              <span>Documentation & Decks</span>
-              <span className="text-xs font-mono text-purple-700">05</span>
+              <span>Projects</span>
+              <span className="text-xs font-mono text-purple-700">03</span>
+            </a>
+            <a
+              href="#proof"
+              onClick={() => setMobileMenuOpen(false)}
+              className="p-3 rounded-2xl hover:bg-slate-100 transition-colors flex items-center justify-between"
+            >
+              <span>Case Study</span>
+              <span className="text-xs font-mono text-purple-700">04</span>
             </a>
             <Link
               to="/founders"
@@ -589,8 +706,16 @@ function Nav({ onOpenAudit }: { onOpenAudit: () => void }) {
               className="p-3 rounded-2xl hover:bg-slate-100 transition-colors flex items-center justify-between"
             >
               <span>Founders & Leadership</span>
-              <span className="text-xs font-mono font-bold text-purple-700">06</span>
+              <span className="text-xs font-mono font-bold text-purple-700">05</span>
             </Link>
+            <a
+              href="#faq"
+              onClick={() => setMobileMenuOpen(false)}
+              className="p-3 rounded-2xl hover:bg-slate-100 transition-colors flex items-center justify-between"
+            >
+              <span>FAQ</span>
+              <span className="text-xs font-mono text-purple-700">06</span>
+            </a>
             <Link
               to="/contact"
               onClick={() => setMobileMenuOpen(false)}
@@ -637,28 +762,70 @@ function Nav({ onOpenAudit }: { onOpenAudit: () => void }) {
   );
 }
 
+/* =========================================================================
+   HERO (Original Clean Headline + WebGL Globe, Pill/Image Removed)
+   ========================================================================= */
+
 function Hero({ onOpenAudit }: { onOpenAudit: () => void }) {
   const isDesktop = useIsDesktop();
 
   return (
-    <section id="top" className="relative min-h-[92vh] w-full bg-[#faf8f5] text-slate-900 flex flex-col justify-center overflow-hidden px-6 pt-36 pb-20 md:px-12 lg:px-16">
+    <section
+      id="top"
+      className="relative min-h-[92vh] w-full bg-[#faf8f5] text-slate-900 flex flex-col justify-center overflow-hidden px-6 pt-36 pb-20 md:px-12 lg:px-16"
+    >
       <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,rgba(168,85,247,0.10)_0%,rgba(99,102,241,0.03)_40%,#faf8f5_75%)] pointer-events-none" />
       <div className="cinematic-noise opacity-30" />
+
       <div className="relative z-10 mx-auto w-full max-w-[1400px] grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
-        <div className="lg:col-span-8 order-1 flex flex-col justify-center items-start text-left max-w-3xl pl-0 sm:pl-8 lg:pl-12 mt-4 lg:mt-16">
-          <h1 className="font-sans text-[clamp(2.2rem,5.6vw,5.5rem)] leading-[1.12] tracking-tight text-slate-900 font-extrabold text-left animate-in fade-in duration-500">
-            Turn Your Business Into a <HeroTypewriter />
+        {/* Left Column: Clean Headline with Typewriter, Subheadline & CTAs */}
+        <div className="lg:col-span-8 order-1 flex flex-col justify-center items-start text-left max-w-3xl pl-0 sm:pl-8 lg:pl-12 mt-4 lg:mt-16 reveal-left">
+          <h1 className="font-sans text-[clamp(2.2rem,5.4vw,5.2rem)] leading-[1.12] tracking-tight text-slate-900 font-extrabold text-left animate-in fade-in duration-500">
+            Stop losing leads to{" "}
+            <span className="inline-block text-purple-700 whitespace-nowrap align-bottom">
+              <HeroTypewriter
+                words={["slow follow-up.", "missed enquiries.", "manual delays."]}
+              />
+            </span>
           </h1>
+
           <p className="mt-4 sm:mt-6 max-w-xl text-slate-600 text-base md:text-xl leading-relaxed font-normal text-left animate-in fade-in duration-700">
-            We install AI growth systems that capture leads, respond instantly, qualify prospects, book appointments, and remove manual work.
+            Buildicy installs AI Growth Systems that capture every enquiry, respond
+            instantly, qualify prospects, and book more qualified meetings for B2B service
+            businesses.
           </p>
-          <div className="mt-6 sm:mt-8 flex flex-col sm:flex-row items-stretch sm:items-center gap-3 w-full sm:w-auto animate-in fade-in duration-700">
-            <button onClick={onOpenAudit} className="w-full sm:w-auto text-center rounded-full bg-purple-600 text-white px-7 py-3.5 sm:py-4 text-sm font-semibold transition-all hover:bg-purple-700 hover:shadow-lg active:scale-95 shadow-md shadow-purple-600/20 cursor-pointer">Book Free AI Growth Audit</button>
-            <a href="#systems" className="w-full sm:w-auto text-center rounded-full border border-slate-300 bg-white px-6 py-3.5 sm:py-4 text-sm font-semibold text-slate-800 transition-all hover:bg-purple-50 hover:border-purple-300 shadow-2xs">View Our Systems</a>
+
+          <div className="mt-6 sm:mt-8 flex flex-col sm:flex-row items-stretch sm:items-center gap-3.5 w-full sm:w-auto animate-in fade-in duration-700">
+            <button
+              onClick={onOpenAudit}
+              className="w-full sm:w-auto text-center rounded-full bg-purple-600 text-white px-7 py-3.5 sm:py-4 text-sm font-semibold transition-all hover:bg-purple-700 hover:shadow-lg active:scale-95 shadow-md shadow-purple-600/20 cursor-pointer"
+            >
+              Book a Free AI Growth Audit
+            </button>
+            <a
+              href="#systems"
+              className="w-full sm:w-auto text-center rounded-full border border-slate-300 bg-white px-6 py-3.5 sm:py-4 text-sm font-semibold text-slate-800 transition-all hover:bg-purple-50 hover:border-purple-300 shadow-2xs"
+            >
+              Explore the 3 AI Systems
+            </a>
           </div>
+
+          <div className="mt-8 pt-5 border-t border-slate-200/80 flex flex-wrap items-center gap-x-6 gap-y-2 text-xs sm:text-sm font-medium text-slate-500">
+            <div className="flex items-center gap-2">
+              <span className="text-purple-600 font-bold">✓</span>
+              <span>Built for B2B service businesses</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <span className="text-purple-600 font-bold">✓</span>
+              <span>India + International clients</span>
+            </div>
+          </div>
+
           {!isDesktop && <MobileHeroGlobe />}
         </div>
-        <div className="lg:col-span-4 order-2 hidden lg:flex items-center justify-center min-h-[480px] relative pointer-events-auto">
+
+        {/* Right Column: WebGL Interactive Particle Globe */}
+        <div className="lg:col-span-4 order-2 hidden lg:flex items-center justify-center min-h-[480px] relative pointer-events-auto reveal-right">
           <div className="w-[340px] h-[340px] xl:w-[420px] xl:h-[420px] relative flex items-center justify-center">
             {isDesktop && <WebGLParticleGlobe />}
           </div>
@@ -668,218 +835,1568 @@ function Hero({ onOpenAudit }: { onOpenAudit: () => void }) {
   );
 }
 
-function Metrics() {
-  return (
-    <section className="border-y border-slate-200 bg-[#faf8f5] px-6 md:px-10 text-slate-900">
-      <div className="mx-auto grid max-w-[1400px] grid-cols-2 md:grid-cols-4">
-        {METRICS.map((m, i) => (
-          <div key={m.label} className={`py-12 md:py-16 ${i ? "md:border-l" : ""} ${i % 2 ? "border-l md:border-l" : ""} border-slate-200 px-4 md:px-8`}>
-            <div className="font-display text-5xl sm:text-6xl tracking-tight md:text-7xl font-extrabold text-slate-900">
-              <Counter value={m.value} suffix={m.suffix} prefix={m.prefix ?? ""} decimals={m.decimals ?? 0} />
-            </div>
-            <p className="eyebrow mt-3 text-slate-500 font-semibold">{m.label}</p>
-          </div>
-        ))}
-      </div>
-    </section>
-  );
-}
+/* =========================================================================
+   FOLLOW-UP BOTTLENECK (Clean, Minimalist Card Grid)
+   ========================================================================= */
 
-const SERVICE_ICONS = [
-  <svg key="funnel" viewBox="0 0 48 48" fill="none" stroke="currentColor" strokeWidth="1.5" className="w-full h-full"><path className="origin-top transition-all duration-700 group-hover:stroke-white" strokeLinecap="round" d="M6 10h36l-14 16v10l-8-4V26L6 10z" /><circle cx="24" cy="38" r="3" className="transition-all duration-500 group-hover:fill-white group-hover:stroke-white scale-0 group-hover:scale-100 origin-center" /></svg>,
-  <svg key="headset" viewBox="0 0 48 48" fill="none" stroke="currentColor" strokeWidth="1.5" className="w-full h-full"><path strokeLinecap="round" d="M10 26v-4a14 14 0 0128 0v4" className="transition-all duration-500 group-hover:stroke-white" /><rect x="6" y="24" width="8" height="12" rx="3" className="transition-all duration-500 group-hover:fill-purple-300/30 group-hover:stroke-white" /><rect x="34" y="24" width="8" height="12" rx="3" className="transition-all duration-500 group-hover:fill-purple-300/30 group-hover:stroke-white" /><path strokeLinecap="round" d="M38 36v2a6 6 0 01-6 6h-4" className="transition-all duration-500 group-hover:stroke-white" /></svg>,
-  <svg key="auto" viewBox="0 0 48 48" fill="none" stroke="currentColor" strokeWidth="1.5" className="w-full h-full"><path strokeLinecap="round" d="M40 24a16 16 0 01-27.3 11.3" className="transition-all duration-700 group-hover:stroke-white group-hover:rotate-180 origin-center" /><path strokeLinecap="round" d="M8 24a16 16 0 0127.3-11.3" className="transition-all duration-700 group-hover:stroke-white" /><path strokeLinecap="round" d="M40 16v8h-8" className="transition-all duration-500 group-hover:stroke-white" /><path strokeLinecap="round" d="M8 32v-8h8" className="transition-all duration-500 group-hover:stroke-white" /></svg>,
-  <svg key="product" viewBox="0 0 48 48" fill="none" stroke="currentColor" strokeWidth="1.5" className="w-full h-full"><rect x="4" y="8" width="40" height="28" rx="3" className="transition-all duration-500 group-hover:stroke-white" /><path strokeLinecap="round" d="M16 44h16M24 36v8" className="transition-all duration-500 group-hover:stroke-white" /><path strokeLinecap="round" d="M18 20l4 4 8-8" className="transition-all duration-700 group-hover:stroke-white scale-0 group-hover:scale-100 origin-center" /></svg>,
-];
-
-function Services() {
-  const isDesktop = useIsDesktop();
+function FollowUpBottleneck() {
+  const problems = [
+    { metric: "4+ hrs delay", title: "Slow Response", desc: "Deals go to whoever answers first. Hours of delay sends warm buyers to competitors.", icon: Clock },
+    { metric: "62% unanswered", title: "Missed Enquiries", desc: "After-hours inquiries bounce to voicemail, leaking revenue 24/7.", icon: PhoneCall },
+    { metric: "70% wasted", title: "Unqualified Leads", desc: "Closers waste hours screening tire-kickers instead of closing buyers.", icon: Users },
+    { metric: "80% drop-off", title: "Zero Follow-Up", desc: "Contracts need 5+ touchpoints, yet most prospects are abandoned after one message.", icon: TrendingUp },
+  ];
 
   return (
-    <section id="services" className="px-6 py-16 md:px-10 md:py-36 bg-[#faf8f5] text-slate-900 border-t border-slate-200">
-      <div className="mx-auto max-w-[1400px]">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
-          <div className="lg:col-span-5 order-1 hidden lg:flex items-center justify-center min-h-[480px] relative pointer-events-auto">
-            <div className="w-[320px] h-[320px] xl:w-[420px] xl:h-[420px] relative flex items-center justify-center sticky top-32">
-              {isDesktop && <WebGLParticleGlobe />}
-            </div>
+    <section id="problem" className="px-6 py-14 md:px-12 md:py-24 bg-[#faf8f5] text-slate-900 border-t border-slate-200">
+      <div className="mx-auto max-w-[1380px]">
+        <div className="reveal-blur max-w-3xl mb-8">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-mono font-semibold bg-purple-50 text-purple-700 border border-purple-200/80 mb-3">
+            <span className="w-1.5 h-1.5 rounded-full bg-purple-600 animate-pulse" />
+            THE REVENUE LEAK
           </div>
-          <div className="lg:col-span-7 order-2">
-            <div className="mb-8">
-              <span className="eyebrow text-purple-700 font-bold block mb-2">Services</span>
-              <h2 className="reveal-zoom font-display text-4xl leading-[1.05] tracking-tight md:text-6xl text-slate-900 font-bold">Four disciplines.<br /><em className="text-slate-500 font-normal italic">One growth engine.</em></h2>
-            </div>
-            <ul className="border-t border-slate-200">
-              {SERVICES.map((s, i) => (
-                <li key={s.n} className="reveal group grid cursor-default gap-6 border-b border-slate-200 py-8 transition-all duration-500 md:grid-cols-12 md:items-center md:px-4" style={{ transitionDelay: `${i * 100}ms` }}>
-                  <div className="md:col-span-2 flex items-center gap-3">
-                    <div className="relative w-12 h-12 rounded-2xl border border-purple-200 group-hover:border-purple-500 bg-white group-hover:bg-purple-600 transition-all duration-500 flex items-center justify-center overflow-hidden shadow-sm group-hover:shadow-[0_0_20px_rgba(140,40,220,0.4)] group-hover:scale-110 text-purple-600">{SERVICE_ICONS[i]}</div>
-                  </div>
-                  <h3 className="font-display text-2xl transition-all duration-500 group-hover:translate-x-2 group-hover:text-purple-700 md:col-span-4 md:text-3xl text-slate-900 font-bold">{s.title}</h3>
-                  <p className="text-sm text-slate-600 md:col-span-6 font-normal leading-relaxed md:opacity-0 md:translate-y-2 md:group-hover:opacity-100 md:group-hover:translate-y-0 transition-all duration-500">{s.body}</p>
-                </li>
-              ))}
-            </ul>
-          </div>
-        </div>
-      </div>
-    </section>
-  );
-}
-
-function Packages({ onSelectPkg }: { onSelectPkg: (name: string, market: string) => void }) {
-  const [market, setMarket] = useState<"india" | "intl">("india");
-  const [activeTab, setActiveTab] = useState<"services" | "packages">("services");
-  const [activeMobileIdx, setActiveMobileIdx] = useState(0);
-  const trackServicesRef = useRef<HTMLDivElement>(null);
-  const trackPackagesRef = useRef<HTMLDivElement>(null);
-  const trackRef = activeTab === "services" ? trackServicesRef : trackPackagesRef;
-  const isIntl = market === "intl";
-  const marketLabel = isIntl ? "International — USD" : "India — INR";
-  const handleTabChange = (tab: "services" | "packages") => { setActiveTab(tab); setActiveMobileIdx(0); if (tab === "services" && trackServicesRef.current) trackServicesRef.current.scrollTo({ left: 0, behavior: "smooth" }); if (tab === "packages" && trackPackagesRef.current) trackPackagesRef.current.scrollTo({ left: 0, behavior: "smooth" }); };
-  const scrollToCard = (index: number) => { setActiveMobileIdx(index); const ref = activeTab === "services" ? trackServicesRef : trackPackagesRef; if (ref.current) { const card = ref.current.children[index] as HTMLElement; if (card) card.scrollIntoView({ behavior: "smooth", inline: "center", block: "nearest" }); } };
-  const handleTrackScroll = () => { if (!trackRef.current) return; const scrollLeft = trackRef.current.scrollLeft; const cardWidth = trackRef.current.firstElementChild?.clientWidth || 280; const newIdx = Math.round(scrollLeft / (cardWidth + 16)); const maxIdx = activeTab === "services" ? INDIVIDUAL_SERVICES.length - 1 : PACKAGES.length - 1; setActiveMobileIdx(Math.max(0, Math.min(newIdx, maxIdx))); };
-  return (
-    <section id="packages" className="relative z-20 px-6 py-20 md:px-10 md:py-36 bg-[#faf8f5] text-slate-900 border-t border-slate-200">
-      <div className="mx-auto max-w-[1400px]">
-        <div className="reveal text-center max-w-3xl mx-auto mb-8 md:mb-14">
-          <div className="inline-flex items-center gap-2 mb-3"><span className="w-2 h-2 rounded-full bg-purple-600 animate-pulse" /></div>
-          <h2 className="font-display text-3xl sm:text-4xl md:text-6xl font-extrabold text-slate-900 tracking-tight">Growth System Packages</h2>
-          <p className="mt-2 text-slate-500 text-sm md:text-base font-light leading-relaxed">Individual AI modules or a full autonomous growth engine.</p>
-          <div className="mt-5 flex justify-center">
-            <div className="inline-flex items-center gap-1.5 p-1 rounded-full bg-slate-200/80 border border-slate-300/80 shadow-2xs">
-              <button type="button" onClick={() => setMarket("india")} className={`px-4 py-1.5 rounded-full text-xs font-mono font-semibold transition-all cursor-pointer ${market === "india" ? "bg-purple-600 text-white shadow-xs" : "text-slate-600 hover:text-slate-900"}`}>India — INR</button>
-              <button type="button" onClick={() => setMarket("intl")} className={`px-4 py-1.5 rounded-full text-xs font-mono font-semibold transition-all cursor-pointer ${market === "intl" ? "bg-purple-600 text-white shadow-xs" : "text-slate-600 hover:text-slate-900"}`}>International — USD</button>
-            </div>
-          </div>
-          <div className="mt-3 flex justify-center">
-            <div className="inline-flex items-center gap-1.5 p-1.5 rounded-2xl bg-white border border-slate-200 shadow-2xs">
-              <button type="button" onClick={() => handleTabChange("services")} className={`px-5 py-2.5 rounded-xl text-xs sm:text-sm font-semibold transition-all cursor-pointer ${activeTab === "services" ? "bg-slate-900 text-white shadow-xs" : "text-slate-600 hover:text-slate-900 hover:bg-slate-50"}`}>Individual Services</button>
-              <button type="button" onClick={() => handleTabChange("packages")} className={`px-5 py-2.5 rounded-xl text-xs sm:text-sm font-semibold transition-all cursor-pointer ${activeTab === "packages" ? "bg-slate-900 text-white shadow-xs" : "text-slate-600 hover:text-slate-900 hover:bg-slate-50"}`}>Growth Packages</button>
-            </div>
-          </div>
-
-        </div>
-        <div className={activeTab === "services" ? "block animate-in fade-in duration-200" : "hidden"}>
-          <div ref={trackServicesRef} onScroll={handleTrackScroll} className="flex md:grid md:grid-cols-2 lg:grid-cols-3 gap-5 md:gap-6 overflow-x-auto md:overflow-visible snap-x snap-mandatory md:snap-none no-scrollbar pb-4 md:pb-0 px-1 md:px-0 -mx-1 md:mx-0 items-stretch">
-            {INDIVIDUAL_SERVICES.map((s, i) => {
-              const setup = isIntl ? s.intlSetup : s.indiaSetup;
-              const monthly = isIntl ? s.intlMonthly : s.indiaMonthly;
-              return (
-                <div key={s.id} className="relative rounded-3xl p-6 sm:p-7 bg-white/95 border border-slate-200/90 shadow-2xs hover:shadow-xl hover:border-purple-300 transition-all duration-300 flex flex-col justify-between w-[85vw] sm:w-[350px] md:w-auto shrink-0 md:shrink snap-center md:snap-align-none">
-                  <div>
-                    <div className="flex items-start justify-between gap-2 mb-2"><h3 className="font-display text-xl sm:text-2xl font-bold text-slate-900 tracking-tight">{s.name}</h3><span className="text-[10px] font-mono px-2 py-0.5 rounded-md bg-purple-50 text-purple-700 font-semibold border border-purple-100 shrink-0">0{i + 1}</span></div>
-                    <p className="text-xs text-slate-500 font-light leading-relaxed min-h-[32px]">{s.description}</p>
-                    <div className="my-4 p-3.5 rounded-2xl bg-[#faf8f5] border border-slate-200/80">
-                      {s.pricingType === "setup_monthly" && (<div className="flex items-baseline justify-between gap-2"><div><span className="font-display text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">{setup}</span><span className="text-[11px] font-mono text-slate-400 uppercase ml-1">Setup</span></div><div className="text-xs sm:text-sm font-mono text-purple-700 font-bold">+ {monthly}</div></div>)}
-                      {s.pricingType === "monthly_only" && (<div className="flex items-baseline justify-between gap-2"><span className="font-display text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">{monthly}</span><span className="text-[11px] font-mono text-slate-400">Monthly Fee</span></div>)}
-                      {s.pricingType === "one_time" && (<div className="flex items-baseline justify-between gap-2"><span className="font-display text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">{setup}</span><span className="text-[11px] font-mono text-slate-400">One-Time Project</span></div>)}
-                    </div>
-                    <div className="space-y-1.5 my-3"><span className="text-[10px] font-mono uppercase tracking-wider text-slate-400 font-medium block">Included Deliverables:</span>{s.deliverables.map((item) => (<div key={item} className="flex items-start gap-2 text-xs text-slate-600 font-light"><span className="text-purple-600 font-bold text-[11px] mt-0.5">✓</span><span className="leading-tight">{item}</span></div>))}</div>
-                    {s.note && (<p className="text-[10px] font-mono text-slate-400 italic mt-3 pt-2 border-t border-slate-100">* {s.note}</p>)}
-                  </div>
-                  <div className="mt-5 pt-4 border-t border-slate-100"><button onClick={() => onSelectPkg(s.name, marketLabel)} className="w-full py-3 rounded-full text-xs sm:text-sm font-semibold transition-all duration-300 flex items-center justify-center gap-2 bg-slate-900 hover:bg-purple-600 text-white cursor-pointer hover:shadow-md"><span>Discuss This Service</span><Arrow /></button></div>
-                </div>
-              );
-            })}
-          </div>
-          <div className="md:hidden flex items-center justify-center gap-2 mt-4">{INDIVIDUAL_SERVICES.map((_, dotIdx) => (<button key={dotIdx} type="button" onClick={() => scrollToCard(dotIdx)} aria-label={`Go to service ${dotIdx + 1}`} className={`transition-all duration-300 rounded-full ${activeMobileIdx === dotIdx ? "w-6 h-1.5 bg-purple-600" : "w-1.5 h-1.5 bg-slate-300"}`} />))}</div>
-          <p className="md:hidden text-center text-[11px] font-mono text-slate-400 mt-2">← Swipe to explore services ({activeMobileIdx + 1}/6) →</p>
+          <h2 className="font-display text-2xl sm:text-4xl md:text-5xl font-extrabold tracking-tight text-slate-900 leading-[1.15]">
+            Most businesses don't have a lead problem.{" "}
+            <span className="text-slate-400 font-normal italic">They have a follow-up problem.</span>
+          </h2>
         </div>
 
-        <div className={activeTab === "packages" ? "block animate-in fade-in duration-200" : "hidden"}>
-          <div ref={trackPackagesRef} onScroll={handleTrackScroll} className="flex md:grid md:grid-cols-3 gap-6 overflow-x-auto md:overflow-visible snap-x snap-mandatory md:snap-none no-scrollbar pb-4 md:pb-0 px-1 md:px-0 -mx-1 md:mx-0 items-start md:items-stretch pt-4 md:pt-0">
-            {PACKAGES.map((pkg, i) => {
-              const isPopular = pkg.popular;
-              const setup = isIntl ? pkg.intlSetup : pkg.indiaSetup;
-              const monthly = isIntl ? pkg.intlMonthly : pkg.indiaMonthly;
-              return (
-                <div key={pkg.id} className={`relative rounded-3xl p-6 sm:p-8 flex flex-col justify-between transition-all duration-300 w-[85vw] sm:w-[350px] md:w-auto md:h-full shrink-0 md:shrink-0 snap-center md:snap-align-none ${isPopular ? "bg-white border-2 border-purple-500 shadow-xl shadow-purple-600/10 md:-translate-y-2 ring-1 ring-purple-300/30" : "bg-white/95 border border-slate-200/90 shadow-2xs hover:shadow-lg hover:border-purple-300"}`}>
-                  {isPopular && (<div className="absolute -top-3 left-1/2 -translate-x-1/2"><span className="inline-flex items-center gap-1.5 rounded-full bg-purple-600 px-3.5 py-0.5 text-[10px] font-mono font-bold uppercase tracking-wider text-white shadow-md shadow-purple-600/30">★ Most Popular</span></div>)}
-                  <div>
-                    <div className="flex items-start justify-between gap-2 mb-2"><h3 className="font-display text-xl sm:text-2xl font-bold text-slate-900 tracking-tight">{pkg.name}</h3><span className="text-[10px] font-mono px-2 py-0.5 rounded-md bg-purple-50 text-purple-700 font-semibold border border-purple-100 shrink-0">Package 0{i + 1}</span></div>
-                    <p className="text-xs text-slate-500 font-light leading-relaxed min-h-[32px]">{pkg.bestFor}</p>
-                    <div className="my-4 p-4 rounded-2xl bg-[#faf8f5] border border-slate-200/80"><div className="flex items-baseline justify-between gap-2"><div><span className="font-display text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">{setup}</span><span className="text-[11px] font-mono text-slate-400 uppercase ml-1">Setup</span></div><div className="text-xs sm:text-sm font-mono text-purple-700 font-bold">+ {monthly}</div></div></div>
-                    <div className="space-y-1.5 my-3"><span className="text-[10px] font-mono uppercase tracking-wider text-slate-400 font-medium block">Included Deliverables:</span>{pkg.deliverables.map((item) => (<div key={item} className="flex items-start gap-2 text-xs text-slate-600 font-light"><span className="text-purple-600 font-bold text-[11px] mt-0.5">✓</span><span className="leading-tight">{item}</span></div>))}</div>
-                  </div>
-                  <div className="mt-6 pt-4 border-t border-slate-100"><button onClick={() => onSelectPkg(pkg.name, marketLabel)} className={`w-full py-3 rounded-full text-xs sm:text-sm font-semibold transition-all duration-300 flex items-center justify-center gap-2 cursor-pointer ${isPopular ? "bg-purple-600 hover:bg-purple-700 text-white shadow-md shadow-purple-600/20 hover:scale-[1.01]" : "bg-slate-900 hover:bg-purple-600 text-white"}`}><span>Discuss This Package</span><Arrow /></button></div>
-                </div>
-              );
-            })}
-          </div>
-          <div className="md:hidden flex items-center justify-center gap-2 mt-4">{PACKAGES.map((_, dotIdx) => (<button key={dotIdx} type="button" onClick={() => scrollToCard(dotIdx)} aria-label={`Go to package ${dotIdx + 1}`} className={`transition-all duration-300 rounded-full ${activeMobileIdx === dotIdx ? "w-6 h-1.5 bg-purple-600" : "w-1.5 h-1.5 bg-slate-300"}`} />))}</div>
-          <p className="md:hidden text-center text-[11px] font-mono text-slate-400 mt-2">← Swipe to view packages ({activeMobileIdx + 1}/3) →</p>
-        </div>
-        <div className="reveal mt-12 text-center max-w-2xl mx-auto"><p className="text-xs font-mono text-slate-500 leading-relaxed bg-white border border-slate-200 p-4 rounded-2xl shadow-2xs">"Prices exclude applicable taxes. Ad spend, AI usage, WhatsApp/SMS/email charges, software subscriptions, domain, and hosting are separate. Final scope is confirmed before work begins."</p></div>
-      </div>
-    </section>
-  );
-}
-
-function MobileStepper() {
-  const [activeIdx, setActiveIdx] = useState<number>(0);
-  const [ripple, setRipple] = useState<number | null>(null);
-  const handleTap = (idx: number) => { setRipple(idx); setTimeout(() => setRipple(null), 600); setActiveIdx(idx === activeIdx ? -1 : idx); };
-  return (
-    <div className="md:hidden">
-      <div className="relative">
-        <div className="absolute left-5 top-0 bottom-0 w-px -translate-x-1/2 bg-gradient-to-b from-purple-300 via-purple-200 to-transparent pointer-events-none" />
-        <div className="space-y-0">
-          {PIPELINE_NODES.map((s, idx) => {
-            const isOpen = activeIdx === idx;
+        {/* 2-col on mobile, 4-col on desktop */}
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-5">
+          {problems.map((p, idx) => {
+            const Icon = p.icon;
             return (
-              <div key={s.step} className="reveal relative" style={{ transitionDelay: `${idx * 70}ms` }}>
-                <button onClick={() => handleTap(idx)} className="w-full flex items-center gap-4 text-left py-4">
-                  <div className="relative shrink-0 w-10 h-10">
-                    {ripple === idx && (<span className="absolute inset-0 rounded-full bg-purple-400/25 animate-ping" />)}
-                    <div className={`absolute inset-0 rounded-full flex items-center justify-center border-2 transition-all duration-300 ${isOpen ? "bg-purple-600 border-purple-600 shadow-[0_0_18px_rgba(168,85,247,0.55)] scale-110" : "bg-white border-purple-200 shadow-sm"}`}>
-                      <span className={`text-xs font-mono font-bold transition-colors duration-300 ${isOpen ? "text-white" : "text-purple-700"}`}>{isOpen ? "✓" : s.step}</span>
-                    </div>
+              <div
+                key={p.title}
+                className="reveal-zoom bg-white rounded-2xl p-4 sm:p-6 border border-slate-200/90 shadow-xs hover:border-purple-300 transition-all duration-300 flex flex-col gap-3 group"
+                style={{ transitionDelay: `${idx * 80}ms` }}
+              >
+                <div className="flex items-center justify-between">
+                  <div className="w-8 h-8 rounded-xl bg-purple-50 flex items-center justify-center text-purple-600">
+                    <Icon className="w-4 h-4" />
                   </div>
-                  <div className="flex-1 flex items-center justify-between min-w-0">
-                    <div>
-                      <h3 className={`font-display text-base font-bold leading-tight transition-colors duration-300 ${isOpen ? "text-purple-700" : "text-slate-900"}`}>{s.name}</h3>
-                      <p className="text-[11px] font-mono text-slate-400 mt-0.5">{s.timeline}</p>
-                    </div>
-                    <span className={`shrink-0 ml-3 w-6 h-6 rounded-full flex items-center justify-center text-sm font-bold transition-all duration-300 ${isOpen ? "bg-purple-100 text-purple-600 rotate-45" : "bg-slate-100 text-slate-400"}`}>+</span>
-                  </div>
-                </button>
-                <div className={`overflow-hidden transition-all duration-300 ease-in-out ${isOpen ? "max-h-36 opacity-100" : "max-h-0 opacity-0"}`}>
-                  <div className="pl-14 pb-5 pr-1">
-                    <p className="text-xs font-mono text-purple-600 font-semibold mb-1.5">{s.sub}</p>
-                    <p className="text-sm text-slate-600 font-light leading-relaxed">{s.detail}</p>
-                    <span className="inline-block mt-2.5 text-[11px] font-mono font-semibold text-purple-600 bg-purple-50 border border-purple-100 px-2.5 py-0.5 rounded-full">{s.metric}</span>
-                  </div>
+                  <span className="text-[10px] font-mono font-bold text-purple-700 bg-purple-50 border border-purple-100 px-2 py-0.5 rounded-md uppercase tracking-wide">
+                    {p.metric}
+                  </span>
                 </div>
-                {idx < PIPELINE_NODES.length - 1 && (<div className="ml-14 h-px bg-slate-100" />)}
+                <div>
+                  <h3 className="font-display text-sm sm:text-base font-bold text-slate-900 mb-1">{p.title}</h3>
+                  <p className="text-[11px] sm:text-xs text-slate-500 leading-relaxed">{p.desc}</p>
+                </div>
               </div>
             );
           })}
         </div>
       </div>
-    </div>
+    </section>
   );
 }
 
-function Process() {
+/* =========================================================================
+   THE AUTONOMOUS ENGINE (Pixel-Perfect Minimalist Dashboard Simulation)
+   Engineered with luxury minimalist card design matching the reference style
+   ========================================================================= */
+
+function VideoDashboardSection({ onOpenAudit }: { onOpenAudit: () => void }) {
+  const [activeTab, setActiveTab] = useState(0);
+  const [isPlaying, setIsPlaying] = useState(true);
+  const [progress, setProgress] = useState(0);
+
+  const STAGES = [
+    { id: 0, label: "01 Pipeline Overview", subtitle: "01 Pipeline Overview: Real-time lead recovery velocity and SLA response tracking." },
+    { id: 1, label: "02 Inbound Stream", subtitle: "02 Inbound Stream: Multi-channel capture across WhatsApp, Website Chat & Voice." },
+    { id: 2, label: "03 Sub-Minute Triage", subtitle: "03 Sub-Minute Triage: Autonomous AI responds in under 18s at peak intent." },
+    { id: 3, label: "04 Qualification & Booking", subtitle: "04 Qualification & Booking: Verified ICP scoring and direct calendar sync." },
+  ];
+
+  useEffect(() => {
+    if (!isPlaying) return;
+
+    const STAGE_DURATION = 5000; // 5 seconds per stage
+    const INTERVAL_MS = 40;
+    let elapsed = 0;
+
+    const interval = setInterval(() => {
+      elapsed += INTERVAL_MS;
+      const pct = Math.min(100, (elapsed / STAGE_DURATION) * 100);
+      setProgress(pct);
+
+      if (elapsed >= STAGE_DURATION) {
+        clearInterval(interval);
+        setProgress(0);
+        setActiveTab((curr) => (curr + 1) % 4);
+      }
+    }, INTERVAL_MS);
+
+    return () => clearInterval(interval);
+  }, [isPlaying, activeTab]);
+
+  const handleSelectTab = (idx: number) => {
+    setActiveTab(idx);
+    setProgress(0);
+  };
+
   return (
-    <section id="process" className="px-6 py-20 md:px-10 md:py-36 bg-[#faf8f5] text-slate-900 border-t border-slate-200">
-      <div className="mx-auto max-w-[1400px]">
-        <div className="reveal mb-12 md:mb-16">
-          <span className="eyebrow text-purple-700 font-bold block mb-2">How It Works</span>
-          <div className="flex flex-col md:flex-row md:items-end justify-between gap-3">
-            <h2 className="font-display text-3xl sm:text-4xl md:text-6xl font-extrabold tracking-tight text-slate-900">The 14-Day<br /><span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-700 to-indigo-600">Growth Protocol.</span></h2>
-            <p className="text-slate-500 text-sm font-light max-w-xs leading-relaxed">Five stages. Zero fluff. From audit to autonomous operations.</p>
+    <section
+      id="dashboard"
+      className="px-6 py-20 md:px-12 md:py-28 bg-[#faf8f5] text-slate-900 border-t border-slate-200"
+    >
+      <div className="mx-auto max-w-[1380px]">
+        {/* Section Header */}
+        <div className="reveal-left max-w-3xl mb-8">
+          <span className="font-mono text-xs font-bold uppercase tracking-wider text-purple-700 block mb-2">
+            The Autonomous Engine
+          </span>
+          <h2 className="font-display text-3xl sm:text-4xl md:text-5xl font-extrabold tracking-tight text-slate-900 leading-[1.12]">
+            Watch how the system runs your pipeline.
+          </h2>
+          <p className="mt-3 text-slate-600 text-sm sm:text-base leading-relaxed">
+            A real-time command center that captures incoming enquiries across WhatsApp,
+            web, and calls, qualifies their budget, and books high-ticket meetings automatically.
+          </p>
+        </div>
+
+        {/* Compact dot tab indicators */}
+        <div className="reveal flex items-center gap-2 mb-5" style={{ transitionDelay: "120ms" }}>
+          {STAGES.map((s) => {
+            const isActive = activeTab === s.id;
+            return (
+              <button
+                key={s.id}
+                onClick={() => handleSelectTab(s.id)}
+                title={s.label}
+                className={`h-1.5 rounded-full transition-all duration-300 cursor-pointer ${
+                  isActive ? "w-8 bg-purple-600" : "w-3 bg-slate-300 hover:bg-purple-300"
+                }`}
+              />
+            );
+          })}
+          <span className="ml-1 text-[11px] font-mono text-slate-400">
+            {STAGES[activeTab]?.label}
+          </span>
+        </div>
+
+        {/* Dashboard Canvas Container (Ultra-Minimalist Light Aesthetic) */}
+        <div className="reveal-scale rounded-3xl bg-white border border-slate-200/90 shadow-[0_24px_60px_-12px_rgba(15,23,42,0.08)] overflow-hidden" style={{ transitionDelay: "180ms" }}>
+          {/* Top Window Bar */}
+          <div className="bg-slate-50/90 border-b border-slate-200 px-6 py-3.5 flex items-center justify-between gap-3">
+            <div className="flex items-center gap-3">
+              <div className="flex gap-1.5">
+                <span className="w-3 h-3 rounded-full bg-rose-400" />
+                <span className="w-3 h-3 rounded-full bg-amber-400" />
+                <span className="w-3 h-3 rounded-full bg-emerald-400" />
+              </div>
+              <div className="h-4 w-px bg-slate-200 mx-1" />
+              <span className="font-mono text-xs font-semibold text-slate-700">
+                buildicy.engine / autonomous-pipeline-demo
+              </span>
+            </div>
+
+            <div className="flex items-center gap-3">
+              <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[11px] font-mono font-semibold bg-emerald-50 text-emerald-700 border border-emerald-200">
+                <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+                Live Simulation
+              </span>
+
+              {/* Play / Pause Toggle */}
+              <button
+                type="button"
+                onClick={() => setIsPlaying(!isPlaying)}
+                className="inline-flex items-center gap-1 px-3 py-1 rounded-full bg-white border border-slate-200 text-xs font-mono text-slate-700 hover:text-slate-900 shadow-2xs cursor-pointer"
+                title={isPlaying ? "Pause Auto-play" : "Resume Auto-play"}
+              >
+                {isPlaying ? (
+                  <>
+                    <Pause className="w-3 h-3 text-slate-600" />
+                    <span>Pause</span>
+                  </>
+                ) : (
+                  <>
+                    <Play className="w-3 h-3 text-purple-600" />
+                    <span className="text-purple-700 font-bold">Auto-Play</span>
+                  </>
+                )}
+              </button>
+            </div>
+          </div>
+
+          {/* Interactive Dynamic Canvas */}
+          <div className="relative bg-gradient-to-br from-[#f0f4ff]/70 via-[#f8fafc] to-[#ffffff] p-4 sm:p-6 md:p-8 min-h-[420px] sm:min-h-[460px] flex flex-col justify-between overflow-hidden">
+            {/* Soft Ambient Radial Blur Background */}
+            <div className="absolute top-0 right-0 w-96 h-96 bg-purple-200/25 rounded-full filter blur-3xl pointer-events-none" />
+            <div className="absolute bottom-0 left-0 w-96 h-96 bg-blue-200/20 rounded-full filter blur-3xl pointer-events-none" />
+
+            {/* TAB 0: 01 PIPELINE OVERVIEW (Style of frame_1.jpg) */}
+            {activeTab === 0 && (
+              <div className="relative z-10 animate-in fade-in duration-300">
+                <div className="flex items-center justify-between mb-8">
+                  <div>
+                    <h3 className="font-display text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">
+                      Overview
+                    </h3>
+                    <p className="text-xs sm:text-sm text-slate-500 font-normal mt-0.5">
+                      Live Inbound Pipeline • All Connected Workspaces
+                    </p>
+                  </div>
+                  <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-emerald-50 border border-emerald-200 text-emerald-700 text-xs font-mono font-semibold">
+                    <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+                    Active SLA 99.98%
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-2 gap-3">
+                  {/* Card 1 */}
+                  <div className="rounded-[18px] sm:rounded-[24px] bg-white border border-slate-100 p-4 sm:p-6 shadow-[0_16px_40px_-8px_rgba(15,23,42,0.06)] hover:border-purple-200 transition-all">
+                    <div className="flex items-center justify-between">
+                      <div className="w-9 h-9 rounded-xl bg-purple-50 text-purple-700 flex items-center justify-center font-bold text-sm">
+                        $
+                      </div>
+                      <span className="text-[11px] font-mono font-semibold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-full">
+                        ↑ +28.4%
+                      </span>
+                    </div>
+                    <span className="text-xs font-medium text-slate-500 block mt-4">
+                      Pipeline Value
+                    </span>
+                    <div className="font-display text-3xl font-extrabold text-slate-900 mt-1">
+                      $184.5k
+                    </div>
+                    {/* Minimalist Sparkline */}
+                    <div className="mt-3 pt-2 border-t border-slate-100 flex items-center justify-between">
+                      <span className="text-[11px] font-mono text-slate-400">Target: $250k</span>
+                      <span className="text-[11px] font-mono font-semibold text-purple-700">73.8% to goal</span>
+                    </div>
+                  </div>
+
+                  {/* Card 2 */}
+                  <div className="rounded-[18px] sm:rounded-[24px] bg-white border border-slate-100 p-4 sm:p-6 shadow-[0_16px_40px_-8px_rgba(15,23,42,0.06)] hover:border-purple-200 transition-all">
+                    <div className="flex items-center justify-between">
+                      <div className="w-9 h-9 rounded-xl bg-blue-50 text-blue-700 flex items-center justify-center font-bold text-sm">
+                        <Users className="w-4 h-4" />
+                      </div>
+                      <span className="text-[11px] font-mono font-semibold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-full">
+                        ↑ +38 new
+                      </span>
+                    </div>
+                    <span className="text-xs font-medium text-slate-500 block mt-4">
+                      Inbound Enquiries
+                    </span>
+                    <div className="font-display text-3xl font-extrabold text-slate-900 mt-1">
+                      1,482
+                    </div>
+                    <div className="mt-3 pt-2 border-t border-slate-100 flex items-center justify-between">
+                      <span className="text-[11px] font-mono text-slate-400">WhatsApp & Web</span>
+                      <span className="text-[11px] font-mono font-semibold text-blue-700">Zero Leakage</span>
+                    </div>
+                  </div>
+
+                  {/* Card 3 */}
+                  <div className="rounded-[18px] sm:rounded-[24px] bg-white border border-slate-100 p-4 sm:p-6 shadow-[0_16px_40px_-8px_rgba(15,23,42,0.06)] hover:border-purple-200 transition-all">
+                    <div className="flex items-center justify-between">
+                      <div className="w-9 h-9 rounded-xl bg-emerald-50 text-emerald-700 flex items-center justify-center font-bold text-sm">
+                        <Clock className="w-4 h-4" />
+                      </div>
+                      <span className="text-[11px] font-mono font-semibold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-full">
+                        &lt; 30s SLA
+                      </span>
+                    </div>
+                    <span className="text-xs font-medium text-slate-500 block mt-4">
+                      Median Response
+                    </span>
+                    <div className="font-display text-3xl font-extrabold text-emerald-600 mt-1">
+                      18.4s
+                    </div>
+                    <div className="mt-3 pt-2 border-t border-slate-100 flex items-center justify-between">
+                      <span className="text-[11px] font-mono text-slate-400">Manual Lag: 4.2h</span>
+                      <span className="text-[11px] font-mono font-semibold text-emerald-600">99.2% faster</span>
+                    </div>
+                  </div>
+
+                  {/* Card 4 */}
+                  <div className="rounded-[18px] sm:rounded-[24px] bg-white border border-slate-100 p-4 sm:p-6 shadow-[0_16px_40px_-8px_rgba(15,23,42,0.06)] hover:border-purple-200 transition-all">
+                    <div className="flex items-center justify-between">
+                      <div className="w-9 h-9 rounded-xl bg-indigo-50 text-indigo-700 flex items-center justify-center font-bold text-sm">
+                        <Calendar className="w-4 h-4" />
+                      </div>
+                      <span className="text-[11px] font-mono font-semibold text-purple-700 bg-purple-50 px-2 py-0.5 rounded-full">
+                        92% show rate
+                      </span>
+                    </div>
+                    <span className="text-xs font-medium text-slate-500 block mt-4">
+                      Booked Meetings
+                    </span>
+                    <div className="font-display text-3xl font-extrabold text-slate-900 mt-1">
+                      318 Calls
+                    </div>
+                    <div className="mt-3 pt-2 border-t border-slate-100 flex items-center justify-between">
+                      <span className="text-[11px] font-mono text-slate-400">Direct CRM sync</span>
+                      <span className="text-[11px] font-mono font-semibold text-indigo-700">Qualified Only</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {/* TAB 1: 02 OMNICHANNEL STREAM */}
+            {activeTab === 1 && (
+              <div className="relative z-10 flex flex-col lg:grid lg:grid-cols-12 gap-4 items-stretch animate-in fade-in duration-300">
+                {/* Left Live Volume Box */}
+                <div className="lg:col-span-5 rounded-[20px] bg-white border border-slate-100 p-4 sm:p-6 shadow-[0_20px_50px_rgba(15,23,42,0.06)] flex flex-col justify-between">
+                  <div>
+                    <div className="flex items-center justify-between">
+                      <span className="font-bold text-slate-900 text-lg">Active Enquiries</span>
+                      <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[11px] font-mono font-semibold bg-rose-50 text-rose-600">
+                        <span className="w-1.5 h-1.5 rounded-full bg-rose-500 animate-pulse" />
+                        Live
+                      </span>
+                    </div>
+                    <div className="font-display text-5xl sm:text-6xl font-extrabold text-slate-900 mt-4 tracking-tight">
+                      1,482
+                    </div>
+                    <div className="inline-flex items-center gap-1 text-xs font-mono font-semibold text-emerald-700 bg-emerald-50 px-2.5 py-1 rounded-full mt-3">
+                      ↑ +38 incoming in last 10 minutes
+                    </div>
+                  </div>
+
+                  {/* Soundwave / Activity Bars */}
+                  <div className="mt-8 flex items-end gap-2.5 h-24 pt-4">
+                    {[35, 55, 40, 75, 60, 95, 50, 80, 65, 100].map((h, i) => (
+                      <div
+                        key={i}
+                        className={`flex-1 rounded-t-md transition-all duration-500 ${
+                          i === 9 ? "bg-purple-600" : "bg-purple-200"
+                        }`}
+                        style={{ height: `${h}%` }}
+                      />
+                    ))}
+                  </div>
+                </div>
+
+                {/* Right Live Activity Feed */}
+                <div className="lg:col-span-7 rounded-[20px] bg-white border border-slate-100 p-4 sm:p-6 shadow-[0_20px_50px_rgba(15,23,42,0.06)]">
+                  <div className="flex items-center justify-between mb-5">
+                    <span className="font-bold text-slate-900 text-lg">Live Inbound Activity</span>
+                    <span className="text-xs font-mono text-purple-700 font-semibold">Sub-30s Triage</span>
+                  </div>
+
+                  <div className="space-y-3.5">
+                    {[
+                      {
+                        initials: "WA",
+                        color: "bg-emerald-50 text-emerald-700 border-emerald-200",
+                        name: "Rajesh V.",
+                        company: "Commercial Real Estate (Bangalore)",
+                        msg: "Need automated booking for 8 commercial office parks",
+                        time: "Just now",
+                      },
+                      {
+                        initials: "WB",
+                        color: "bg-blue-50 text-blue-700 border-blue-200",
+                        name: "Sarah Jenkins",
+                        company: "VP Sales • Elevate Growth Partners",
+                        msg: "Inbound demo qualification for 40 monthly website leads",
+                        time: "6s ago",
+                      },
+                      {
+                        initials: "VR",
+                        color: "bg-purple-50 text-purple-700 border-purple-200",
+                        name: "Marcus Vance",
+                        company: "Principal • Executive Search",
+                        msg: "Missed call recovered • Transcribed intent: Retained search",
+                        time: "18s ago",
+                      },
+                      {
+                        initials: "WA",
+                        color: "bg-emerald-50 text-emerald-700 border-emerald-200",
+                        name: "Dr. Alan Hayes",
+                        company: "Founder • Private Aesthetic Clinic",
+                        msg: "After-hours WhatsApp consultation booking inquiry",
+                        time: "34s ago",
+                      },
+                    ].map((row, idx) => (
+                      <div
+                        key={idx}
+                        className="flex items-start justify-between gap-3 p-3.5 rounded-2xl bg-slate-50/80 hover:bg-purple-50/40 transition-colors"
+                      >
+                        <div className="flex items-center gap-3">
+                          <span
+                            className={`w-9 h-9 rounded-xl flex items-center justify-center font-mono font-bold text-xs border shrink-0 ${row.color}`}
+                          >
+                            {row.initials}
+                          </span>
+                          <div>
+                            <div className="text-xs font-semibold text-slate-900">
+                              {row.name}{" "}
+                              <span className="font-normal text-slate-500">• {row.company}</span>
+                            </div>
+                            <div className="text-xs text-slate-600 mt-0.5 line-clamp-1">
+                              "{row.msg}"
+                            </div>
+                          </div>
+                        </div>
+                        <span className="text-[11px] font-mono text-slate-400 shrink-0">
+                          {row.time}
+                        </span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {/* TAB 2: 03 SUB-MINUTE TRIAGE */}
+            {activeTab === 2 && (
+              <div className="relative z-10 flex flex-col lg:grid lg:grid-cols-12 gap-4 items-stretch animate-in fade-in duration-300">
+                {/* Left Conversational AI Box */}
+                <div className="lg:col-span-7 rounded-[20px] bg-white border border-slate-100 p-4 sm:p-6 shadow-[0_20px_50px_rgba(15,23,42,0.06)] flex flex-col justify-between">
+                  <div>
+                    <div className="flex items-center justify-between mb-4">
+                      <span className="font-bold text-slate-900 text-lg">Autonomous AI Exchange</span>
+                      <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[11px] font-mono font-semibold bg-emerald-50 text-emerald-700">
+                        <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
+                        Active Chat
+                      </span>
+                    </div>
+
+                    <div className="space-y-3.5 mt-2">
+                      {/* Prospect message */}
+                      <div className="bg-slate-50 p-4 rounded-2xl border border-slate-200/80 max-w-lg">
+                        <span className="text-[11px] font-mono font-semibold text-slate-500 block mb-1">
+                          Sarah Jenkins (Website Chat • 18s ago)
+                        </span>
+                        <p className="text-xs sm:text-sm text-slate-800 leading-relaxed font-normal">
+                          "Hi! We are losing after-hours leads on our website. Can Buildicy help qualify and book them automatically?"
+                        </p>
+                      </div>
+
+                      {/* AI Concierge response */}
+                      <div className="bg-purple-50/80 p-4 rounded-2xl border border-purple-200/80 ml-auto max-w-lg">
+                        <span className="text-[11px] font-mono font-bold text-purple-700 block mb-1">
+                          Buildicy AI Concierge • Dispatched in 18.2s
+                        </span>
+                        <p className="text-xs sm:text-sm text-slate-900 leading-relaxed font-medium">
+                          "Hi Sarah! Absolutely. We install systems that qualify and book prospects in under 60 seconds across WhatsApp, web & voice. How many active monthly inquiries do you currently handle?"
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between text-xs font-mono text-purple-700 font-semibold">
+                    <span>✓ ZERO HUMAN LATENCY</span>
+                    <span>1-CLICK MEETING SCHEDULING</span>
+                  </div>
+                </div>
+
+                {/* Right Latency Benchmark Box */}
+                <div className="lg:col-span-5 rounded-[20px] bg-white border border-slate-100 p-4 sm:p-6 shadow-[0_20px_50px_rgba(15,23,42,0.06)] flex flex-col justify-between">
+                  <div>
+                    <span className="font-bold text-slate-900 text-lg block">Speed-to-Lead</span>
+                    <span className="text-xs text-slate-500 font-normal mt-0.5 block">
+                      Buying intent peaks within the first 10 minutes.
+                    </span>
+
+                    <div className="font-display text-5xl sm:text-6xl font-extrabold text-slate-900 mt-6 tracking-tight">
+                      18.2s
+                    </div>
+                    <span className="text-xs font-mono text-purple-700 font-semibold block mt-1">
+                      Buildicy AI Median Latency
+                    </span>
+
+                    <div className="mt-6 space-y-3">
+                      <div>
+                        <div className="flex justify-between text-xs font-mono mb-1">
+                          <span className="font-semibold text-slate-800">Buildicy AI</span>
+                          <span className="text-emerald-600 font-bold">&lt; 20s (Instant)</span>
+                        </div>
+                        <div className="w-full h-3 rounded-full bg-slate-100 overflow-hidden">
+                          <div className="h-full bg-emerald-500 rounded-full w-[95%]" />
+                        </div>
+                      </div>
+
+                      <div>
+                        <div className="flex justify-between text-xs font-mono mb-1 text-slate-400">
+                          <span>Traditional Manual Delay</span>
+                          <span className="text-rose-500 font-semibold">4.2 Hours</span>
+                        </div>
+                        <div className="w-full h-3 rounded-full bg-slate-100 overflow-hidden">
+                          <div className="h-full bg-rose-400 rounded-full w-[12%]" />
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="p-3 rounded-xl bg-emerald-50 text-emerald-800 text-xs font-semibold text-center border border-emerald-200 mt-4">
+                    ✓ 99.2% faster engagement than standard teams
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {/* TAB 3: 04 QUALIFICATION & BOOKING */}
+            {activeTab === 3 && (
+              <div className="relative z-10 flex flex-col lg:grid lg:grid-cols-12 gap-4 items-stretch animate-in fade-in duration-300">
+                {/* Left Channel Attribution */}
+                <div className="lg:col-span-5 rounded-[20px] bg-white border border-slate-100 p-4 sm:p-6 shadow-[0_20px_50px_rgba(15,23,42,0.06)] flex flex-col justify-between">
+                  <div>
+                    <div className="flex items-center justify-between mb-2">
+                      <span className="font-bold text-slate-900 text-lg">Channel Distribution</span>
+                      <span className="text-xs font-mono text-slate-500">All Sources</span>
+                    </div>
+
+                    {/* Donut Simulation */}
+                    <div className="my-6 flex items-center justify-center">
+                      <div className="relative w-40 h-40 rounded-full border-[18px] border-purple-600 flex items-center justify-center border-t-blue-500 border-l-emerald-500 shadow-inner">
+                        <div className="text-center">
+                          <div className="font-display text-2xl font-extrabold text-slate-900">
+                            1,482
+                          </div>
+                          <div className="text-[10px] font-mono text-slate-400 uppercase">
+                            Ingested
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="space-y-2 text-xs font-medium">
+                      <div className="flex items-center justify-between">
+                        <span className="flex items-center gap-2">
+                          <span className="w-2.5 h-2.5 rounded-full bg-emerald-500" />
+                          WhatsApp Business
+                        </span>
+                        <span className="font-mono font-bold text-slate-900">42% (622 leads)</span>
+                      </div>
+                      <div className="flex items-center justify-between">
+                        <span className="flex items-center gap-2">
+                          <span className="w-2.5 h-2.5 rounded-full bg-blue-500" />
+                          Website Concierge
+                        </span>
+                        <span className="font-mono font-bold text-slate-900">36% (534 leads)</span>
+                      </div>
+                      <div className="flex items-center justify-between">
+                        <span className="flex items-center gap-2">
+                          <span className="w-2.5 h-2.5 rounded-full bg-purple-600" />
+                          Voice AI Reception
+                        </span>
+                        <span className="font-mono font-bold text-slate-900">22% (326 leads)</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Right Confirmed Booking & CRM Sync */}
+                <div className="lg:col-span-7 rounded-[20px] bg-white border border-slate-100 p-4 sm:p-6 shadow-[0_20px_50px_rgba(15,23,42,0.06)] flex flex-col justify-between">
+                  <div>
+                    <div className="flex items-center justify-between mb-4">
+                      <span className="font-bold text-slate-900 text-lg">Confirmed Booking</span>
+                      <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-mono font-bold bg-emerald-50 text-emerald-700 border border-emerald-200">
+                        ✓ SLOTTED & SYNCED
+                      </span>
+                    </div>
+
+                    <div className="p-4 rounded-2xl bg-purple-50/60 border border-purple-200/80 mb-5">
+                      <div className="text-xs font-mono text-purple-700 font-bold uppercase tracking-wider">
+                        Discovery Call Reserved
+                      </div>
+                      <div className="font-display text-2xl font-bold text-slate-900 mt-1">
+                        Tomorrow, Thursday • 2:30 PM EST
+                      </div>
+                      <div className="text-xs text-slate-600 mt-1">
+                        Attendee: Sarah Jenkins (VP Sales • Elevate Growth Partners)
+                      </div>
+                    </div>
+
+                    <div className="space-y-2.5 text-xs">
+                      <div className="flex items-center gap-2 text-slate-800">
+                        <span className="text-emerald-600 font-bold">✓</span>
+                        <span>Google Meet invitation generated and delivered</span>
+                      </div>
+                      <div className="flex items-center gap-2 text-slate-800">
+                        <span className="text-emerald-600 font-bold">✓</span>
+                        <span>HubSpot CRM deal ($24,000 value) automatically created</span>
+                      </div>
+                      <div className="flex items-center gap-2 text-slate-800">
+                        <span className="text-emerald-600 font-bold">✓</span>
+                        <span>WhatsApp & SMS reminder sequences armed (T-24h & T-1h)</span>
+                      </div>
+                      <div className="flex items-center gap-2 text-slate-800">
+                        <span className="text-emerald-600 font-bold">✓</span>
+                        <span>Slack notification dispatched to sales leadership</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="mt-5 pt-3 border-t border-slate-100 flex items-center justify-between">
+                    <span className="text-xs font-mono text-slate-500">ICP Score: 96/100 (Tier 1)</span>
+                    <button
+                      onClick={onOpenAudit}
+                      className="text-xs font-semibold text-purple-700 hover:text-purple-800 cursor-pointer inline-flex items-center gap-1"
+                    >
+                      Install this engine →
+                    </button>
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {/* Minimalist Bottom Caption & Progress Bar (Matching reference video's clean caption) */}
+            <div className="relative z-10 mt-8 pt-4 border-t border-slate-200/70 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs">
+              <div className="flex items-center gap-2.5">
+                <span className="w-2 h-2 rounded-full bg-purple-600 animate-pulse" />
+                <span className="font-mono text-slate-700 font-medium">
+                  {STAGES[activeTab]?.subtitle || ""}
+                </span>
+              </div>
+
+              {/* Progress Bar */}
+              <div className="w-full sm:w-48 h-1.5 rounded-full bg-slate-200 overflow-hidden">
+                <div
+                  className="h-full bg-purple-600 rounded-full transition-all duration-75"
+                  style={{ width: `${progress}%` }}
+                />
+              </div>
+            </div>
           </div>
         </div>
-        <MobileStepper />
-        <div className="hidden md:block space-y-0">
-          {PIPELINE_NODES.map((s, idx) => (
-            <div key={s.step} className="reveal group grid grid-cols-12 items-center gap-6 py-8 border-t border-slate-200 last:border-b" style={{ transitionDelay: `${idx * 70}ms` }}>
-              <div className="col-span-1"><span className="font-display text-6xl font-extrabold text-slate-100 group-hover:text-purple-200 transition-colors duration-300 select-none">{s.step}</span></div>
-              <div className="col-span-3"><h3 className="font-display text-3xl font-bold text-slate-900">{s.name}</h3><p className="text-xs font-mono text-purple-600 font-semibold mt-0.5 tracking-wide">{s.sub}</p></div>
-              <div className="col-span-5"><p className="text-sm text-slate-600 font-light leading-relaxed">{s.detail}</p></div>
-              <div className="col-span-3 flex flex-col items-end gap-1"><span className="text-xs font-mono font-semibold text-slate-400 bg-slate-100 px-3 py-1 rounded-full">{s.timeline}</span><span className="text-xs font-mono text-purple-600 font-semibold">{s.metric}</span></div>
+
+        {/* Minimalist CTA Below Dashboard */}
+        <div className="reveal-flip mt-8 flex flex-col sm:flex-row items-center justify-between gap-4 p-6 rounded-2xl bg-white border border-slate-200 shadow-xs" style={{ transitionDelay: "200ms" }}>
+          <div>
+            <div className="font-display text-lg font-bold text-slate-900">
+              Want this autonomous engine installed into your business?
+            </div>
+            <div className="text-xs sm:text-sm text-slate-600 mt-0.5">
+              We audit your inbound channels, design your custom blueprint, and connect your CRM within 7–14 days.
+            </div>
+          </div>
+          <button
+            onClick={onOpenAudit}
+            className="w-full sm:w-auto shrink-0 rounded-full bg-purple-600 hover:bg-purple-700 text-white px-6 py-3 text-xs sm:text-sm font-semibold transition-all cursor-pointer shadow-md shadow-purple-600/20"
+          >
+            Book a Free AI Growth Audit →
+          </button>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/* =========================================================================
+   THE THREE AI GROWTH SYSTEMS (React Bits Pricing 6: Highlighted Middle)
+   ========================================================================= */
+
+function AIGrowthSystemsPackages({
+  onSelectPkg,
+}: {
+  onSelectPkg: (name: string, market: string) => void;
+}) {
+  const [market, setMarket] = useState<"india" | "intl">("india");
+  const isIntl = market === "intl";
+  const marketLabel = isIntl ? "International — USD" : "India — INR";
+
+  const systems = [
+    {
+      id: "ai-funnel",
+      name: "AI Funnel System",
+      systemNumber: "01",
+      tagline: "Turn inbound website enquiries into qualified booked consultations.",
+      popular: false,
+      indiaSetup: "₹35,000",
+      indiaMonthly: "₹7,000/mo",
+      intlSetup: "$1,500",
+      intlMonthly: "$400/mo",
+      includes: [
+        "Landing page intake & lead form architecture",
+        "Custom ICP qualification scoring questions",
+        "Instant CRM contact tagging & sync",
+        "Direct calendar booking & automated reminders",
+      ],
+      cta: "Get AI Funnel",
+    },
+    {
+      id: "ai-concierge",
+      name: "AI Lead Concierge",
+      systemNumber: "02",
+      tagline: "Autonomous 24/7 lead qualification and booking across WhatsApp & Web.",
+      popular: true,
+      indiaSetup: "₹65,000",
+      indiaMonthly: "₹15,000/mo",
+      intlSetup: "$3,000",
+      intlMonthly: "$850/mo",
+      includes: [
+        "Everything in AI Funnel System",
+        "24/7 AI response on WhatsApp, Web & Email (< 18s)",
+        "Conversational ICP qualification & instant booking",
+        "Lead summaries & seamless human handover",
+        "Missed-call recovery via automated WhatsApp/SMS",
+      ],
+      cta: "Deploy AI Concierge",
+    },
+    {
+      id: "growth-engine",
+      name: "Complete Growth Engine",
+      systemNumber: "03",
+      tagline: "End-to-end sales pipeline automation, multi-rep routing, and reporting.",
+      popular: false,
+      indiaSetup: "₹1,25,000",
+      indiaMonthly: "₹35,000/mo",
+      intlSetup: "$5,500",
+      intlMonthly: "$1,800/mo",
+      includes: [
+        "Everything in AI Lead Concierge",
+        "Full HubSpot / GHL / Salesforce 2-way sync",
+        "Automated closer routing & pipeline stages",
+        "Multi-touch no-show recovery sequences",
+        "Executive owner dashboard & monthly optimization",
+      ],
+      cta: "Deploy Full Engine",
+    },
+  ];
+
+  return (
+    <section
+      id="systems"
+      className="px-6 py-20 md:px-12 md:py-28 bg-[#faf8f5] text-slate-900 border-t border-slate-200"
+    >
+      <div className="mx-auto max-w-[1380px]">
+        {/* Minimalist Section Header */}
+        <div className="reveal-blur text-center max-w-2xl mx-auto mb-12 sm:mb-14">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-mono font-semibold bg-purple-50 text-purple-700 border border-purple-200/80 mb-3.5">
+            <span className="w-1.5 h-1.5 rounded-full bg-purple-600 animate-pulse" />
+            CORE SYSTEMS
+          </div>
+          <h2 className="font-display text-3xl sm:text-4xl md:text-5xl font-extrabold tracking-tight text-slate-900 leading-[1.12]">
+            The Three AI Growth Systems.
+          </h2>
+          <p className="mt-3 text-slate-600 text-sm sm:text-base leading-relaxed">
+            Transparent pricing: Fixed one-time setup plus managed monthly optimization.
+          </p>
+
+          {/* Minimalist Currency Pill Toggle */}
+          <div className="mt-6 flex justify-center">
+            <div className="inline-flex items-center p-1 rounded-full bg-white border border-slate-200 shadow-2xs">
+              <button
+                type="button"
+                onClick={() => setMarket("india")}
+                className={`px-4 py-1.5 rounded-full text-xs font-medium transition-all cursor-pointer ${
+                  market === "india"
+                    ? "bg-purple-600 text-white shadow-xs font-semibold"
+                    : "text-slate-600 hover:text-slate-900"
+                }`}
+              >
+                India — INR (₹)
+              </button>
+              <button
+                type="button"
+                onClick={() => setMarket("intl")}
+                className={`px-4 py-1.5 rounded-full text-xs font-medium transition-all cursor-pointer ${
+                  market === "intl"
+                    ? "bg-purple-600 text-white shadow-xs font-semibold"
+                    : "text-slate-600 hover:text-slate-900"
+                }`}
+              >
+                International — USD ($)
+              </button>
+            </div>
+          </div>
+        </div>
+
+        {/* Mobile: one card at a time — full width snap */}
+        <div className="lg:hidden overflow-x-auto snap-x snap-mandatory no-scrollbar -mx-6">
+          <div className="flex w-max px-6 gap-3">
+          {systems.map((sys, idx) => {
+            const setup = isIntl ? sys.intlSetup : sys.indiaSetup;
+            const monthly = isIntl ? sys.intlMonthly : sys.indiaMonthly;
+            const isPopular = sys.popular;
+            return (
+              <div
+                key={sys.id}
+                style={{ width: "calc(100vw - 48px)" }}
+                className={`snap-start snap-always shrink-0 rounded-3xl p-6 flex flex-col ${
+                  isPopular
+                    ? "bg-slate-950 text-white border-2 border-purple-500 shadow-xl"
+                    : "bg-white border border-slate-200"
+                }`}
+              >
+                {isPopular && (
+                  <div className="mb-3">
+                    <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[10px] font-mono font-bold bg-purple-600 text-white">
+                      <Sparkles className="w-2.5 h-2.5" /> Most Popular
+                    </span>
+                  </div>
+                )}
+                <span className={`text-[10px] font-mono font-semibold ${isPopular ? "text-purple-400" : "text-slate-500"}`}>System {sys.systemNumber}</span>
+                <h3 className={`font-display text-xl font-bold mt-1 mb-2 ${isPopular ? "text-white" : "text-slate-900"}`}>{sys.name}</h3>
+                <p className={`text-xs mb-4 leading-relaxed ${isPopular ? "text-slate-400" : "text-slate-500"}`}>{sys.tagline}</p>
+                <div className={`p-3 rounded-xl mb-4 ${isPopular ? "bg-white/5 border border-white/10" : "bg-[#faf8f5] border border-slate-200"}`}>
+                  <span className={`font-display text-2xl font-extrabold ${isPopular ? "text-white" : "text-slate-900"}`}>{setup}</span>
+                  <span className={`text-[10px] font-mono ml-1 ${isPopular ? "text-slate-400" : "text-slate-500"}`}>setup</span>
+                  <span className={`text-xs font-mono font-bold block mt-0.5 ${isPopular ? "text-purple-400" : "text-purple-700"}`}>+ {monthly}</span>
+                </div>
+                <div className="space-y-2 flex-1">
+                  {sys.includes.map((item) => (
+                    <div key={item} className={`flex items-start gap-2 text-[11px] ${isPopular ? "text-slate-300" : "text-slate-600"}`}>
+                      <CheckCircle2 className={`w-3.5 h-3.5 shrink-0 mt-0.5 ${isPopular ? "text-purple-400" : "text-purple-600"}`} />
+                      <span>{item}</span>
+                    </div>
+                  ))}
+                </div>
+                <button
+                  onClick={() => onSelectPkg(sys.name, marketLabel)}
+                  className={`mt-5 w-full py-3 rounded-full text-xs font-semibold flex items-center justify-center gap-1.5 cursor-pointer ${
+                    isPopular ? "bg-purple-600 hover:bg-purple-500 text-white" : "bg-slate-900 hover:bg-purple-600 text-white"
+                  }`}
+                >
+                  {sys.cta} <ArrowRight className="w-3.5 h-3.5" />
+                </button>
+              </div>
+            );
+          })}
+          </div>
+        </div>
+        {/* swipe hint dots */}
+        <div className="lg:hidden flex justify-center gap-1.5 mt-3">
+          {systems.map((_, i) => (
+            <span key={i} className="w-1.5 h-1.5 rounded-full bg-slate-300" />
+          ))}
+        </div>
+
+        {/* Desktop: 3-col grid */}
+        <div className="hidden lg:grid grid-cols-3 gap-6 lg:gap-7 items-stretch pt-4">
+          {systems.map((sys, idx) => {
+            const setup = isIntl ? sys.intlSetup : sys.indiaSetup;
+            const monthly = isIntl ? sys.intlMonthly : sys.indiaMonthly;
+            const isPopular = sys.popular;
+
+            if (isPopular) {
+              /* HIGHLIGHTED MIDDLE CARD (Centerpiece) */
+              return (
+                <div
+                  key={sys.id}
+                  className="reveal-zoom rounded-3xl p-7 sm:p-9 bg-slate-950 text-white border-2 border-purple-500 shadow-2xl shadow-purple-950/25 lg:-translate-y-4 relative flex flex-col justify-between transition-all duration-300"
+                  style={{ transitionDelay: `${idx * 100}ms` }}
+                >
+                  {/* Floating Highlight Badge */}
+                  <div className="absolute -top-3.5 left-1/2 -translate-x-1/2">
+                    <span className="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full text-[11px] font-mono font-bold uppercase tracking-wider bg-purple-600 text-white shadow-md shadow-purple-600/30">
+                      <Sparkles className="w-3 h-3 text-purple-200" />
+                      <span>Most Popular</span>
+                    </span>
+                  </div>
+
+                  <div>
+                    {/* Header */}
+                    <div className="flex items-center justify-between mb-3">
+                      <span className="text-xs font-mono font-semibold text-purple-400">
+                        System {sys.systemNumber}
+                      </span>
+                    </div>
+
+                    <h3 className="font-display text-2xl sm:text-3xl font-extrabold text-white tracking-tight">
+                      {sys.name}
+                    </h3>
+
+                    <p className="text-xs sm:text-sm text-slate-400 mt-2 mb-6 leading-relaxed">
+                      {sys.tagline}
+                    </p>
+
+                    {/* Price Box */}
+                    <div className="mb-7 p-4 rounded-2xl bg-white/5 border border-white/10">
+                      <div className="flex items-baseline justify-between">
+                        <div>
+                          <span className="font-display text-3xl sm:text-4xl font-extrabold text-white tracking-tight">
+                            {setup}
+                          </span>
+                          <span className="text-xs text-slate-400 font-mono uppercase ml-1.5">
+                            Setup
+                          </span>
+                        </div>
+                        <div className="text-xs font-mono font-bold text-purple-400">
+                          + {monthly}
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Features List */}
+                    <div className="space-y-3 mb-8">
+                      {sys.includes.map((item) => (
+                        <div key={item} className="flex items-start gap-2.5 text-xs sm:text-sm text-slate-300">
+                          <CheckCircle2 className="w-4 h-4 text-purple-400 shrink-0 mt-0.5" />
+                          <span className="leading-snug">{item}</span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* CTA */}
+                  <div className="pt-4 border-t border-white/10">
+                    <button
+                      onClick={() => onSelectPkg(sys.name, marketLabel)}
+                      className="w-full py-4 rounded-full text-xs sm:text-sm font-semibold bg-purple-600 hover:bg-purple-500 text-white shadow-lg shadow-purple-600/30 transition-all duration-300 flex items-center justify-center gap-2 cursor-pointer group"
+                    >
+                      <span>{sys.cta}</span>
+                      <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-0.5" />
+                    </button>
+                  </div>
+                </div>
+              );
+            }
+
+            /* STANDARD TIER CARDS (Left & Right) */
+            return (
+              <div
+                key={sys.id}
+                className="reveal-scale rounded-3xl p-7 sm:p-9 bg-white text-slate-900 border border-slate-200 shadow-xs hover:border-purple-300 hover:shadow-md relative flex flex-col justify-between transition-all duration-300"
+                style={{ transitionDelay: `${idx * 100}ms` }}
+              >
+                <div>
+                  {/* Header */}
+                  <div className="flex items-center justify-between mb-3">
+                    <span className="text-xs font-mono font-semibold text-slate-500">
+                      System {sys.systemNumber}
+                    </span>
+                  </div>
+
+                  <h3 className="font-display text-2xl font-bold text-slate-900 tracking-tight">
+                    {sys.name}
+                  </h3>
+
+                  <p className="text-xs sm:text-sm text-slate-600 mt-2 mb-6 leading-relaxed">
+                    {sys.tagline}
+                  </p>
+
+                  {/* Price Box */}
+                  <div className="mb-7 p-4 rounded-2xl bg-[#faf8f5] border border-slate-200/80">
+                    <div className="flex items-baseline justify-between">
+                      <div>
+                        <span className="font-display text-3xl sm:text-4xl font-extrabold text-slate-900 tracking-tight">
+                          {setup}
+                        </span>
+                        <span className="text-xs text-slate-500 font-mono uppercase ml-1.5">
+                          Setup
+                        </span>
+                      </div>
+                      <div className="text-xs font-mono font-bold text-purple-700">
+                        + {monthly}
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Features List */}
+                  <div className="space-y-3 mb-8">
+                    {sys.includes.map((item) => (
+                      <div key={item} className="flex items-start gap-2.5 text-xs sm:text-sm text-slate-700">
+                        <CheckCircle2 className="w-4 h-4 text-purple-600 shrink-0 mt-0.5" />
+                        <span className="leading-snug">{item}</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                {/* CTA */}
+                <div className="pt-4 border-t border-slate-100">
+                  <button
+                    onClick={() => onSelectPkg(sys.name, marketLabel)}
+                    className="w-full py-3.5 rounded-full text-xs sm:text-sm font-semibold bg-slate-900 hover:bg-purple-600 text-white transition-all duration-300 flex items-center justify-center gap-2 cursor-pointer group"
+                  >
+                    <span>{sys.cta}</span>
+                    <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-0.5" />
+                  </button>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+        {/* end desktop grid */}
+      </div>
+    </section>
+  );
+}
+
+/* =========================================================================
+   FEATURED SYSTEMS & CLIENT WORK (3D Circular Carousel)
+   ========================================================================= */
+
+interface FeaturedProject {
+  id: string;
+  src: string;
+  alt: string;
+  title: string;
+  subtitle: string;
+  category: string;
+  badge: string;
+  year: string;
+  description: string;
+  outcome: string;
+}
+
+const FEATURED_PROJECTS: FeaturedProject[] = [
+  {
+    id: "growzo",
+    src: "/thumbnails/growzo.jpg",
+    alt: "GrowZO AI Voice Agent",
+    title: "GrowZO",
+    subtitle: "AI Voice & Cold Calling Agent",
+    category: "AI Voice",
+    badge: "Live Voice Agent",
+    year: "2025",
+    description: "Autonomous AI voice agent handling outbound calls, live qualification, and calendar booking 24/7.",
+    outcome: "10× outreach volume • −80% manual sales effort",
+  },
+  {
+    id: "bizbrain",
+    src: "/thumbnails/bizbrain.jpg",
+    alt: "BizBrain Autonomous CRM",
+    title: "BizBrain",
+    subtitle: "Autonomous Pipeline CRM",
+    category: "AI CRM",
+    badge: "Production CRM",
+    year: "2025",
+    description: "Centralized AI CRM unifying omnichannel inquiries, lead scoring, and automated deal pipeline routing.",
+    outcome: "−60% manual CRM work",
+  },
+  {
+    id: "markeee",
+    src: "/thumbnails/markeee.jpg",
+    alt: "Markeee Lead Funnel",
+    title: "Markeee",
+    subtitle: "Inbound Lead Qualification Funnel",
+    category: "Lead Inbound",
+    badge: "Inbound Engine",
+    year: "2025",
+    description: "Multi-channel inbound marketing and automated lead capture funnel converting visits to booked calls.",
+    outcome: "3× faster lead response",
+  },
+  {
+    id: "clientsync-os",
+    src: "/thumbnails/clientsync-os.jpg",
+    alt: "ClientSync Operations OS",
+    title: "ClientSync OS",
+    subtitle: "Client Onboarding & Operations OS",
+    category: "Operations",
+    badge: "Client OS",
+    year: "2024",
+    description: "Automated onboarding, project milestones, and client communication system eliminating operational bottlenecks.",
+    outcome: "−50% fragmented workflows",
+  },
+  {
+    id: "vibestay",
+    src: "/thumbnails/vibestay.jpg",
+    alt: "VibeStay Direct Booking Engine",
+    title: "VibeStay",
+    subtitle: "Direct Booking & Guest Engine",
+    category: "Hospitality",
+    badge: "Booking Platform",
+    year: "2025",
+    description: "High-conversion direct booking engine with instant room inventory reservation and guest messaging.",
+    outcome: "+65% direct booking engagement",
+  },
+  {
+    id: "tuition-os",
+    src: "/thumbnails/tuition-os.jpg",
+    alt: "Tuition OS Academy System",
+    title: "Tuition OS",
+    subtitle: "Academy Operations & Inquiries System",
+    category: "Education",
+    badge: "Academy SaaS",
+    year: "2024",
+    description: "Multi-branch platform automating student enrollment inquiries, attendance, and tuition collections.",
+    outcome: "−65% administrative manual workload",
+  },
+];
+
+function FeaturedProjectsSection({
+  onOpenAudit,
+}: {
+  onOpenAudit: (pkgName?: string) => void;
+}) {
+  const [selectedProject, setSelectedProject] = useState<FeaturedProject | null>(null);
+  const [isClient, setIsClient] = useState(false);
+
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
+
+  useEffect(() => {
+    if (!selectedProject) return;
+    const orig = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setSelectedProject(null);
+    };
+    window.addEventListener("keydown", handleKeyDown);
+    return () => {
+      document.body.style.overflow = orig;
+      window.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [selectedProject]);
+
+  return (
+    <section
+      id="projects"
+      className="px-6 py-16 md:px-12 md:py-24 bg-[#faf8f5] text-slate-900 border-t border-slate-200 overflow-hidden relative"
+    >
+      <div className="mx-auto max-w-[1380px]">
+        {/* Minimalist Section Header */}
+        <div className="reveal-blur text-center max-w-xl mx-auto mb-6 sm:mb-8">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-mono font-semibold bg-purple-50 text-purple-700 border border-purple-200/80 mb-3">
+            <span className="w-1.5 h-1.5 rounded-full bg-purple-600 animate-pulse" />
+            CLIENT SYSTEMS
+          </div>
+          <h2 className="font-display text-3xl sm:text-4xl font-extrabold tracking-tight text-slate-900">
+            Systems We've Deployed.
+          </h2>
+          <p className="mt-2 text-slate-500 text-xs sm:text-sm">
+            Live AI agents and autonomous platforms built for real businesses.
+          </p>
+        </div>
+
+        {/* 3D Circular Carousel Container */}
+        <div className="w-full h-[500px] sm:h-[550px] md:h-[580px] relative overflow-hidden flex items-center justify-center select-none">
+          <CircularCarousel
+            items={FEATURED_PROJECTS}
+            preset="cylinder"
+            intro="rise"
+            cardWidth={260}
+            aspectRatio={1.35}
+            speed={11}
+            captions={true}
+            draggable={true}
+            fadeColor="#faf8f5"
+            innerShade={0.12}
+            onItemClick={(item) => setSelectedProject(item as FeaturedProject)}
+          />
+        </div>
+      </div>
+
+      {/* Case Preview Modal */}
+      {isClient &&
+        selectedProject &&
+        createPortal(
+          <div
+            className="fixed inset-0 z-[9999] flex items-center justify-center p-3.5 sm:p-6 bg-slate-950/80 backdrop-blur-md animate-in fade-in duration-200"
+            onClick={() => setSelectedProject(null)}
+          >
+            <div
+              className="relative w-full max-w-lg max-h-[88dvh] overflow-y-auto rounded-3xl bg-white border border-slate-200 text-slate-900 shadow-2xl p-5 sm:p-7 no-scrollbar my-auto"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <button
+                type="button"
+                onClick={() => setSelectedProject(null)}
+                className="absolute top-4 right-4 sm:top-5 sm:right-5 w-8 h-8 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-700 flex items-center justify-center transition-colors cursor-pointer text-sm font-bold z-10"
+                aria-label="Close details"
+              >
+                <X className="w-4 h-4" />
+              </button>
+
+              <div className="relative aspect-[16/10] w-full rounded-2xl overflow-hidden bg-slate-100 mb-4 border border-slate-200">
+                <img
+                  src={selectedProject.src}
+                  alt={selectedProject.title}
+                  className="w-full h-full object-cover object-center"
+                />
+                <div className="absolute top-3 left-3 flex items-center gap-1.5 bg-slate-900/85 backdrop-blur-md text-white px-3 py-1 rounded-full text-xs font-mono">
+                  <span>{selectedProject.badge}</span>
+                  <span>•</span>
+                  <span>{selectedProject.year}</span>
+                </div>
+              </div>
+
+              <div className="mb-3">
+                <span className="text-[10px] font-mono font-bold text-purple-700 bg-purple-50 border border-purple-200 px-2.5 py-0.5 rounded-full uppercase tracking-wider inline-block mb-1.5">
+                  {selectedProject.category}
+                </span>
+                <h3 className="font-display text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">
+                  {selectedProject.title}
+                </h3>
+                <p className="text-xs sm:text-sm text-slate-600 mt-1.5 font-light leading-relaxed">
+                  {selectedProject.description}
+                </p>
+              </div>
+
+              <div className="my-3.5 p-3 rounded-2xl bg-[#faf8f5] border border-slate-200 flex items-center gap-2.5">
+                <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
+                <div>
+                  <span className="text-[9px] font-mono uppercase tracking-wider text-slate-400 block font-semibold">
+                    Documented Studio Outcome
+                  </span>
+                  <span className="text-xs sm:text-sm font-mono font-bold text-slate-900">
+                    {selectedProject.outcome}
+                  </span>
+                </div>
+              </div>
+
+              <div className="pt-3 border-t border-slate-100 flex flex-col sm:flex-row gap-2.5 mt-4">
+                <button
+                  type="button"
+                  onClick={() => {
+                    const label = selectedProject.title;
+                    setSelectedProject(null);
+                    onOpenAudit(label);
+                  }}
+                  className="flex-1 rounded-full bg-purple-600 hover:bg-purple-700 py-3 text-xs sm:text-sm font-semibold text-white shadow-sm transition-all cursor-pointer flex items-center justify-center gap-1.5"
+                >
+                  <span>Deploy System Like {selectedProject.title}</span>
+                  <ArrowUpRight className="w-4 h-4" />
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setSelectedProject(null)}
+                  className="rounded-full bg-slate-100 hover:bg-slate-200 py-3 px-5 text-xs font-semibold text-slate-700 transition-colors cursor-pointer"
+                >
+                  Close
+                </button>
+              </div>
+            </div>
+          </div>,
+          document.body
+        )}
+    </section>
+  );
+}
+
+/* =========================================================================
+   DEPLOYMENT PROTOCOL (Minimalist Split: Left Headline & Arrow, Right Folder)
+   ========================================================================= */
+
+function DeploymentProtocol({ onOpenAudit }: { onOpenAudit: () => void }) {
+  const [selectedDeliverable, setSelectedDeliverable] = useState<string | null>(null);
+
+  const DELIVERABLES = [
+    "01 • System Leakage Audit",
+    "02 • Conversation Blueprint",
+    "03 • WhatsApp Business API",
+    "04 • AI Voice Concierge",
+    "05 • HubSpot & CRM Sync",
+    "06 • Smart Calendar Slotting",
+    "07 • Synthetic Stress Testing",
+    "08 • Zero-Downtime Launch",
+  ];
+
+  const handleSelectPill = (val: string) => {
+    setSelectedDeliverable(val);
+    toast.success("Deployment Module Selected", {
+      description: `${val} calibrated and staged for zero-downtime cutover.`,
+    });
+  };
+
+  return (
+    <section
+      id="protocol"
+      className="px-6 py-20 md:px-12 md:py-28 bg-[#faf8f5] text-slate-900 border-t border-slate-200"
+    >
+      <div className="mx-auto max-w-[1380px]">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14 items-center">
+          {/* Left Column: Minimalist Context with Direct Arrow Pointer */}
+          <div className="reveal-left lg:col-span-5 flex flex-col justify-center">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-mono font-semibold bg-purple-50 text-purple-700 border border-purple-200/80 mb-4 w-fit">
+              <span className="w-1.5 h-1.5 rounded-full bg-purple-600 animate-pulse" />
+              DEPLOYMENT PROTOCOL
+            </div>
+
+            <h2 className="font-display text-3xl sm:text-4xl md:text-5xl font-extrabold tracking-tight text-slate-900 leading-[1.12]">
+              From Audit to Live System.
+            </h2>
+
+            <p className="mt-3 text-slate-600 text-sm sm:text-base leading-relaxed max-w-lg">
+              Every system deliverable calibrated, stress-tested, and launched with zero downtime to your existing operations.
+            </p>
+
+            {/* Clean Arrow Pointer to Folder */}
+            <div className="mt-8 flex items-center gap-3">
+              <div className="inline-flex items-center gap-3 px-4 py-2.5 rounded-2xl bg-purple-100/70 border border-purple-200 text-purple-900 shadow-sm">
+                <span className="text-xs font-mono font-bold tracking-tight">
+                  Hover or click the dossier
+                </span>
+                <ArrowRight className="w-4 h-4 text-purple-700 animate-pulse" />
+              </div>
+            </div>
+
+            {/* Clean CTA */}
+            <div className="mt-8 flex flex-wrap items-center gap-4">
+              <button
+                onClick={onOpenAudit}
+                className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-slate-900 hover:bg-purple-700 text-white text-xs font-mono font-semibold transition-all shadow-md group"
+              >
+                <span>Book a Free AI Growth Audit</span>
+                <ArrowRight className="w-3.5 h-3.5 transition-transform group-hover:translate-x-0.5" />
+              </button>
+              <span className="text-xs text-slate-500 font-mono">14-Day Delivery SLA</span>
+            </div>
+          </div>
+
+          {/* Right Column: Folder on desktop, clean list on mobile */}
+          <div className="reveal-right lg:col-span-7 flex flex-col items-center justify-center relative overflow-hidden">
+
+            {/* Mobile: clean numbered step list */}
+            <div className="lg:hidden w-full space-y-2">
+              {DELIVERABLES.map((item, i) => (
+                <div key={i} className="flex items-center gap-3 px-4 py-3 rounded-2xl bg-white border border-slate-200 text-xs font-mono text-slate-700">
+                  <span className="w-6 h-6 rounded-full bg-purple-50 border border-purple-200 text-purple-700 text-[10px] font-bold flex items-center justify-center shrink-0">
+                    {String(i + 1).padStart(2, "0")}
+                  </span>
+                  <span>{item.replace(/^\d+ • /, "")}</span>
+                </div>
+              ))}
+              <button
+                onClick={onOpenAudit}
+                className="w-full mt-2 py-3 rounded-full bg-slate-900 hover:bg-purple-700 text-white text-xs font-semibold transition-all cursor-pointer"
+              >
+                Book a Free AI Growth Audit →
+              </button>
+            </div>
+
+            {/* Desktop: FolderFloat animation — contained in fixed height box */}
+            <div className="hidden lg:flex flex-col items-center justify-center w-full" style={{ height: 520 }}>
+              <FolderFloat
+                items={DELIVERABLES}
+                label="Buildicy Deployment Dossier"
+                sublabel="8 Core Architecture Modules"
+                trigger="hover"
+                physics={true}
+                drift={0.65}
+                closeOnSelect={false}
+                onSelect={handleSelectPill}
+                folderColor="#4c1d95"
+                frontColor="#7c3aed"
+                paperColor="#ffffff"
+                itemColor="#ffffff"
+                itemTextColor="#0f172a"
+                labelColor="#ffffff"
+                width={300}
+                height={200}
+                radius={18}
+                spread={220}
+                lift={44}
+                tilt={10}
+                bounce={0.32}
+              />
+              {selectedDeliverable && (
+                <div className="mt-6 px-4 py-1.5 rounded-full bg-white/95 backdrop-blur-sm border border-purple-200 text-xs font-mono text-purple-900 shadow-sm animate-in fade-in">
+                  Active: <span className="font-bold">{selectedDeliverable}</span>
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/* =========================================================================
+   REAL ESTATE CASE STUDY: BEFORE VS AFTER (With ✕ and ✓)
+   (Exactly matching user's requested single-industry high-impact format)
+   ========================================================================= */
+
+function RealEstateProofOfImpact({ onOpenAudit }: { onOpenAudit: () => void }) {
+  return (
+    <section
+      id="proof"
+      className="px-6 py-20 md:px-12 md:py-28 bg-[#faf8f5] text-slate-900 border-t border-slate-200"
+    >
+      <div className="mx-auto max-w-[1380px]">
+        {/* Header - Clean, Minimalist, Punchy */}
+        <div className="reveal-left max-w-2xl mb-10">
+          <span className="font-mono text-xs font-bold uppercase tracking-wider text-purple-700 block mb-2">
+            • Real Estate Case Study
+          </span>
+          <h2 className="font-display text-3xl sm:text-4xl md:text-5xl font-extrabold tracking-tight text-slate-900 leading-[1.12]">
+            Before vs. After Buildicy.
+          </h2>
+          <p className="mt-3 text-slate-600 text-sm sm:text-base leading-relaxed">
+            How a real estate brokerage converted missed calls and slow WhatsApp replies into 14 confirmed private viewings every month.
+          </p>
+        </div>
+
+        {/* Side-by-side Before (✕) vs After (✓) */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 items-stretch">
+          {/* Before Buildicy (✕) */}
+          <div className="reveal-left rounded-3xl p-6 sm:p-8 bg-white border border-slate-200 shadow-2xs flex flex-col justify-between">
+            <div>
+              <div className="flex items-center justify-between pb-4 mb-4 border-b border-slate-100">
+                <span className="text-xs font-mono uppercase tracking-wider text-rose-600 font-bold">
+                  Before Buildicy (Manual Delays)
+                </span>
+                <span className="w-6 h-6 rounded-full bg-rose-50 text-rose-600 font-bold text-xs flex items-center justify-center">
+                  ✕
+                </span>
+              </div>
+
+              <ul className="space-y-4 text-xs sm:text-sm text-slate-700">
+                <li className="flex items-start gap-3">
+                  <span className="text-rose-500 font-bold text-sm shrink-0">✕</span>
+                  <span>
+                    <strong>62% of inbound calls missed:</strong> Evening &amp; weekend
+                    property inquiries went to voicemail; buyers immediately called rival
+                    brokers.
+                  </span>
+                </li>
+                <li className="flex items-start gap-3">
+                  <span className="text-rose-500 font-bold text-sm shrink-0">✕</span>
+                  <span>
+                    <strong>4+ hour response delay:</strong> Enquiries sat in unread WhatsApp
+                    inboxes until the next morning when buyer interest was already cold.
+                  </span>
+                </li>
+                <li className="flex items-start gap-3">
+                  <span className="text-rose-500 font-bold text-sm shrink-0">✕</span>
+                  <span>
+                    <strong>Wasted agent time:</strong> Agents spent 15+ hours weekly giving
+                    walkthroughs to unqualified buyers with no pre-approved financing.
+                  </span>
+                </li>
+                <li className="flex items-start gap-3">
+                  <span className="text-rose-500 font-bold text-sm shrink-0">✕</span>
+                  <span>
+                    <strong>38% appointment no-show rate:</strong> Zero automated reminder
+                    sequences meant prospects simply forgot scheduled walkthroughs.
+                  </span>
+                </li>
+              </ul>
+            </div>
+
+            <div className="mt-6 pt-4 border-t border-slate-100 text-xs font-mono text-rose-700 font-medium">
+              Result: Estimated $35,000+ in lost monthly property commissions.
+            </div>
+          </div>
+
+          {/* After Buildicy (✓) */}
+          <div className="reveal-right rounded-3xl p-6 sm:p-8 bg-white border-2 border-purple-500 shadow-xl shadow-purple-600/10 flex flex-col justify-between" style={{ transitionDelay: "100ms" }}>
+            <div>
+              <div className="flex items-center justify-between pb-4 mb-4 border-b border-purple-100">
+                <span className="text-xs font-mono uppercase tracking-wider text-purple-700 font-bold">
+                  After Buildicy (AI Lead Recovery)
+                </span>
+                <span className="w-6 h-6 rounded-full bg-purple-100 text-purple-700 font-bold text-xs flex items-center justify-center">
+                  ✓
+                </span>
+              </div>
+
+              <ul className="space-y-4 text-xs sm:text-sm text-slate-800">
+                <li className="flex items-start gap-3">
+                  <span className="text-purple-600 font-bold text-sm shrink-0">✓</span>
+                  <span>
+                    <strong>Sub-20s auto text-back:</strong> Missed phone calls immediately
+                    trigger automated WhatsApp/SMS response with property sheets and FAQs.
+                  </span>
+                </li>
+                <li className="flex items-start gap-3">
+                  <span className="text-purple-600 font-bold text-sm shrink-0">✓</span>
+                  <span>
+                    <strong>Automated buyer qualification:</strong> AI screens budget, purchase
+                    timeline, and pre-approval status before ever offering booking slots.
+                  </span>
+                </li>
+                <li className="flex items-start gap-3">
+                  <span className="text-purple-600 font-bold text-sm shrink-0">✓</span>
+                  <span>
+                    <strong>Direct calendar booking:</strong> Vetted buyers schedule private
+                    viewings directly on the assigned agent’s calendar in seconds.
+                  </span>
+                </li>
+                <li className="flex items-start gap-3">
+                  <span className="text-purple-600 font-bold text-sm shrink-0">✓</span>
+                  <span>
+                    <strong>88% show-up rate:</strong> Automated multi-channel confirmation
+                    briefings sent to the buyer's WhatsApp with directions and 1-click reschedule.
+                  </span>
+                </li>
+              </ul>
+            </div>
+
+            <div className="mt-6 pt-4 border-t border-purple-100 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
+              <span className="text-xs font-mono font-bold text-emerald-700 bg-emerald-50 px-3 py-1 rounded-full border border-emerald-200">
+                ★ Outcome: +14 Qualified Viewings / Month
+              </span>
+
+              <button
+                onClick={onOpenAudit}
+                className="text-xs font-semibold text-purple-700 hover:text-purple-900 flex items-center gap-1 cursor-pointer"
+              >
+                <span>Book a Free AI Growth Audit</span>
+                <Arrow className="w-3.5 h-3.5" />
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/* =========================================================================
+   BUILDICY STUDIO (Impressive, Clean, Professional Software Engineering)
+   ========================================================================= */
+
+function BuildicyStudioSection({ onOpenAudit }: { onOpenAudit: () => void }) {
+  const capabilities = [
+    {
+      title: "Custom CRM & Pipelines",
+      desc: "Tailored deal stages, automated routing rules, and custom data schemas.",
+      icon: <Database className="w-5 h-5 text-purple-600" />,
+    },
+    {
+      title: "Branded Client Portals",
+      desc: "Secure hubs for deliverable reviews, asynchronous messaging & project tracking.",
+      icon: <Laptop className="w-5 h-5 text-purple-600" />,
+    },
+    {
+      title: "Internal AI Operations Tools",
+      desc: "Custom agents that summarize calls, parse contracts, and eliminate busywork.",
+      icon: <Bot className="w-5 h-5 text-purple-600" />,
+    },
+    {
+      title: "Full-Stack SaaS / MVP",
+      desc: "Production web applications engineered on modern high-velocity stacks.",
+      icon: <Code2 className="w-5 h-5 text-purple-600" />,
+    },
+  ];
+
+  return (
+    <section
+      id="studio"
+      className="px-6 py-20 md:px-12 md:py-28 bg-[#faf8f5] text-slate-900 border-t border-slate-200"
+    >
+      <div className="mx-auto max-w-[1380px]">
+        {/* Header */}
+        <div className="reveal-blur flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12">
+          <div className="max-w-2xl">
+            <span className="font-mono text-xs font-bold uppercase tracking-wider text-purple-700 block mb-2">
+              Custom Engineering Division
+            </span>
+            <h2 className="font-display text-3xl sm:text-4xl md:text-5xl font-extrabold tracking-tight text-slate-900 leading-[1.12]">
+              Need custom software built around your business?
+            </h2>
+            <p className="mt-3 text-slate-600 text-sm sm:text-base leading-relaxed">
+              Buildicy Studio designs and engineers custom software for businesses that have
+              outgrown generic off-the-shelf tools.
+            </p>
+          </div>
+
+          <button
+            onClick={onOpenAudit}
+            className="rounded-full bg-slate-900 hover:bg-purple-600 text-white px-6 py-3.5 text-xs sm:text-sm font-semibold transition-all shadow-md cursor-pointer shrink-0"
+          >
+            Discuss a Custom Build →
+          </button>
+        </div>
+
+        {/* 4 Impressive Cards */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          {capabilities.map((cap, i) => (
+            <div
+              key={cap.title}
+              className="reveal-zoom rounded-3xl p-6 bg-white border border-slate-200 shadow-2xs hover:border-purple-300 hover:shadow-lg transition-all duration-300"
+              style={{ transitionDelay: `${i * 90}ms` }}
+            >
+              <div className="w-10 h-10 rounded-2xl bg-purple-50 flex items-center justify-center mb-4">
+                {cap.icon}
+              </div>
+              <h3 className="font-display text-lg font-bold text-slate-900 mb-2">
+                {cap.title}
+              </h3>
+              <p className="text-xs text-slate-600 leading-relaxed">{cap.desc}</p>
             </div>
           ))}
         </div>
@@ -888,6 +2405,237 @@ function Process() {
   );
 }
 
+/* =========================================================================
+   MINIMALIST FAQ (Concise Answers)
+   ========================================================================= */
+
+function MinimalistFAQ({ onOpenAudit }: { onOpenAudit: () => void }) {
+  const [openIdx, setOpenIdx] = useState<number | null>(0);
+
+  const faqs = [
+    {
+      q: "Will AI replace my team?",
+      a: "No. Buildicy handles immediate frontline response and qualification so your team only spends time closing vetted buyers.",
+    },
+    {
+      q: "Which channels can Buildicy connect?",
+      a: "Website chat, WhatsApp Business API, Instagram DMs, email, and inbound calls with missed-call SMS recovery.",
+    },
+    {
+      q: "Do we own the system and data?",
+      a: "Yes, 100%. All systems, prompts, and lead data are deployed directly into your own infrastructure.",
+    },
+    {
+      q: "How long does implementation take?",
+      a: "Typically 7 to 14 business days from initial audit to live deployment with zero downtime.",
+    },
+    {
+      q: "Do you manage ads?",
+      a: "No. We focus exclusively on capturing, qualifying, and booking the leads your existing marketing generates.",
+    },
+    {
+      q: "Do you work with international clients?",
+      a: "Yes. We work with clients across India, North America, the UK, Europe, Australia, and the Middle East.",
+    },
+  ];
+
+  return (
+    <section
+      id="faq"
+      className="px-6 py-20 md:px-12 md:py-28 bg-[#faf8f5] text-slate-900 border-t border-slate-200"
+    >
+      <div className="mx-auto max-w-[900px]">
+        <div className="reveal-blur text-center mb-10">
+          <span className="font-mono text-xs font-bold uppercase tracking-wider text-purple-700 block mb-2">
+            FAQ
+          </span>
+          <h2 className="font-display text-3xl sm:text-4xl font-extrabold tracking-tight text-slate-900">
+            Frequently Asked Questions
+          </h2>
+        </div>
+
+        <div className="divide-y divide-slate-200">
+          {faqs.map((faq, i) => {
+            const isOpen = openIdx === i;
+            return (
+              <div key={faq.q} className="py-4">
+                <button
+                  onClick={() => setOpenIdx(isOpen ? null : i)}
+                  className="w-full flex items-center justify-between text-left py-2 font-display text-base sm:text-lg font-bold text-slate-900 cursor-pointer"
+                >
+                  <span>{faq.q}</span>
+                  <span className="text-slate-400 text-sm ml-4">{isOpen ? "−" : "+"}</span>
+                </button>
+                {isOpen && (
+                  <p className="mt-2 text-xs sm:text-sm text-slate-600 leading-relaxed">
+                    {faq.a}
+                  </p>
+                )}
+              </div>
+            );
+          })}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/* =========================================================================
+   RESOURCES / DOCS DOWNLOAD SECTION
+   ========================================================================= */
+
+function ResourcesSection() {
+  const [previewing, setPreviewing] = useState<string | null>(null);
+
+  const docs = [
+    {
+      title: "AI Growth Systems Guide",
+      desc: "3 AI systems, deployment process & ROI benchmarks.",
+      file: "/Buildicy_AI_Growth_Systems_Guide new.pdf",
+      preview: "/Buildicy_AI_Growth_Systems_Guide new.pdf",
+      ext: "PDF",
+    },
+    {
+      title: "Company Profile",
+      desc: "Who we are, what we build, and global clients.",
+      file: "/Buildicy_Company_Profile_new.pdf",
+      preview: "/Buildicy_Company_Profile_new.pdf",
+      ext: "PDF",
+    },
+    {
+      title: "Product Engineering Guide",
+      desc: "Custom SaaS, MVPs & internal AI tools — scope & process.",
+      file: "/docs/Product_Engineering_Service_Guide.pdf",
+      preview: "/docs/Product_Engineering_Service_Guide.pdf",
+      ext: "PDF",
+    },
+  ];
+
+  return (
+    <>
+      <section className="px-6 py-12 md:px-12 bg-[#faf8f5] border-t border-slate-200">
+        <div className="mx-auto max-w-[1380px]">
+          <div className="reveal flex items-center justify-between mb-6">
+            <div>
+              <span className="text-[10px] font-mono font-bold uppercase tracking-widest text-purple-700">Free Resources</span>
+              <h2 className="font-display text-xl font-extrabold text-slate-900 mt-0.5">Download Our Guides</h2>
+            </div>
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+            {docs.map((doc, i) => (
+              <div
+                key={doc.title}
+                className="reveal-zoom group flex items-center justify-between gap-4 px-5 py-4 rounded-2xl bg-white border border-slate-200 hover:border-purple-300 hover:shadow-sm transition-all duration-200"
+                style={{ transitionDelay: `${i * 70}ms` }}
+              >
+                <div className="min-w-0">
+                  <div className="flex items-center gap-2 mb-1">
+                    <span className="text-[9px] font-mono font-bold px-1.5 py-0.5 rounded bg-slate-100 text-slate-500 border border-slate-200">
+                      {doc.ext}
+                    </span>
+                  </div>
+                  <p className="text-sm font-semibold text-slate-900 truncate">{doc.title}</p>
+                  <p className="text-[11px] text-slate-400 mt-0.5 leading-snug">{doc.desc}</p>
+                </div>
+
+                <div className="flex items-center gap-2 shrink-0">
+                  {doc.preview && (
+                    <button
+                      onClick={() => setPreviewing(doc.preview!)}
+                      className="w-8 h-8 rounded-xl bg-slate-50 border border-slate-200 flex items-center justify-center text-slate-500 hover:text-purple-600 hover:border-purple-300 transition-colors cursor-pointer"
+                      title="Preview"
+                    >
+                      <ExternalLink className="w-3.5 h-3.5" />
+                    </button>
+                  )}
+                  <a
+                    href={doc.file}
+                    download
+                    className="w-8 h-8 rounded-xl bg-purple-600 flex items-center justify-center text-white hover:bg-purple-700 transition-colors cursor-pointer"
+                    title="Download"
+                  >
+                    <ArrowUpRight className="w-3.5 h-3.5" />
+                  </a>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* PDF Preview Modal */}
+      {previewing && (
+        <div
+          className="fixed inset-0 z-[9999] bg-slate-950/80 backdrop-blur-md flex items-center justify-center p-4 animate-in fade-in duration-200"
+          onClick={() => setPreviewing(null)}
+        >
+          <div
+            className="relative w-full max-w-3xl h-[85dvh] rounded-2xl overflow-hidden bg-white shadow-2xl flex flex-col"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="flex items-center justify-between px-4 py-3 border-b border-slate-200 bg-slate-50">
+              <span className="text-xs font-mono font-semibold text-slate-600">Preview</span>
+              <div className="flex items-center gap-2">
+                <a
+                  href={previewing}
+                  download
+                  className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-purple-600 text-white text-xs font-semibold hover:bg-purple-700 transition-colors"
+                >
+                  <ArrowUpRight className="w-3 h-3" />
+                  Download PDF
+                </a>
+                <button
+                  onClick={() => setPreviewing(null)}
+                  className="w-7 h-7 rounded-full bg-slate-200 hover:bg-slate-300 flex items-center justify-center text-slate-600 cursor-pointer transition-colors"
+                >
+                  <X className="w-3.5 h-3.5" />
+                </button>
+              </div>
+            </div>
+            <iframe
+              src={`${previewing}#toolbar=0`}
+              className="flex-1 w-full"
+              title="Document Preview"
+            />
+          </div>
+        </div>
+      )}
+    </>
+  );
+}
+
+/* =========================================================================
+   FINAL CTA
+   ========================================================================= */
+
+function FinalCTA({ onOpenAudit }: { onOpenAudit: () => void }) {
+  return (
+    <section className="px-6 py-20 md:px-12 md:py-28 bg-[#faf8f5] text-slate-900 border-t border-slate-200 text-center">
+      <div className="mx-auto max-w-2xl">
+        <h2 className="font-display text-3xl sm:text-4xl md:text-5xl font-extrabold tracking-tight text-slate-900">
+          Ready to stop losing leads?
+        </h2>
+        <p className="mt-4 text-slate-600 text-sm sm:text-base leading-relaxed">
+          Book a free AI Growth Audit. We will map where leads are leaking and show the
+          system Buildicy would install.
+        </p>
+        <div className="mt-8 flex justify-center">
+          <button
+            onClick={onOpenAudit}
+            className="rounded-full bg-purple-600 hover:bg-purple-700 text-white px-8 py-4 text-sm font-semibold transition-all shadow-md shadow-purple-600/20 cursor-pointer"
+          >
+            Book a Free AI Growth Audit
+          </button>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/* =========================================================================
+   ORIGINAL FOOTER (Restored Exact Match from Original Codebase)
+   ========================================================================= */
 
 function Footer({ onOpenAudit }: { onOpenAudit?: () => void }) {
   return (
@@ -955,7 +2703,8 @@ function Footer({ onOpenAudit }: { onOpenAudit?: () => void }) {
 
             {/* Concise Mission / Positioning matching reference */}
             <p className="text-white/70 text-base md:text-lg font-light leading-relaxed max-w-md">
-              Thoughtful AI systems engineered to capture, qualify, and convert leads 24/7. Built around your business.
+              Thoughtful AI systems engineered to capture, qualify, and convert leads 24/7.
+              Built around your business.
             </p>
 
             {/* Action Links */}
@@ -1022,19 +2771,22 @@ function Footer({ onOpenAudit }: { onOpenAudit?: () => void }) {
 
           {/* Nav Links + Back to top */}
           <div className="flex flex-wrap items-center gap-6 md:gap-8 text-xs md:text-sm font-medium text-white/70">
-            <a href="#services" className="hover:text-white transition-colors">
-              Services
+            <a href="#problem" className="hover:text-white transition-colors">
+              Follow-Up
             </a>
-            <a href="#process" className="hover:text-white transition-colors">
-              Pipeline
+            <a href="#dashboard" className="hover:text-white transition-colors">
+              Autonomous Engine
             </a>
-            <a href="#packages" className="hover:text-white transition-colors">
-              Pricing
+            <a href="#systems" className="hover:text-white transition-colors">
+              AI Growth Systems
             </a>
-            <a href="#docs" className="hover:text-white transition-colors">
-              Docs
+            <a href="#protocol" className="hover:text-white transition-colors">
+              Protocol
             </a>
-            <Link to="/founders" className="hover:text-white transition-colors text-purple-300 font-semibold">
+            <Link
+              to="/founders"
+              className="hover:text-white transition-colors text-purple-300 font-semibold"
+            >
               Founders
             </Link>
             <Link to="/contact" className="hover:text-white transition-colors">
