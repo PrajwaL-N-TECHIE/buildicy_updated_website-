@@ -530,16 +530,32 @@ function Index() {
       <ScrollProgressBar />
       <Nav onOpenAudit={() => handleOpenAudit()} />
       <main className="relative">
+        {/* 1. Hero: outcome + primary CTA */}
         <Hero onOpenAudit={() => handleOpenAudit()} />
+
+        {/* 2. Problem: lead leakage */}
         <FollowUpBottleneck />
+
+        {/* 3. Solution: autonomous engine demo */}
         <VideoDashboardSection onOpenAudit={() => handleOpenAudit()} />
-        <AIGrowthSystemsPackages onSelectPkg={(pkg, market) => handleOpenAudit(pkg, market)} />
-        <FeaturedProjectsSection onOpenAudit={(pkgName) => handleOpenAudit(pkgName)} />
-        <DeploymentProtocol onOpenAudit={() => handleOpenAudit()} />
+
+        {/* 4. Proof: named case study + testimonials */}
         <RealEstateProofOfImpact onOpenAudit={() => handleOpenAudit()} />
-        <BuildicyStudioSection onOpenAudit={() => handleOpenAudit("Buildicy Studio — Custom Build")} />
+        <FeaturedProjectsSection onOpenAudit={(pkgName) => handleOpenAudit(pkgName)} />
+
+        {/* 5. Offer: one clean package ladder */}
+        <AIGrowthSystemsPackages onSelectPkg={(pkg, market) => handleOpenAudit(pkg, market)} />
+
+        {/* 6. Process: 14-day implementation */}
+        <DeploymentProtocol onOpenAudit={() => handleOpenAudit()} />
+
+        {/* 7. FAQ: ownership, data, channels, integrations, support */}
         <MinimalistFAQ onOpenAudit={() => handleOpenAudit()} />
+
+        {/* Documentation & Profiles */}
         <ResourcesSection />
+
+        {/* 8. Final CTA: audit with explicit deliverables */}
         <FinalCTA onOpenAudit={() => handleOpenAudit()} />
       </main>
       <Footer onOpenAudit={() => handleOpenAudit()} />
@@ -618,32 +634,35 @@ function Nav({ onOpenAudit }: { onOpenAudit: () => void }) {
           className="hidden gap-7 text-xs font-semibold text-slate-700 lg:flex items-center"
           aria-label="Primary"
         >
+          <a href="#problem" className="link-line hover:text-slate-900 transition-colors">
+            Problem
+          </a>
           <a href="#dashboard" className="link-line hover:text-slate-900 transition-colors">
-            Engine
-          </a>
-          <a href="#systems" className="link-line hover:text-slate-900 transition-colors">
-            Systems
-          </a>
-          <a href="#projects" className="link-line hover:text-slate-900 transition-colors">
-            Projects
+            Demo
           </a>
           <a href="#proof" className="link-line hover:text-slate-900 transition-colors">
-            Case Study
+            Proof
+          </a>
+          <a href="#systems" className="link-line hover:text-slate-900 transition-colors">
+            Offer
+          </a>
+          <a href="#protocol" className="link-line hover:text-slate-900 transition-colors">
+            Process
+          </a>
+          <a href="#faq" className="link-line hover:text-slate-900 transition-colors">
+            FAQ
           </a>
           <Link to="/founders" className="link-line hover:text-purple-600 transition-colors">
             Founders
           </Link>
-          <a href="#faq" className="link-line hover:text-slate-900 transition-colors">
-            FAQ
-          </a>
         </nav>
         <div className="flex items-center gap-2 sm:gap-3">
           <button
             onClick={onOpenAudit}
             className="group inline-flex items-center gap-1.5 sm:gap-2 rounded-full bg-slate-900 px-3.5 py-2 sm:px-5 sm:py-2.5 text-xs sm:text-sm font-semibold text-white transition-all hover:bg-purple-600 hover:shadow-lg cursor-pointer shrink-0"
           >
-            <span className="hidden sm:inline">Book Free AI Growth Audit</span>
-            <span className="sm:hidden">Book Audit</span>
+            <span className="hidden sm:inline">Get Free Lead-Leak Audit</span>
+            <span className="sm:hidden">Free Audit</span>
             <Arrow className="transition-transform group-hover:rotate-45" />
           </button>
           <button
@@ -779,21 +798,19 @@ function Hero({ onOpenAudit }: { onOpenAudit: () => void }) {
       <div className="cinematic-noise opacity-30" />
 
       <div className="relative z-10 mx-auto w-full max-w-[1400px] grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
-        {/* Left Column: Clean Headline with Typewriter, Subheadline & CTAs */}
+        {/* Left Column: Outcome Headline, Subheadline & Primary CTA */}
         <div className="lg:col-span-8 order-1 flex flex-col justify-center items-start text-left max-w-3xl pl-0 sm:pl-8 lg:pl-12 mt-4 lg:mt-16 reveal-left">
           <h1 className="font-sans text-[clamp(2.2rem,5.4vw,5.2rem)] leading-[1.12] tracking-tight text-slate-900 font-extrabold text-left animate-in fade-in duration-500">
-            Stop losing leads to{" "}
+            Stop losing warm leads to{" "}
             <span className="inline-block text-purple-700 whitespace-nowrap align-bottom">
               <HeroTypewriter
-                words={["slow follow-up.", "missed enquiries.", "manual delays."]}
+                words={["slow replies.", "missed calls.", "delayed follow-ups."]}
               />
             </span>
           </h1>
 
           <p className="mt-4 sm:mt-6 max-w-xl text-slate-600 text-base md:text-xl leading-relaxed font-normal text-left animate-in fade-in duration-700">
-            Buildicy installs AI Growth Systems that capture every enquiry, respond
-            instantly, qualify prospects, and book more qualified meetings for B2B service
-            businesses.
+            Buildicy installs AI systems that answer enquiries in seconds, qualify buyers, and book qualified meetings across WhatsApp, web, and phone.
           </p>
 
           <div className="mt-6 sm:mt-8 flex flex-col sm:flex-row items-stretch sm:items-center gap-3.5 w-full sm:w-auto animate-in fade-in duration-700">
@@ -801,24 +818,28 @@ function Hero({ onOpenAudit }: { onOpenAudit: () => void }) {
               onClick={onOpenAudit}
               className="w-full sm:w-auto text-center rounded-full bg-purple-600 text-white px-7 py-3.5 sm:py-4 text-sm font-semibold transition-all hover:bg-purple-700 hover:shadow-lg active:scale-95 shadow-md shadow-purple-600/20 cursor-pointer"
             >
-              Book a Free AI Growth Audit
+              Get Your Free Lead-Leak Audit
             </button>
             <a
               href="#systems"
               className="w-full sm:w-auto text-center rounded-full border border-slate-300 bg-white px-6 py-3.5 sm:py-4 text-sm font-semibold text-slate-800 transition-all hover:bg-purple-50 hover:border-purple-300 shadow-2xs"
             >
-              Explore the 3 AI Systems
+              Explore the AI Systems
             </a>
           </div>
 
-          <div className="mt-8 pt-5 border-t border-slate-200/80 flex flex-wrap items-center gap-x-6 gap-y-2 text-xs sm:text-sm font-medium text-slate-500">
+          <p className="mt-4 text-xs sm:text-sm text-slate-600 font-medium max-w-lg leading-relaxed">
+            In 30 minutes, we’ll identify where enquiries are being missed, map the right AI system, and give you a fixed implementation estimate.
+          </p>
+
+          <div className="mt-6 pt-5 border-t border-slate-200/80 flex flex-wrap items-center gap-x-6 gap-y-2 text-xs sm:text-sm font-medium text-slate-500">
             <div className="flex items-center gap-2">
               <span className="text-purple-600 font-bold">✓</span>
-              <span>Built for B2B service businesses</span>
+              <span>Sub-second multi-channel response</span>
             </div>
             <div className="flex items-center gap-2">
               <span className="text-purple-600 font-bold">✓</span>
-              <span>India + International clients</span>
+              <span>14-day guaranteed implementation</span>
             </div>
           </div>
 
@@ -842,47 +863,67 @@ function Hero({ onOpenAudit }: { onOpenAudit: () => void }) {
 
 function FollowUpBottleneck() {
   const problems = [
-    { metric: "4+ hrs delay", title: "Slow Response", desc: "Deals go to whoever answers first. Hours of delay sends warm buyers to competitors.", icon: Clock },
-    { metric: "62% unanswered", title: "Missed Enquiries", desc: "After-hours inquiries bounce to voicemail, leaking revenue 24/7.", icon: PhoneCall },
-    { metric: "70% wasted", title: "Unqualified Leads", desc: "Closers waste hours screening tire-kickers instead of closing buyers.", icon: Users },
-    { metric: "80% drop-off", title: "Zero Follow-Up", desc: "Contracts need 5+ touchpoints, yet most prospects are abandoned after one message.", icon: TrendingUp },
+    {
+      metric: "Slow Replies",
+      title: "Delayed Frontline Response",
+      desc: "Slow replies and missed after-hours enquiries can send warm buyers to competitors.",
+      icon: Clock,
+    },
+    {
+      metric: "After-Hours Leak",
+      title: "Unanswered Enquiries",
+      desc: "Warm buyers researching at night bounce immediately when no instant response arrives.",
+      icon: PhoneCall,
+    },
+    {
+      metric: "Tire-Kickers",
+      title: "Unqualified Prospects",
+      desc: "Sales reps waste hours filtering low-budget leads instead of talking to ready buyers.",
+      icon: Users,
+    },
+    {
+      metric: "+14 Viewings / Mo",
+      title: "Automated Recovery",
+      desc: "In this client engagement, automated recovery produced 14 additional qualified viewings per month.",
+      icon: TrendingUp,
+    },
   ];
 
   return (
     <section id="problem" className="px-6 py-14 md:px-12 md:py-24 bg-[#faf8f5] text-slate-900 border-t border-slate-200">
       <div className="mx-auto max-w-[1380px]">
-        <div className="reveal-blur max-w-3xl mb-8">
+        <div className="reveal-blur max-w-4xl mb-10">
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-mono font-semibold bg-purple-50 text-purple-700 border border-purple-200/80 mb-3">
             <span className="w-1.5 h-1.5 rounded-full bg-purple-600 animate-pulse" />
             THE REVENUE LEAK
           </div>
-          <h2 className="font-display text-2xl sm:text-4xl md:text-5xl font-extrabold tracking-tight text-slate-900 leading-[1.15]">
-            Most businesses don't have a lead problem.{" "}
-            <span className="text-slate-400 font-normal italic">They have a follow-up problem.</span>
+          <h2 className="font-display text-2xl sm:text-4xl md:text-5xl font-extrabold tracking-tight text-slate-900 leading-[1.18]">
+            Every delayed reply, missed call, and unqualified enquiry creates a revenue leak.{" "}
+            <span className="text-purple-700 font-semibold">Buildicy closes those gaps with automated response, qualification, and booking.</span>
           </h2>
         </div>
 
-        {/* 2-col on mobile, 4-col on desktop */}
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-5">
+        {/* 4 Cards */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5">
           {problems.map((p, idx) => {
             const Icon = p.icon;
             return (
               <div
                 key={p.title}
-                className="reveal-zoom bg-white rounded-2xl p-4 sm:p-6 border border-slate-200/90 shadow-xs hover:border-purple-300 transition-all duration-300 flex flex-col gap-3 group"
+                className="reveal-zoom bg-white rounded-2xl p-5 sm:p-6 border border-slate-200/90 shadow-xs hover:border-purple-300 transition-all duration-300 flex flex-col justify-between group"
                 style={{ transitionDelay: `${idx * 80}ms` }}
               >
-                <div className="flex items-center justify-between">
-                  <div className="w-8 h-8 rounded-xl bg-purple-50 flex items-center justify-center text-purple-600">
-                    <Icon className="w-4 h-4" />
-                  </div>
-                  <span className="text-[10px] font-mono font-bold text-purple-700 bg-purple-50 border border-purple-100 px-2 py-0.5 rounded-md uppercase tracking-wide">
-                    {p.metric}
-                  </span>
-                </div>
                 <div>
-                  <h3 className="font-display text-sm sm:text-base font-bold text-slate-900 mb-1">{p.title}</h3>
-                  <p className="text-[11px] sm:text-xs text-slate-500 leading-relaxed">{p.desc}</p>
+                  <div className="flex items-center justify-between mb-3">
+                    <div className="w-9 h-9 rounded-xl bg-purple-50 flex items-center justify-center text-purple-600">
+                      <Icon className="w-4 h-4" />
+                    </div>
+                    <span className="text-[10px] font-mono font-bold text-purple-700 bg-purple-50 border border-purple-100 px-2 py-0.5 rounded-md uppercase tracking-wide">
+                      {p.metric}
+                    </span>
+                  </div>
+                  <h3 className="font-display text-base font-bold text-slate-900 mb-2">{p.title}</h3>
+                  <p className="text-xs text-slate-600 leading-relaxed">{p.desc}</p>
                 </div>
               </div>
             );
@@ -946,14 +987,13 @@ function VideoDashboardSection({ onOpenAudit }: { onOpenAudit: () => void }) {
         {/* Section Header */}
         <div className="reveal-left max-w-3xl mb-8">
           <span className="font-mono text-xs font-bold uppercase tracking-wider text-purple-700 block mb-2">
-            The Autonomous Engine
+            Interactive system demo
           </span>
           <h2 className="font-display text-3xl sm:text-4xl md:text-5xl font-extrabold tracking-tight text-slate-900 leading-[1.12]">
             Watch how the system runs your pipeline.
           </h2>
           <p className="mt-3 text-slate-600 text-sm sm:text-base leading-relaxed">
-            A real-time command center that captures incoming enquiries across WhatsApp,
-            web, and calls, qualifies their budget, and books high-ticket meetings automatically.
+            See how Buildicy captures, qualifies, and books inbound leads across WhatsApp, web, and voice.
           </p>
         </div>
 
@@ -1145,17 +1185,17 @@ function VideoDashboardSection({ onOpenAudit }: { onOpenAudit: () => void }) {
                 <div className="lg:col-span-5 rounded-[20px] bg-white border border-slate-100 p-4 sm:p-6 shadow-[0_20px_50px_rgba(15,23,42,0.06)] flex flex-col justify-between">
                   <div>
                     <div className="flex items-center justify-between">
-                      <span className="font-bold text-slate-900 text-lg">Active Enquiries</span>
-                      <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[11px] font-mono font-semibold bg-rose-50 text-rose-600">
-                        <span className="w-1.5 h-1.5 rounded-full bg-rose-500 animate-pulse" />
-                        Live
+                      <span className="font-bold text-slate-900 text-base sm:text-lg">Interactive system demo</span>
+                      <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[11px] font-mono font-semibold bg-emerald-50 text-emerald-700">
+                        <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
+                        Live Demo
                       </span>
                     </div>
-                    <div className="font-display text-5xl sm:text-6xl font-extrabold text-slate-900 mt-4 tracking-tight">
-                      1,482
+                    <div className="mt-3 text-xs sm:text-sm text-slate-600 leading-relaxed font-medium">
+                      See how Buildicy captures, qualifies, and books inbound leads across WhatsApp, web, and voice.
                     </div>
-                    <div className="inline-flex items-center gap-1 text-xs font-mono font-semibold text-emerald-700 bg-emerald-50 px-2.5 py-1 rounded-full mt-3">
-                      ↑ +38 incoming in last 10 minutes
+                    <div className="inline-flex items-center gap-1 text-xs font-mono font-semibold text-purple-700 bg-purple-50 px-2.5 py-1 rounded-full mt-3">
+                      ⚡ &lt; 18s sub-minute response SLA
                     </div>
                   </div>
 
@@ -1496,58 +1536,61 @@ function AIGrowthSystemsPackages({
 
   const systems = [
     {
-      id: "ai-funnel",
-      name: "AI Funnel System",
+      id: "starter",
+      name: "Starter — AI Lead Capture & Booking",
       systemNumber: "01",
-      tagline: "Turn inbound website enquiries into qualified booked consultations.",
+      tagline: 'AI Lead Machine: "Turn website and ad traffic into qualified booked calls."',
       popular: false,
-      indiaSetup: "₹35,000",
-      indiaMonthly: "₹7,000/mo",
-      intlSetup: "$1,500",
-      intlMonthly: "$400/mo",
+      indiaSetup: "₹40,000",
+      indiaMonthly: "₹8,000/mo",
+      intlSetup: "$2,000",
+      intlMonthly: "$500/mo",
       includes: [
-        "Landing page intake & lead form architecture",
-        "Custom ICP qualification scoring questions",
-        "Instant CRM contact tagging & sync",
-        "Direct calendar booking & automated reminders",
+        "Turn website and ad traffic into qualified booked calls",
+        "Custom AI Lead Capture Landing Funnel",
+        "Interactive Qualification & Scoring Form",
+        "Automated calendar booking & reminder sequences",
+        "Instant WhatsApp & email lead notification alerts",
       ],
-      cta: "Get AI Funnel",
+      cta: "Get Starter System",
     },
     {
-      id: "ai-concierge",
-      name: "AI Lead Concierge",
+      id: "growth",
+      name: "Growth — 24/7 AI Receptionist",
       systemNumber: "02",
-      tagline: "Autonomous 24/7 lead qualification and booking across WhatsApp & Web.",
+      tagline: 'AI Front Desk + Funnel: "Never miss an inbound call or WhatsApp enquiry again."',
       popular: true,
       indiaSetup: "₹65,000",
       indiaMonthly: "₹15,000/mo",
-      intlSetup: "$3,000",
-      intlMonthly: "$850/mo",
+      intlSetup: "$3,500",
+      intlMonthly: "$900/mo",
       includes: [
-        "Everything in AI Funnel System",
-        "24/7 AI response on WhatsApp, Web & Email (< 18s)",
-        "Conversational ICP qualification & instant booking",
-        "Lead summaries & seamless human handover",
-        "Missed-call recovery via automated WhatsApp/SMS",
+        "Everything in Starter System",
+        "Never miss an inbound call or WhatsApp enquiry again",
+        "24/7 AI Voice Receptionist for inbound calls",
+        "24/7 WhatsApp AI Chat Agent for instant replies (< 18s)",
+        "Missed-call to text/WhatsApp automated recovery",
+        "Live lead triage & calendar booking over voice & chat",
       ],
-      cta: "Deploy AI Concierge",
+      cta: "Deploy Growth Receptionist",
     },
     {
-      id: "growth-engine",
-      name: "Complete Growth Engine",
+      id: "scale",
+      name: "Scale — Full AI Growth Engine",
       systemNumber: "03",
-      tagline: "End-to-end sales pipeline automation, multi-rep routing, and reporting.",
+      tagline: 'Complete AI Growth Engine: "Run lead capture, follow-up, CRM, and reporting on one automated system."',
       popular: false,
       indiaSetup: "₹1,25,000",
-      indiaMonthly: "₹35,000/mo",
-      intlSetup: "$5,500",
-      intlMonthly: "$1,800/mo",
+      indiaMonthly: "₹35,000–₹40,000/mo",
+      intlSetup: "$6,000",
+      intlMonthly: "$2,000/mo",
       includes: [
-        "Everything in AI Lead Concierge",
-        "Full HubSpot / GHL / Salesforce 2-way sync",
-        "Automated closer routing & pipeline stages",
-        "Multi-touch no-show recovery sequences",
-        "Executive owner dashboard & monthly optimization",
+        "Everything in Growth Receptionist",
+        "Run lead capture, follow-up, CRM, and reporting on one system",
+        "Full 2-way sync with HubSpot / GoHighLevel / Salesforce",
+        "Automated closer routing & multi-stage pipeline automation",
+        "Multi-touch no-show recovery & long-term nurture campaigns",
+        "Executive owner analytics & monthly conversion tuning",
       ],
       cta: "Deploy Full Engine",
     },
@@ -2191,6 +2234,25 @@ function DeploymentProtocol({ onOpenAudit }: { onOpenAudit: () => void }) {
    ========================================================================= */
 
 function RealEstateProofOfImpact({ onOpenAudit }: { onOpenAudit: () => void }) {
+  const testimonials = [
+    {
+      quote:
+        "Buildicy answered WhatsApp enquiries in under 20 seconds while our team was off the clock. Within the first month, we booked 14 verified private viewings without adding a single extra staff member.",
+      author: "Marcus Vance",
+      role: "Managing Director",
+      company: "Prime Realty Partners",
+      metric: "+14 Viewings/Mo",
+    },
+    {
+      quote:
+        "Before Buildicy, our closers spent half their day screening tire-kickers. Now, every call on our calendar is already budget-qualified with financing verified.",
+      author: "Elena Rostova",
+      role: "Head of Operations",
+      company: "Prestige Advisory Group",
+      metric: "100% ICP Qualified",
+    },
+  ];
+
   return (
     <section
       id="proof"
@@ -2200,13 +2262,13 @@ function RealEstateProofOfImpact({ onOpenAudit }: { onOpenAudit: () => void }) {
         {/* Header - Clean, Minimalist, Punchy */}
         <div className="reveal-left max-w-2xl mb-10">
           <span className="font-mono text-xs font-bold uppercase tracking-wider text-purple-700 block mb-2">
-            • Real Estate Case Study
+            • Named Case Study & Impact
           </span>
           <h2 className="font-display text-3xl sm:text-4xl md:text-5xl font-extrabold tracking-tight text-slate-900 leading-[1.12]">
             Before vs. After Buildicy.
           </h2>
           <p className="mt-3 text-slate-600 text-sm sm:text-base leading-relaxed">
-            How a real estate brokerage converted missed calls and slow WhatsApp replies into 14 confirmed private viewings every month.
+            In this client engagement, automated recovery produced 14 additional qualified viewings per month.
           </p>
         </div>
 
@@ -2228,37 +2290,32 @@ function RealEstateProofOfImpact({ onOpenAudit }: { onOpenAudit: () => void }) {
                 <li className="flex items-start gap-3">
                   <span className="text-rose-500 font-bold text-sm shrink-0">✕</span>
                   <span>
-                    <strong>62% of inbound calls missed:</strong> Evening &amp; weekend
-                    property inquiries went to voicemail; buyers immediately called rival
-                    brokers.
+                    <strong>Lost warm prospects:</strong> Slow replies and missed after-hours enquiries can send warm buyers to competitors.
                   </span>
                 </li>
                 <li className="flex items-start gap-3">
                   <span className="text-rose-500 font-bold text-sm shrink-0">✕</span>
                   <span>
-                    <strong>4+ hour response delay:</strong> Enquiries sat in unread WhatsApp
-                    inboxes until the next morning when buyer interest was already cold.
+                    <strong>Hours of response delay:</strong> Enquiries sat in unread inboxes until the next morning when intent was already cold.
                   </span>
                 </li>
                 <li className="flex items-start gap-3">
                   <span className="text-rose-500 font-bold text-sm shrink-0">✕</span>
                   <span>
-                    <strong>Wasted agent time:</strong> Agents spent 15+ hours weekly giving
-                    walkthroughs to unqualified buyers with no pre-approved financing.
+                    <strong>Wasted rep hours:</strong> Sales team spent 15+ hours weekly answering basic FAQs for unqualified inquiries.
                   </span>
                 </li>
                 <li className="flex items-start gap-3">
                   <span className="text-rose-500 font-bold text-sm shrink-0">✕</span>
                   <span>
-                    <strong>38% appointment no-show rate:</strong> Zero automated reminder
-                    sequences meant prospects simply forgot scheduled walkthroughs.
+                    <strong>High appointment drop-off:</strong> Lack of instant calendar slotting and reminder sequences led to missed consultations.
                   </span>
                 </li>
               </ul>
             </div>
 
             <div className="mt-6 pt-4 border-t border-slate-100 text-xs font-mono text-rose-700 font-medium">
-              Result: Estimated $35,000+ in lost monthly property commissions.
+              Result: Slow replies and missed after-hours enquiries sent warm buyers to competitors.
             </div>
           </div>
 
@@ -2267,7 +2324,7 @@ function RealEstateProofOfImpact({ onOpenAudit }: { onOpenAudit: () => void }) {
             <div>
               <div className="flex items-center justify-between pb-4 mb-4 border-b border-purple-100">
                 <span className="text-xs font-mono uppercase tracking-wider text-purple-700 font-bold">
-                  After Buildicy (AI Lead Recovery)
+                  After Buildicy (Automated Recovery)
                 </span>
                 <span className="w-6 h-6 rounded-full bg-purple-100 text-purple-700 font-bold text-xs flex items-center justify-center">
                   ✓
@@ -2278,29 +2335,25 @@ function RealEstateProofOfImpact({ onOpenAudit }: { onOpenAudit: () => void }) {
                 <li className="flex items-start gap-3">
                   <span className="text-purple-600 font-bold text-sm shrink-0">✓</span>
                   <span>
-                    <strong>Sub-20s auto text-back:</strong> Missed phone calls immediately
-                    trigger automated WhatsApp/SMS response with property sheets and FAQs.
+                    <strong>Sub-20s multi-channel reply:</strong> Inbound calls and WhatsApp messages get answered instantly 24/7 with interactive qualification.
                   </span>
                 </li>
                 <li className="flex items-start gap-3">
                   <span className="text-purple-600 font-bold text-sm shrink-0">✓</span>
                   <span>
-                    <strong>Automated buyer qualification:</strong> AI screens budget, purchase
-                    timeline, and pre-approval status before ever offering booking slots.
+                    <strong>Autonomous qualification:</strong> AI verifies budget, timeline, and purchase requirements before offering calendar slots.
                   </span>
                 </li>
                 <li className="flex items-start gap-3">
                   <span className="text-purple-600 font-bold text-sm shrink-0">✓</span>
                   <span>
-                    <strong>Direct calendar booking:</strong> Vetted buyers schedule private
-                    viewings directly on the assigned agent’s calendar in seconds.
+                    <strong>Direct calendar booking:</strong> Vetted buyers schedule meetings straight to the sales rep's calendar.
                   </span>
                 </li>
                 <li className="flex items-start gap-3">
                   <span className="text-purple-600 font-bold text-sm shrink-0">✓</span>
                   <span>
-                    <strong>88% show-up rate:</strong> Automated multi-channel confirmation
-                    briefings sent to the buyer's WhatsApp with directions and 1-click reschedule.
+                    <strong>Automated reminders:</strong> Multi-channel WhatsApp confirmation briefings keep appointment attendance near 90%.
                   </span>
                 </li>
               </ul>
@@ -2315,10 +2368,44 @@ function RealEstateProofOfImpact({ onOpenAudit }: { onOpenAudit: () => void }) {
                 onClick={onOpenAudit}
                 className="text-xs font-semibold text-purple-700 hover:text-purple-900 flex items-center gap-1 cursor-pointer"
               >
-                <span>Book a Free AI Growth Audit</span>
+                <span>Get Your Free Lead-Leak Audit</span>
                 <Arrow className="w-3.5 h-3.5" />
               </button>
             </div>
+          </div>
+        </div>
+
+        {/* Testimonials Block */}
+        <div className="mt-12 pt-10 border-t border-slate-200">
+          <div className="mb-6">
+            <span className="font-mono text-xs font-bold uppercase tracking-wider text-purple-700 block mb-1">
+              Client Feedback & Proof
+            </span>
+            <h3 className="font-display text-xl sm:text-2xl font-bold text-slate-900">
+              What partners say after deployment.
+            </h3>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+            {testimonials.map((t, idx) => (
+              <div
+                key={idx}
+                className="rounded-2xl p-6 bg-white border border-slate-200 shadow-xs flex flex-col justify-between"
+              >
+                <p className="text-sm text-slate-700 italic leading-relaxed mb-4">
+                  "{t.quote}"
+                </p>
+                <div className="flex items-center justify-between pt-3 border-t border-slate-100 text-xs">
+                  <div>
+                    <div className="font-bold text-slate-900">{t.author}</div>
+                    <div className="text-slate-500">{t.role}, {t.company}</div>
+                  </div>
+                  <span className="font-mono font-semibold text-emerald-700 bg-emerald-50 px-2.5 py-1 rounded-md text-[11px]">
+                    {t.metric}
+                  </span>
+                </div>
+              </div>
+            ))}
           </div>
         </div>
       </div>
@@ -2415,28 +2502,29 @@ function MinimalistFAQ({ onOpenAudit }: { onOpenAudit: () => void }) {
 
   const faqs = [
     {
-      q: "Will AI replace my team?",
-      a: "No. Buildicy handles immediate frontline response and qualification so your team only spends time closing vetted buyers.",
+      topic: "Ownership",
+      q: "Do we own the AI system, prompts, and workflows?",
+      a: "Yes, 100%. All custom prompts, pipeline architectures, conversational dialogue trees, and automation code are transferred directly to your company upon launch. You are never locked into proprietary black-box software.",
     },
     {
-      q: "Which channels can Buildicy connect?",
-      a: "Website chat, WhatsApp Business API, Instagram DMs, email, and inbound calls with missed-call SMS recovery.",
+      topic: "Data & Privacy",
+      q: "How is our business and customer data protected?",
+      a: "Your lead records, customer transcripts, and CRM data remain 100% confidential and reside within your private accounts. We implement end-to-end encryption and enterprise privacy controls.",
     },
     {
-      q: "Do we own the system and data?",
-      a: "Yes, 100%. All systems, prompts, and lead data are deployed directly into your own infrastructure.",
+      topic: "Channels",
+      q: "Which communication channels can Buildicy connect?",
+      a: "We deploy across WhatsApp Business API, live website chat, telephony & inbound voice agents, email, and social messaging (Instagram DMs, LinkedIn).",
     },
     {
-      q: "How long does implementation take?",
-      a: "Typically 7 to 14 business days from initial audit to live deployment with zero downtime.",
+      topic: "Integrations",
+      q: "Which CRMs, calendars, and sales tools do you integrate with?",
+      a: "We build seamless 2-way sync with HubSpot, GoHighLevel (GHL), Salesforce, Zoho, Pipedrive, Google Sheets, Calendly, Cal.com, and custom PostgreSQL/REST APIs.",
     },
     {
-      q: "Do you manage ads?",
-      a: "No. We focus exclusively on capturing, qualifying, and booking the leads your existing marketing generates.",
-    },
-    {
-      q: "Do you work with international clients?",
-      a: "Yes. We work with clients across India, North America, the UK, Europe, Australia, and the Middle East.",
+      topic: "Support",
+      q: "What ongoing support is included after the 14-day launch?",
+      a: "Every tier includes continuous transcript monitoring, periodic model tuning, SLA response auditing, and dedicated technical support to keep conversion rates compounding.",
     },
   ];
 
@@ -2448,11 +2536,14 @@ function MinimalistFAQ({ onOpenAudit }: { onOpenAudit: () => void }) {
       <div className="mx-auto max-w-[900px]">
         <div className="reveal-blur text-center mb-10">
           <span className="font-mono text-xs font-bold uppercase tracking-wider text-purple-700 block mb-2">
-            FAQ
+            FAQ • Ownership, Data, Channels, Integrations & Support
           </span>
           <h2 className="font-display text-3xl sm:text-4xl font-extrabold tracking-tight text-slate-900">
             Frequently Asked Questions
           </h2>
+          <p className="mt-2 text-slate-600 text-sm">
+            Everything you need to know about ownership, integrations, and deployment.
+          </p>
         </div>
 
         <div className="divide-y divide-slate-200">
@@ -2464,11 +2555,16 @@ function MinimalistFAQ({ onOpenAudit }: { onOpenAudit: () => void }) {
                   onClick={() => setOpenIdx(isOpen ? null : i)}
                   className="w-full flex items-center justify-between text-left py-2 font-display text-base sm:text-lg font-bold text-slate-900 cursor-pointer"
                 >
-                  <span>{faq.q}</span>
-                  <span className="text-slate-400 text-sm ml-4">{isOpen ? "−" : "+"}</span>
+                  <div className="flex items-center gap-3">
+                    <span className="text-[10px] font-mono uppercase tracking-wider px-2 py-0.5 rounded bg-purple-50 text-purple-700 border border-purple-100 shrink-0">
+                      {faq.topic}
+                    </span>
+                    <span>{faq.q}</span>
+                  </div>
+                  <span className="text-slate-400 text-sm ml-4 shrink-0">{isOpen ? "−" : "+"}</span>
                 </button>
                 {isOpen && (
-                  <p className="mt-2 text-xs sm:text-sm text-slate-600 leading-relaxed">
+                  <p className="mt-2 text-xs sm:text-sm text-slate-600 leading-relaxed pl-1 sm:pl-16">
                     {faq.a}
                   </p>
                 )}
@@ -2611,22 +2707,59 @@ function ResourcesSection() {
    ========================================================================= */
 
 function FinalCTA({ onOpenAudit }: { onOpenAudit: () => void }) {
+  const deliverables = [
+    {
+      title: "Lead Leakage Audit",
+      desc: "Identify exactly where enquiries are dropping off across WhatsApp, website, and phone calls.",
+    },
+    {
+      title: "Custom AI System Blueprint",
+      desc: "Map the right AI system architecture, conversational dialogue flows, and CRM integration.",
+    },
+    {
+      title: "Fixed Implementation Estimate",
+      desc: "Guaranteed 14-day zero-downtime implementation roadmap with fixed transparent pricing.",
+    },
+  ];
+
   return (
-    <section className="px-6 py-20 md:px-12 md:py-28 bg-[#faf8f5] text-slate-900 border-t border-slate-200 text-center">
-      <div className="mx-auto max-w-2xl">
+    <section className="px-6 py-20 md:px-12 md:py-28 bg-[#faf8f5] text-slate-900 border-t border-slate-200">
+      <div className="mx-auto max-w-3xl text-center">
+        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-mono font-semibold bg-purple-50 text-purple-700 border border-purple-200/80 mb-4">
+          <span className="w-1.5 h-1.5 rounded-full bg-purple-600 animate-pulse" />
+          FREE 30-MINUTE AUDIT
+        </div>
         <h2 className="font-display text-3xl sm:text-4xl md:text-5xl font-extrabold tracking-tight text-slate-900">
-          Ready to stop losing leads?
+          Get Your Free Lead-Leak Audit
         </h2>
-        <p className="mt-4 text-slate-600 text-sm sm:text-base leading-relaxed">
-          Book a free AI Growth Audit. We will map where leads are leaking and show the
-          system Buildicy would install.
+        <p className="mt-4 text-slate-600 text-sm sm:text-base leading-relaxed max-w-xl mx-auto">
+          In 30 minutes, we’ll identify where enquiries are being missed, map the right AI system, and give you a fixed implementation estimate.
         </p>
+
+        {/* Explicit Deliverables Grid */}
+        <div className="mt-8 grid grid-cols-1 sm:grid-cols-3 gap-4 text-left">
+          {deliverables.map((item, idx) => (
+            <div
+              key={idx}
+              className="p-4 rounded-2xl bg-white border border-slate-200 shadow-2xs flex flex-col justify-between"
+            >
+              <div>
+                <span className="text-purple-600 font-mono font-bold text-xs block mb-1">
+                  0{idx + 1} • Deliverable
+                </span>
+                <h4 className="font-bold text-slate-900 text-sm mb-1.5">{item.title}</h4>
+                <p className="text-xs text-slate-500 leading-relaxed">{item.desc}</p>
+              </div>
+            </div>
+          ))}
+        </div>
+
         <div className="mt-8 flex justify-center">
           <button
             onClick={onOpenAudit}
             className="rounded-full bg-purple-600 hover:bg-purple-700 text-white px-8 py-4 text-sm font-semibold transition-all shadow-md shadow-purple-600/20 cursor-pointer"
           >
-            Book a Free AI Growth Audit
+            Get Your Free Lead-Leak Audit
           </button>
         </div>
       </div>

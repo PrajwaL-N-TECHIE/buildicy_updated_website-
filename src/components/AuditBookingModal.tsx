@@ -9,9 +9,9 @@ const WHATSAPP_URL = `https://wa.me/919150890205?text=${encodeURIComponent(
 )}`;
 
 const SYSTEMS = [
-  { id: "AI Lead Concierge", label: "AI Concierge (WhatsApp & Web)" },
-  { id: "AI Funnel", label: "AI Funnel System" },
-  { id: "Complete AI Growth Engine", label: "Complete Growth Engine" },
+  { id: "Growth — 24/7 AI Receptionist", label: "Growth — 24/7 AI Receptionist" },
+  { id: "Starter — AI Lead Capture & Booking", label: "Starter — Lead Capture & Booking" },
+  { id: "Scale — Full AI Growth Engine", label: "Scale — Full AI Growth Engine" },
   { id: "Buildicy Studio — Custom Build", label: "Custom Architecture" },
 ];
 
@@ -29,7 +29,7 @@ export function AuditBookingModal({
   const [phone, setPhone] = useState("");
   const [businessName, setBusinessName] = useState("");
   const [serviceNeeded, setServiceNeeded] = useState(
-    initialPackage || "AI Lead Concierge"
+    initialPackage || "Growth — 24/7 AI Receptionist"
   );
   const [market, setMarket] = useState(initialMarket || "India — INR");
   const [notes, setNotes] = useState("");
