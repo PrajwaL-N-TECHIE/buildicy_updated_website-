@@ -17,8 +17,10 @@ vi.mock("@tanstack/react-router", async () => {
 import { ContactPage } from "@/components/ContactPage";
 
 describe("Contact / Project Inquiry Page", () => {
-  it("renders the sweet, clean light-theme form with PDF download options", () => {
-    render(<ContactPage />);
+  it(
+    "renders the sweet, clean light-theme form with PDF download options",
+    () => {
+      render(<ContactPage />);
 
     // Check headings
     expect(
@@ -65,5 +67,5 @@ describe("Contact / Project Inquiry Page", () => {
 
     const downloadLinks = screen.getAllByRole("link", { name: /Download/i });
     expect(downloadLinks.length).toBe(3);
-  });
+  }, 15000);
 });

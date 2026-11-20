@@ -41,6 +41,7 @@ import { HeroTypewriter } from "../components/HeroTypewriter";
 import { AuditBookingModal } from "../components/AuditBookingModal";
 import FolderFloat from "../components/FolderFloat";
 import CircularCarousel from "../components/CircularCarousel";
+import { PORTAL_ITEMS } from "../config/links";
 
 export const Route = createFileRoute("/")({
   component: Index,
