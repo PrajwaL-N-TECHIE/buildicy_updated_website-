@@ -2866,30 +2866,52 @@ function Footer({ onOpenAudit }: { onOpenAudit?: () => void }) {
           </div>
         </div>
 
-        {/* Studio Systems & Live Ecosystem Portals (Minimalist) */}
-        <div className="mt-14 pt-8 border-t border-white/10">
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-5">
-            <span className="text-[11px] font-mono uppercase tracking-[0.2em] text-white/40">
-              Live Systems & Portals
-            </span>
-            <span className="text-xs font-mono text-white/30 hidden sm:inline">
-              Production consoles & internal engines
-            </span>
+        {/* Studio Systems & Live Ecosystem Portals */}
+        <div className="mt-16 md:mt-24 pt-12 border-t border-white/10">
+          <div className="flex flex-col sm:flex-row sm:items-end justify-between mb-8 gap-4">
+            <div>
+              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-purple-500/10 border border-purple-500/25 text-[11px] font-mono text-purple-300 tracking-wider uppercase mb-3">
+                <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse shadow-[0_0_8px_#34d399]" />
+                Live Systems & Founder Ecosystem
+              </div>
+              <h3 className="font-display text-2xl sm:text-3xl font-light text-white tracking-tight">
+                Studio Portals & Engines
+              </h3>
+            </div>
+            <p className="text-xs sm:text-sm font-mono text-white/50 max-w-md">
+              Direct access to Buildicy’s production consoles, interactive multiplayer engines, and internal operations portals.
+            </p>
           </div>
 
-          <div className="flex flex-wrap items-center gap-2 sm:gap-2.5">
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3 sm:gap-3.5">
             {PORTAL_ITEMS.map((portal) => (
               <a
                 key={portal.id}
                 href={portal.url}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="group inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-white/[0.03] hover:bg-white/[0.07] border border-white/[0.08] hover:border-purple-500/40 text-xs font-mono text-white/70 hover:text-white transition-all duration-200"
+                className="group relative p-4 rounded-2xl bg-white/[0.03] hover:bg-white/[0.07] border border-white/[0.08] hover:border-purple-500/50 transition-all duration-300 flex flex-col justify-between overflow-hidden hover:shadow-[0_0_30px_rgba(168,85,247,0.16)] hover:-translate-y-1"
               >
-                <span>{portal.name}</span>
-                <span className="text-[10px] text-white/30 group-hover:text-purple-400 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-all">
-                  ↗
-                </span>
+                {/* Ambient glow effect on hover */}
+                <div className="absolute top-0 right-0 w-24 h-24 bg-purple-500/10 rounded-full blur-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none" />
+
+                <div>
+                  <div className="flex items-center justify-between gap-1 mb-3">
+                    <span className="text-[10px] font-mono uppercase tracking-wider px-2 py-0.5 rounded-md bg-purple-500/15 text-purple-300 border border-purple-500/20 group-hover:border-purple-400/40 group-hover:bg-purple-500/25 transition-colors">
+                      {portal.badge}
+                    </span>
+                    <span className="text-xs text-white/30 group-hover:text-purple-300 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5">
+                      ↗
+                    </span>
+                  </div>
+                  <div className="font-display text-sm sm:text-base font-semibold text-white group-hover:text-purple-200 transition-colors">
+                    {portal.name}
+                  </div>
+                </div>
+
+                <div className="text-[11px] text-white/50 font-light leading-snug mt-2.5 group-hover:text-white/75 transition-colors">
+                  {portal.desc}
+                </div>
               </a>
             ))}
           </div>
