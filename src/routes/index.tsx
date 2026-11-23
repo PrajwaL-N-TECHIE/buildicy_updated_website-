@@ -1,5 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState, Fragment } from "react";
 import { createPortal } from "react-dom";
 import { toast } from "sonner";
 import {
@@ -34,8 +34,10 @@ import {
   VolumeX,
   Play,
   Pause,
+  RotateCcw,
   Maximize2,
   X,
+  Zap,
 } from "lucide-react";
 import { HeroTypewriter } from "../components/HeroTypewriter";
 import { AuditBookingModal } from "../components/AuditBookingModal";
@@ -549,14 +551,16 @@ function Index() {
         {/* 6. Process: 14-day implementation */}
         <DeploymentProtocol onOpenAudit={() => handleOpenAudit()} />
 
-        {/* 7. FAQ: ownership, data, channels, integrations, support */}
-        <MinimalistFAQ onOpenAudit={() => handleOpenAudit()} />
+
 
         {/* Documentation & Profiles */}
         <ResourcesSection />
 
-        {/* 8. Final CTA: audit with explicit deliverables */}
-        <FinalCTA onOpenAudit={() => handleOpenAudit()} />
+        {/* 7. Audit Banner */}
+        <AuditBanner onOpenAudit={() => handleOpenAudit()} />
+
+        {/* 8. FAQ: ownership, data, channels, integrations, support */}
+        <MinimalistFAQ onOpenAudit={() => handleOpenAudit()} />
       </main>
       <Footer onOpenAudit={() => handleOpenAudit()} />
       {auditModalOpen && (
@@ -828,9 +832,14 @@ function Hero({ onOpenAudit }: { onOpenAudit: () => void }) {
             </a>
           </div>
 
-          <p className="mt-4 text-xs sm:text-sm text-slate-600 font-medium max-w-lg leading-relaxed">
-            In 30 minutes, we’ll identify where enquiries are being missed, map the right AI system, and give you a fixed implementation estimate.
-          </p>
+
+
+          {/* Italic Quote Banner */}
+          <div className="mt-6 w-full max-w-xl p-4 sm:p-5 rounded-2xl bg-slate-900 border border-slate-700 text-left">
+            <p className="font-serif italic text-sm sm:text-base font-normal text-slate-200 leading-relaxed">
+              &ldquo;In <strong className="font-sans font-bold text-purple-400 not-italic">30 minutes</strong>, we&apos;ll identify where enquiries are being missed, map the right AI system, and give you a <strong className="font-sans font-bold text-white not-italic">fixed implementation estimate</strong>.&rdquo;
+            </p>
+          </div>
 
           <div className="mt-6 pt-5 border-t border-slate-200/80 flex flex-wrap items-center gap-x-6 gap-y-2 text-xs sm:text-sm font-medium text-slate-500">
             <div className="flex items-center gap-2">
@@ -863,67 +872,43 @@ function Hero({ onOpenAudit }: { onOpenAudit: () => void }) {
 
 function FollowUpBottleneck() {
   const problems = [
-    {
-      metric: "Slow Replies",
-      title: "Delayed Frontline Response",
-      desc: "Slow replies and missed after-hours enquiries can send warm buyers to competitors.",
-      icon: Clock,
-    },
-    {
-      metric: "After-Hours Leak",
-      title: "Unanswered Enquiries",
-      desc: "Warm buyers researching at night bounce immediately when no instant response arrives.",
-      icon: PhoneCall,
-    },
-    {
-      metric: "Tire-Kickers",
-      title: "Unqualified Prospects",
-      desc: "Sales reps waste hours filtering low-budget leads instead of talking to ready buyers.",
-      icon: Users,
-    },
-    {
-      metric: "+14 Viewings / Mo",
-      title: "Automated Recovery",
-      desc: "In this client engagement, automated recovery produced 14 additional qualified viewings per month.",
-      icon: TrendingUp,
-    },
+    { metric: "4.2h avg", title: "Slow Replies", desc: "Warm leads go cold before your team responds.", icon: Clock },
+    { metric: "After-Hours", title: "Missed Enquiries", desc: "Buyers researching at night bounce with zero response.", icon: PhoneCall },
+    { metric: "Tire-Kickers", title: "Unqualified Calls", desc: "Reps waste hours on leads that were never going to buy.", icon: Users },
+    { metric: "+14 / Month", title: "Recovered Revenue", desc: "Automated recovery added 14 qualified viewings in one engagement.", icon: TrendingUp },
   ];
 
   return (
-    <section id="problem" className="px-6 py-14 md:px-12 md:py-24 bg-[#faf8f5] text-slate-900 border-t border-slate-200">
+    <section id="problem" className="px-6 py-14 md:px-12 md:py-20 bg-[#faf8f5] text-slate-900 border-t border-slate-200">
       <div className="mx-auto max-w-[1380px]">
-        <div className="reveal-blur max-w-4xl mb-10">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-mono font-semibold bg-purple-50 text-purple-700 border border-purple-200/80 mb-3">
-            <span className="w-1.5 h-1.5 rounded-full bg-purple-600 animate-pulse" />
-            THE REVENUE LEAK
-          </div>
-          <h2 className="font-display text-2xl sm:text-4xl md:text-5xl font-extrabold tracking-tight text-slate-900 leading-[1.18]">
-            Every delayed reply, missed call, and unqualified enquiry creates a revenue leak.{" "}
-            <span className="text-purple-700 font-semibold">Buildicy closes those gaps with automated response, qualification, and booking.</span>
+        <div className="reveal-blur max-w-2xl mb-10">
+          <span className="text-xs font-mono font-bold uppercase tracking-widest text-purple-700 block mb-3">The Revenue Leak</span>
+          <h2 className="font-display text-2xl sm:text-3xl md:text-4xl font-extrabold tracking-tight text-slate-900 leading-[1.18]">
+            Every missed reply is a lead you paid for — and lost.{" "}
+            <span className="text-purple-700">Buildicy closes those gaps.</span>
           </h2>
         </div>
 
-        {/* 4 Cards */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
           {problems.map((p, idx) => {
             const Icon = p.icon;
             return (
               <div
                 key={p.title}
-                className="reveal-zoom bg-white rounded-2xl p-5 sm:p-6 border border-slate-200/90 shadow-xs hover:border-purple-300 transition-all duration-300 flex flex-col justify-between group"
+                className="reveal-zoom bg-white rounded-2xl p-5 border border-slate-200/90 shadow-xs hover:border-purple-300 transition-all duration-300 flex flex-col gap-3"
                 style={{ transitionDelay: `${idx * 80}ms` }}
               >
-                <div>
-                  <div className="flex items-center justify-between mb-3">
-                    <div className="w-9 h-9 rounded-xl bg-purple-50 flex items-center justify-center text-purple-600">
-                      <Icon className="w-4 h-4" />
-                    </div>
-                    <span className="text-[10px] font-mono font-bold text-purple-700 bg-purple-50 border border-purple-100 px-2 py-0.5 rounded-md uppercase tracking-wide">
-                      {p.metric}
-                    </span>
+                <div className="flex items-center justify-between">
+                  <div className="w-8 h-8 rounded-xl bg-purple-50 flex items-center justify-center text-purple-600">
+                    <Icon className="w-4 h-4" />
                   </div>
-                  <h3 className="font-display text-base font-bold text-slate-900 mb-2">{p.title}</h3>
-                  <p className="text-xs text-slate-600 leading-relaxed">{p.desc}</p>
+                  <span className="text-[10px] font-mono font-bold text-purple-700 bg-purple-50 border border-purple-100 px-2 py-0.5 rounded-md">
+                    {p.metric}
+                  </span>
+                </div>
+                <div>
+                  <h3 className="font-semibold text-sm text-slate-900 mb-1">{p.title}</h3>
+                  <p className="text-xs text-slate-500 leading-relaxed">{p.desc}</p>
                 </div>
               </div>
             );
@@ -939,582 +924,796 @@ function FollowUpBottleneck() {
    Engineered with luxury minimalist card design matching the reference style
    ========================================================================= */
 
+/* =========================================================================
+   INTERACTIVE SYSTEM DEMO (True n8n-Style Autonomous Workflow Canvas)
+   ========================================================================= */
+
+type WorkflowScenario = "growth" | "starter" | "scale";
+
+interface WorkflowNodeData {
+  id: string;
+  label: string;
+  sublabel: string;
+  iconType: "trigger" | "filter" | "agent" | "model" | "tools" | "booking" | "crm" | "nurture" | "reactivation";
+  x: number; // percentage on canvas
+  y: number; // percentage on canvas
+  category: "trigger" | "logic" | "agent" | "subnode" | "action";
+  status: "idle" | "running" | "success";
+  businessImpact: string;
+  description: string;
+  livePayload: {
+    input: Record<string, any>;
+    output: Record<string, any>;
+  };
+}
+
+/* =========================================================================
+   INTERACTIVE SYSTEM DEMO (Fully Mobile-Optimized & Desktop 2D n8n Canvas)
+   ========================================================================= */
+
+type WorkflowType = "starter" | "growth" | "scale";
+
+interface WorkflowStepNode {
+  id: string;
+  stepNumber: string;
+  label: string;
+  sublabel: string;
+  icon: string;
+  category: "Capture" | "AI Agent" | "Booking" | "Recovery" | "Insights";
+  businessImpact: string;
+  description: string;
+  metrics: { label: string; value: string }[];
+  x: number;
+  y: number;
+}
+
+interface WorkflowDefinition {
+  id: WorkflowType;
+  badge: string;
+  name: string;
+  tagline: string;
+  nodes: WorkflowStepNode[];
+  connections: { from: string; to: string; label?: string; dashed?: boolean }[];
+}
+
+const WORKFLOWS: Record<WorkflowType, WorkflowDefinition> = {
+  starter: {
+    id: "starter",
+    badge: "SYSTEM 01 · STARTER",
+    name: "AI Funnel & Booking",
+    tagline: "Speed-to-lead & automated calendar booking for web visitors",
+    nodes: [
+      {
+        id: "s1",
+        stepNumber: "01",
+        label: "Website Enquiry",
+        sublabel: "High-Intent Web Form",
+        icon: "globe",
+        category: "Capture",
+        businessImpact: "Responds in 2.8 seconds, eliminating lead bounce.",
+        description: "Captures inbound web form submissions 24/7 and initiates instant response.",
+        metrics: [{ label: "Speed", value: "< 3 sec" }, { label: "Capture", value: "100%" }],
+        x: 40,
+        y: 190,
+      },
+      {
+        id: "s2",
+        stepNumber: "02",
+        label: "AI Instant Response",
+        sublabel: "Immediate Acknowledgment",
+        icon: "zap",
+        category: "Capture",
+        businessImpact: "Engages the prospect while buying intent is highest.",
+        description: "Sends contextual email and SMS referencing their exact enquiry.",
+        metrics: [{ label: "Open Rate", value: "88%" }, { label: "Delivery", value: "Instant" }],
+        x: 230,
+        y: 190,
+      },
+      {
+        id: "s3",
+        stepNumber: "03",
+        label: "Lead Qualification",
+        sublabel: "BANT Intent Filter",
+        icon: "filter",
+        category: "AI Agent",
+        businessImpact: "Filters out tire-kickers so reps only take high-fit calls.",
+        description: "Evaluates company size, budget, and timeline against your target profile.",
+        metrics: [{ label: "ICP Match", value: "96.4%" }, { label: "Hours Saved", value: "12h / wk" }],
+        x: 420,
+        y: 190,
+      },
+      {
+        id: "s4",
+        stepNumber: "04",
+        label: "Personalised Follow-ups",
+        sublabel: "Targeted Nurture Cadence",
+        icon: "mail",
+        category: "Recovery",
+        businessImpact: "Maintains interest and answers hesitations automatically.",
+        description: "Sends targeted case studies and proof points to prospects needing nurturing.",
+        metrics: [{ label: "Engagement", value: "+42%" }, { label: "Follow-ups", value: "Automated" }],
+        x: 620,
+        y: 290,
+      },
+      {
+        id: "s5",
+        stepNumber: "05",
+        label: "Appointment Booking",
+        sublabel: "Self-Serve Calendar",
+        icon: "calendar",
+        category: "Booking",
+        businessImpact: "Directly locks meetings with zero back-and-forth friction.",
+        description: "Presents real-time available slots matching sales rep calendars.",
+        metrics: [{ label: "Bookings", value: "+45%" }, { label: "Friction", value: "Zero" }],
+        x: 620,
+        y: 90,
+      },
+      {
+        id: "s6",
+        stepNumber: "06",
+        label: "AI No-Show Recovery",
+        sublabel: "Multi-Touch Reminders",
+        icon: "shield",
+        category: "Recovery",
+        businessImpact: "Slashes no-show rates from 35% down to under 8%.",
+        description: "Sends SMS/WhatsApp reminder cadences with 1-click easy reschedule.",
+        metrics: [{ label: "No-Show Rate", value: "< 8%" }, { label: "Attendance", value: "92%+" }],
+        x: 820,
+        y: 190,
+      },
+      {
+        id: "s7",
+        stepNumber: "07",
+        label: "Dashboard & Handover",
+        sublabel: "CRM Sync & Rep Alert",
+        icon: "user-check",
+        category: "Booking",
+        businessImpact: "Sales reps receive enriched buyer dossiers before calls.",
+        description: "Updates CRM with lead intent score and notifies sales in Slack.",
+        metrics: [{ label: "CRM Sync", value: "Realtime" }, { label: "Manual Entry", value: "0 mins" }],
+        x: 1010,
+        y: 190,
+      },
+    ],
+    connections: [
+      { from: "s1", to: "s2" },
+      { from: "s2", to: "s3" },
+      { from: "s3", to: "s5" },
+      { from: "s3", to: "s4", dashed: true },
+      { from: "s4", to: "s6" },
+      { from: "s5", to: "s6" },
+      { from: "s6", to: "s7" },
+    ],
+  },
+
+  growth: {
+    id: "growth",
+    badge: "SYSTEM 02 · GROWTH (MOST POPULAR)",
+    name: "AI Funnel + AI Receptionist",
+    tagline: "24/7 Voice & WhatsApp front desk with missed-call recovery",
+    nodes: [
+      {
+        id: "g1",
+        stepNumber: "01",
+        label: "Inbound Channels",
+        sublabel: "Web, WhatsApp & Calls",
+        icon: "phone-incoming",
+        category: "Capture",
+        businessImpact: "Zero missed enquiries, even after hours and on weekends.",
+        description: "Unifies website enquiries, WhatsApp messages, and phone calls in one engine.",
+        metrics: [{ label: "Uptime", value: "24/7/365" }, { label: "Channels", value: "3 Unified" }],
+        x: 40,
+        y: 190,
+      },
+      {
+        id: "g2",
+        stepNumber: "02",
+        label: "AI Receptionist",
+        sublabel: "Voice & WhatsApp Agent",
+        icon: "bot",
+        category: "AI Agent",
+        businessImpact: "Handles calls & chats simultaneously with < 350ms natural tone.",
+        description: "Conversational front desk answering questions, pricing, and company FAQs.",
+        metrics: [{ label: "Latency", value: "320ms" }, { label: "Concurrency", value: "Unlimited" }],
+        x: 230,
+        y: 190,
+      },
+      {
+        id: "g3",
+        stepNumber: "03",
+        label: "Lead Qualification",
+        sublabel: "Intent & Fit Assessment",
+        icon: "filter",
+        category: "AI Agent",
+        businessImpact: "Prioritises ready-to-buy prospects in real-time.",
+        description: "Verifies caller requirements and budget naturally during conversation.",
+        metrics: [{ label: "Accuracy", value: "98.2%" }, { label: "Routing", value: "Instant" }],
+        x: 420,
+        y: 190,
+      },
+      {
+        id: "g4",
+        stepNumber: "04",
+        label: "Missed-Call Recovery",
+        sublabel: "Instant SMS/Chat Triage",
+        icon: "phone-forwarded",
+        category: "Recovery",
+        businessImpact: "Recovers 64% of dropped or after-hours calls immediately.",
+        description: "Sends an immediate text to dropped calls to continue triage over WhatsApp.",
+        metrics: [{ label: "Recovery", value: "64%" }, { label: "Trigger", value: "< 10s" }],
+        x: 620,
+        y: 290,
+      },
+      {
+        id: "g5",
+        stepNumber: "05",
+        label: "Intelligent Booking",
+        sublabel: "Conversational Slots",
+        icon: "calendar",
+        category: "Booking",
+        businessImpact: "Negotiates mutual times naturally without sending raw links.",
+        description: "Finds calendar availability dynamically during voice or WhatsApp chats.",
+        metrics: [{ label: "Conv. Rate", value: "+48%" }, { label: "Friction", value: "Zero Links" }],
+        x: 620,
+        y: 90,
+      },
+      {
+        id: "g6",
+        stepNumber: "06",
+        label: "AI No-Show Recovery",
+        sublabel: "Voice & Text Reminders",
+        icon: "shield",
+        category: "Recovery",
+        businessImpact: "Guarantees attendance and re-books cancellations automatically.",
+        description: "Multi-touch reminder sequences on WhatsApp/SMS with instant re-booking.",
+        metrics: [{ label: "No-Show Rate", value: "< 7%" }, { label: "Re-booking", value: "48%" }],
+        x: 820,
+        y: 190,
+      },
+      {
+        id: "g7",
+        stepNumber: "07",
+        label: "Dashboard & Handover",
+        sublabel: "Transcript & CRM Sync",
+        icon: "user-check",
+        category: "Booking",
+        businessImpact: "Closer gets full call recording and AI executive summary.",
+        description: "Logs call transcript, objection notes, and alerts sales team in Slack.",
+        metrics: [{ label: "CRM Sync", value: "Instant" }, { label: "Summary", value: "AI Briefing" }],
+        x: 1010,
+        y: 190,
+      },
+    ],
+    connections: [
+      { from: "g1", to: "g2" },
+      { from: "g2", to: "g3" },
+      { from: "g3", to: "g5" },
+      { from: "g3", to: "g4", dashed: true },
+      { from: "g4", to: "g6" },
+      { from: "g5", to: "g6" },
+      { from: "g6", to: "g7" },
+    ],
+  },
+
+  scale: {
+    id: "scale",
+    badge: "SYSTEM 03 · SCALE",
+    name: "AI Growth Intelligence",
+    tagline: "Autonomous engine with cold CRM lead reactivation & conversion insights",
+    nodes: [
+      {
+        id: "c1",
+        stepNumber: "01",
+        label: "Omnichannel Capture",
+        sublabel: "Enterprise Ingestion",
+        icon: "layers",
+        category: "Capture",
+        businessImpact: "Centralises all marketing, phone, and messaging leads into one stream.",
+        description: "Ingests web traffic, paid campaigns, WhatsApp, and phone calls at scale.",
+        metrics: [{ label: "Ingestion", value: "< 1s" }, { label: "Channels", value: "All Sources" }],
+        x: 40,
+        y: 190,
+      },
+      {
+        id: "c2",
+        stepNumber: "02",
+        label: "AI Receptionist",
+        sublabel: "Enterprise Triage",
+        icon: "bot",
+        category: "AI Agent",
+        businessImpact: "Custom objection handling tuned to high-ticket B2B service buyers.",
+        description: "Enterprise front desk with multi-tier qualification and company knowledge.",
+        metrics: [{ label: "Accuracy", value: "99.1%" }, { label: "Availability", value: "24/7" }],
+        x: 230,
+        y: 190,
+      },
+      {
+        id: "c3",
+        stepNumber: "03",
+        label: "Booking & No-Show",
+        sublabel: "Attendance Guarantee",
+        icon: "calendar",
+        category: "Booking",
+        businessImpact: "Maximises sales rep utilization with verified, committed meetings.",
+        description: "Automated booking paired with multi-channel attendance recovery cadences.",
+        metrics: [{ label: "Show-Up Rate", value: "94%+" }, { label: "Cadence", value: "3-Touch" }],
+        x: 430,
+        y: 90,
+      },
+      {
+        id: "c4",
+        stepNumber: "04",
+        label: "AI Lead Reactivation",
+        sublabel: "Wakes Dormant Leads",
+        icon: "refresh-cw",
+        category: "Recovery",
+        businessImpact: "Re-opens closed/lost CRM opportunities without ad spend.",
+        description: "Engages cold contacts from 30-180 days ago with natural re-connect offers.",
+        metrics: [{ label: "Reactivated", value: "14-19%" }, { label: "Ad Cost", value: "$0" }],
+        x: 430,
+        y: 290,
+      },
+      {
+        id: "c5",
+        stepNumber: "05",
+        label: "Conversation Insights",
+        sublabel: "Objection Mining",
+        icon: "pie-chart",
+        category: "Insights",
+        businessImpact: "Reveals exact buyer hesitations and reasons for lost deals.",
+        description: "Analyses 100% of customer interactions to extract patterns and competitor trends.",
+        metrics: [{ label: "Coverage", value: "100% Calls" }, { label: "Reports", value: "Weekly" }],
+        x: 680,
+        y: 190,
+      },
+      {
+        id: "c6",
+        stepNumber: "06",
+        label: "Conversion Tuning",
+        sublabel: "Autonomous Loop",
+        icon: "trending-up",
+        category: "Insights",
+        businessImpact: "Continuously lifts meeting booking and close rates automatically.",
+        description: "Optimises response prompts, follow-up timing, and recovery cadences automatically.",
+        metrics: [{ label: "Pipeline Lift", value: "+38%" }, { label: "Optimization", value: "Continuous" }],
+        x: 920,
+        y: 190,
+      },
+    ],
+    connections: [
+      { from: "c1", to: "c2" },
+      { from: "c2", to: "c3" },
+      { from: "c2", to: "c4", dashed: true },
+      { from: "c3", to: "c5" },
+      { from: "c4", to: "c5" },
+      { from: "c5", to: "c6" },
+    ],
+  },
+};
+
 function VideoDashboardSection({ onOpenAudit }: { onOpenAudit: () => void }) {
-  const [activeTab, setActiveTab] = useState(0);
-  const [isPlaying, setIsPlaying] = useState(true);
-  const [progress, setProgress] = useState(0);
+  const [activeWorkflow, setActiveWorkflow] = useState<WorkflowType>("growth");
+  const [activeStepIndex, setActiveStepIndex] = useState<number>(0);
+  const [isAutoPlaying, setIsAutoPlaying] = useState<boolean>(true);
+  const [selectedNodeId, setSelectedNodeId] = useState<string>("g2");
+  const [zoomLevel, setZoomLevel] = useState<number>(100);
+  const canvasContainerRef = useRef<HTMLDivElement>(null);
 
-  const STAGES = [
-    { id: 0, label: "01 Pipeline Overview", subtitle: "01 Pipeline Overview: Real-time lead recovery velocity and SLA response tracking." },
-    { id: 1, label: "02 Inbound Stream", subtitle: "02 Inbound Stream: Multi-channel capture across WhatsApp, Website Chat & Voice." },
-    { id: 2, label: "03 Sub-Minute Triage", subtitle: "03 Sub-Minute Triage: Autonomous AI responds in under 18s at peak intent." },
-    { id: 3, label: "04 Qualification & Booking", subtitle: "04 Qualification & Booking: Verified ICP scoring and direct calendar sync." },
-  ];
+  const currentWf = WORKFLOWS[activeWorkflow];
+  const nodeCount = currentWf.nodes.length;
 
+  // Auto-play loop advancing through nodes sequentially
   useEffect(() => {
-    if (!isPlaying) return;
-
-    const STAGE_DURATION = 5000; // 5 seconds per stage
-    const INTERVAL_MS = 40;
-    let elapsed = 0;
-
+    if (!isAutoPlaying) return;
     const interval = setInterval(() => {
-      elapsed += INTERVAL_MS;
-      const pct = Math.min(100, (elapsed / STAGE_DURATION) * 100);
-      setProgress(pct);
-
-      if (elapsed >= STAGE_DURATION) {
-        clearInterval(interval);
-        setProgress(0);
-        setActiveTab((curr) => (curr + 1) % 4);
-      }
-    }, INTERVAL_MS);
-
+      setActiveStepIndex((prev) => {
+        const next = prev >= nodeCount - 1 ? 0 : prev + 1;
+        const nextNode = currentWf.nodes[next];
+        if (nextNode) setSelectedNodeId(nextNode.id);
+        return next;
+      });
+    }, 2800);
     return () => clearInterval(interval);
-  }, [isPlaying, activeTab]);
+  }, [isAutoPlaying, nodeCount, currentWf]);
 
-  const handleSelectTab = (idx: number) => {
-    setActiveTab(idx);
-    setProgress(0);
+  const handleSwitchWorkflow = (type: WorkflowType) => {
+    setActiveWorkflow(type);
+    setActiveStepIndex(0);
+    const firstNode = WORKFLOWS[type].nodes[0];
+    if (firstNode) setSelectedNodeId(firstNode.id);
+    if (canvasContainerRef.current) {
+      canvasContainerRef.current.scrollTo({ left: 0, behavior: "smooth" });
+    }
+  };
+
+  const selectedNode = useMemo(() => {
+    return currentWf.nodes.find((n) => n.id === selectedNodeId) || currentWf.nodes[0]!;
+  }, [currentWf, selectedNodeId]);
+
+  // Center active or selected node in canvas when stepping through on mobile/smaller screens
+  useEffect(() => {
+    const container = canvasContainerRef.current;
+    if (!container) return;
+    const node = currentWf.nodes.find((n) => n.id === selectedNodeId) || currentWf.nodes[activeStepIndex];
+    if (node && container.scrollWidth > container.clientWidth) {
+      const scale = zoomLevel / 100;
+      const nodeCenterX = (node.x + 77) * scale;
+      const targetScroll = nodeCenterX - container.clientWidth / 2;
+      container.scrollTo({
+        left: Math.max(0, targetScroll),
+        behavior: "smooth",
+      });
+    }
+  }, [selectedNodeId, activeStepIndex, activeWorkflow, zoomLevel]);
+
+  const renderNodeIcon = (type: string) => {
+    switch (type) {
+      case "globe":
+        return <Globe className="w-4 h-4 text-purple-600" />;
+      case "zap":
+        return <Zap className="w-4 h-4 text-amber-500" />;
+      case "filter":
+        return <Search className="w-4 h-4 text-blue-600" />;
+      case "mail":
+        return <MessageSquare className="w-4 h-4 text-purple-600" />;
+      case "calendar":
+        return <Calendar className="w-4 h-4 text-emerald-600" />;
+      case "shield":
+        return <CheckCircle2 className="w-4 h-4 text-indigo-600" />;
+      case "user-check":
+        return <UserCheck className="w-4 h-4 text-emerald-600" />;
+      case "phone-incoming":
+        return <PhoneCall className="w-4 h-4 text-purple-600" />;
+      case "bot":
+        return <Bot className="w-4 h-4 text-purple-600" />;
+      case "phone-forwarded":
+        return <RotateCcw className="w-4 h-4 text-amber-600" />;
+      case "layers":
+        return <Layers className="w-4 h-4 text-blue-600" />;
+      case "refresh-cw":
+        return <RotateCcw className="w-4 h-4 text-purple-600" />;
+      case "pie-chart":
+        return <BarChart3 className="w-4 h-4 text-indigo-600" />;
+      case "trending-up":
+        return <TrendingUp className="w-4 h-4 text-emerald-600" />;
+      default:
+        return <Sparkles className="w-4 h-4 text-purple-600" />;
+    }
   };
 
   return (
-    <section
-      id="dashboard"
-      className="px-6 py-20 md:px-12 md:py-28 bg-[#faf8f5] text-slate-900 border-t border-slate-200"
-    >
-      <div className="mx-auto max-w-[1380px]">
-        {/* Section Header */}
-        <div className="reveal-left max-w-3xl mb-8">
-          <span className="font-mono text-xs font-bold uppercase tracking-wider text-purple-700 block mb-2">
-            Interactive system demo
-          </span>
-          <h2 className="font-display text-3xl sm:text-4xl md:text-5xl font-extrabold tracking-tight text-slate-900 leading-[1.12]">
-            Watch how the system runs your pipeline.
-          </h2>
-          <p className="mt-3 text-slate-600 text-sm sm:text-base leading-relaxed">
-            See how Buildicy captures, qualifies, and books inbound leads across WhatsApp, web, and voice.
-          </p>
+    <section id="demo" className="px-3 sm:px-6 py-14 md:px-8 md:py-24 bg-[#faf8f5] text-slate-900 overflow-hidden relative">
+      {/* Section Header */}
+      <div className="max-w-5xl mx-auto mb-8 sm:mb-10 text-center">
+        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-purple-100/80 border border-purple-200 text-purple-800 text-xs font-mono uppercase tracking-widest font-semibold mb-3">
+          <span className="w-2 h-2 rounded-full bg-purple-600 animate-ping" />
+          Interactive System Demo
         </div>
+        <h2 className="text-2xl sm:text-3xl md:text-5xl font-bold tracking-tight text-slate-900 font-display">
+          How Buildicy&apos;s AI Systems Work &amp; Help Your Business
+        </h2>
+        <p className="mt-2.5 sm:mt-3 text-sm sm:text-base md:text-lg text-slate-600 max-w-2xl mx-auto">
+          Select a package to see how enquiries are captured, qualified, and booked on autopilot.
+        </p>
 
-        {/* Compact dot tab indicators */}
-        <div className="reveal flex items-center gap-2 mb-5" style={{ transitionDelay: "120ms" }}>
-          {STAGES.map((s) => {
-            const isActive = activeTab === s.id;
+        {/* Workflow Switcher Tabs: Starter, Growth, Scale */}
+        <div className="mt-6 sm:mt-8 inline-flex flex-wrap items-center justify-center p-1 rounded-2xl bg-white border border-slate-200 shadow-sm gap-1 max-w-full">
+          {(["starter", "growth", "scale"] as const).map((type) => {
+            const wf = WORKFLOWS[type];
+            const isSelected = activeWorkflow === type;
             return (
               <button
-                key={s.id}
-                onClick={() => handleSelectTab(s.id)}
-                title={s.label}
-                className={`h-1.5 rounded-full transition-all duration-300 cursor-pointer ${
-                  isActive ? "w-8 bg-purple-600" : "w-3 bg-slate-300 hover:bg-purple-300"
+                key={type}
+                onClick={() => handleSwitchWorkflow(type)}
+                className={`px-3 sm:px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold transition-all flex items-center gap-1.5 cursor-pointer ${
+                  isSelected
+                    ? "bg-purple-600 text-white shadow-md shadow-purple-600/20"
+                    : "text-slate-600 hover:text-slate-900 hover:bg-slate-50"
                 }`}
-              />
+              >
+                <span className={`w-1.5 h-1.5 rounded-full ${isSelected ? "bg-white" : "bg-slate-400"}`} />
+                <span>{wf.name}</span>
+                {type === "growth" && (
+                  <span className={`text-[9px] uppercase font-mono px-1 py-0.2 rounded font-bold ${
+                    isSelected ? "bg-purple-700 text-white" : "bg-purple-100 text-purple-700"
+                  }`}>
+                    Popular
+                  </span>
+                )}
+              </button>
             );
           })}
-          <span className="ml-1 text-[11px] font-mono text-slate-400">
-            {STAGES[activeTab]?.label}
-          </span>
         </div>
+      </div>
 
-        {/* Dashboard Canvas Container (Ultra-Minimalist Light Aesthetic) */}
-        <div className="reveal-scale rounded-3xl bg-white border border-slate-200/90 shadow-[0_24px_60px_-12px_rgba(15,23,42,0.08)] overflow-hidden" style={{ transitionDelay: "180ms" }}>
-          {/* Top Window Bar */}
-          <div className="bg-slate-50/90 border-b border-slate-200 px-6 py-3.5 flex items-center justify-between gap-3">
-            <div className="flex items-center gap-3">
-              <div className="flex gap-1.5">
-                <span className="w-3 h-3 rounded-full bg-rose-400" />
-                <span className="w-3 h-3 rounded-full bg-amber-400" />
-                <span className="w-3 h-3 rounded-full bg-emerald-400" />
-              </div>
-              <div className="h-4 w-px bg-slate-200 mx-1" />
-              <span className="font-mono text-xs font-semibold text-slate-700">
-                buildicy.engine / autonomous-pipeline-demo
-              </span>
-            </div>
+      {/* Main n8n Workflow Studio Container */}
+      <div className="max-w-7xl mx-auto bg-white rounded-3xl border border-slate-200 shadow-xl overflow-hidden flex flex-col">
+        {/* Canvas Top Bar */}
+        <div className="px-4 sm:px-5 py-3 bg-slate-50 border-b border-slate-200 flex flex-wrap items-center justify-between gap-3 text-xs">
+          <div className="flex items-center gap-2">
+            <span className="w-2.5 h-2.5 rounded-full bg-emerald-500 shadow-sm shadow-emerald-500/50 animate-pulse" />
+            <span className="font-semibold text-slate-900 font-mono text-xs truncate max-w-[170px] sm:max-w-none">
+              buildicy_{activeWorkflow}_workflow.n8n
+            </span>
+            <span className="px-2 py-0.5 rounded bg-purple-100 text-purple-800 font-mono font-medium text-[10px] hidden sm:inline-block">
+              {currentWf.badge}
+            </span>
+          </div>
 
-            <div className="flex items-center gap-3">
-              <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[11px] font-mono font-semibold bg-emerald-50 text-emerald-700 border border-emerald-200">
-                <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-                Live Simulation
-              </span>
+          {/* Controls: Play/Pause, Reset, and Zoom */}
+          <div className="flex items-center gap-1.5">
+            <button
+              onClick={() => setIsAutoPlaying((p) => !p)}
+              className={`px-2.5 sm:px-3 py-1.5 rounded-xl font-medium flex items-center gap-1.5 transition-all text-xs cursor-pointer ${
+                isAutoPlaying
+                  ? "bg-slate-200/80 text-slate-700 hover:bg-slate-300/80"
+                  : "bg-purple-600 text-white hover:bg-purple-700"
+              }`}
+            >
+              {isAutoPlaying ? <Pause className="w-3.5 h-3.5" /> : <Play className="w-3.5 h-3.5" />}
+              <span className="hidden sm:inline">{isAutoPlaying ? "Pause" : "Resume"}</span>
+            </button>
+            <button
+              onClick={() => {
+                setActiveStepIndex(0);
+                const firstNode = currentWf.nodes[0];
+                if (firstNode) setSelectedNodeId(firstNode.id);
+              }}
+              title="Restart Workflow"
+              className="p-1.5 rounded-xl border border-slate-200 hover:bg-slate-100 text-slate-600"
+            >
+              <RotateCcw className="w-3.5 h-3.5" />
+            </button>
 
-              {/* Play / Pause Toggle */}
+            {/* Quick Zoom on Mobile & Desktop */}
+            <div className="flex items-center border border-slate-200 rounded-xl bg-white overflow-hidden p-0.5">
               <button
-                type="button"
-                onClick={() => setIsPlaying(!isPlaying)}
-                className="inline-flex items-center gap-1 px-3 py-1 rounded-full bg-white border border-slate-200 text-xs font-mono text-slate-700 hover:text-slate-900 shadow-2xs cursor-pointer"
-                title={isPlaying ? "Pause Auto-play" : "Resume Auto-play"}
+                onClick={() => setZoomLevel((z) => Math.max(z - 15, 50))}
+                className="w-6 h-6 flex items-center justify-center hover:bg-slate-100 text-slate-700 text-xs font-mono font-bold"
+                title="Zoom Out"
               >
-                {isPlaying ? (
-                  <>
-                    <Pause className="w-3 h-3 text-slate-600" />
-                    <span>Pause</span>
-                  </>
-                ) : (
-                  <>
-                    <Play className="w-3 h-3 text-purple-600" />
-                    <span className="text-purple-700 font-bold">Auto-Play</span>
-                  </>
-                )}
+                −
+              </button>
+              <span className="px-1 text-[11px] font-mono text-slate-600 min-w-[32px] text-center">
+                {zoomLevel}%
+              </span>
+              <button
+                onClick={() => setZoomLevel((z) => Math.min(z + 15, 120))}
+                className="w-6 h-6 flex items-center justify-center hover:bg-slate-100 text-slate-700 text-xs font-mono font-bold"
+                title="Zoom In"
+              >
+                +
+              </button>
+              <button
+                onClick={() => setZoomLevel(zoomLevel === 100 ? 55 : 100)}
+                className="px-1.5 h-6 flex items-center justify-center hover:bg-slate-100 text-purple-700 font-mono text-[10px] font-semibold border-l border-slate-200"
+                title="Toggle Fit / 100%"
+              >
+                {zoomLevel === 100 ? "Fit" : "100%"}
               </button>
             </div>
           </div>
+        </div>
 
-          {/* Interactive Dynamic Canvas */}
-          <div className="relative bg-gradient-to-br from-[#f0f4ff]/70 via-[#f8fafc] to-[#ffffff] p-4 sm:p-6 md:p-8 min-h-[420px] sm:min-h-[460px] flex flex-col justify-between overflow-hidden">
-            {/* Soft Ambient Radial Blur Background */}
-            <div className="absolute top-0 right-0 w-96 h-96 bg-purple-200/25 rounded-full filter blur-3xl pointer-events-none" />
-            <div className="absolute bottom-0 left-0 w-96 h-96 bg-blue-200/20 rounded-full filter blur-3xl pointer-events-none" />
+        {/* =========================================================================
+            INTERACTIVE 2D WORKFLOW CANVAS (Used for BOTH Mobile & Desktop)
+            ========================================================================= */}
+        <div
+          ref={canvasContainerRef}
+          className="relative w-full h-[450px] sm:h-[480px] bg-[#faf8f5] overflow-x-auto overflow-y-hidden select-none cursor-grab active:cursor-grabbing touch-pan-x"
+          style={{
+            backgroundImage: "radial-gradient(#cbd5e1 1.25px, transparent 1.25px)",
+            backgroundSize: "24px 24px",
+            WebkitOverflowScrolling: "touch",
+          }}
+        >
+          {/* Mobile Drag / Swipe Guidance Pill */}
+          <div className="md:hidden absolute top-3 right-3 z-20 pointer-events-none px-2.5 py-1 rounded-full bg-slate-900/80 backdrop-blur text-white text-[10px] font-mono flex items-center gap-1.5 shadow-md">
+            <span>👈 Swipe canvas or tap nodes 👉</span>
+          </div>
 
-            {/* TAB 0: 01 PIPELINE OVERVIEW (Style of frame_1.jpg) */}
-            {activeTab === 0 && (
-              <div className="relative z-10 animate-in fade-in duration-300">
-                <div className="flex items-center justify-between mb-8">
-                  <div>
-                    <h3 className="font-display text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">
-                      Overview
-                    </h3>
-                    <p className="text-xs sm:text-sm text-slate-500 font-normal mt-0.5">
-                      Live Inbound Pipeline • All Connected Workspaces
-                    </p>
-                  </div>
-                  <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-emerald-50 border border-emerald-200 text-emerald-700 text-xs font-mono font-semibold">
-                    <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-                    Active SLA 99.98%
-                  </div>
-                </div>
+          <div
+            className="relative min-w-[1220px] h-[450px] sm:h-[480px] transition-transform duration-300 origin-top-left"
+            style={{
+              transform: `scale(${zoomLevel / 100})`,
+              transformOrigin: "top left",
+            }}
+          >
+            {/* SVG Dynamic Connecting Wires */}
+            <svg className="absolute inset-0 w-full h-full pointer-events-none z-0">
+              <defs>
+                <filter id="wireGlow" x="-20%" y="-20%" width="140%" height="140%">
+                  <feGaussianBlur stdDeviation="3" result="glow" />
+                  <feComposite in="SourceGraphic" in2="glow" operator="over" />
+                </filter>
+              </defs>
 
-                <div className="grid grid-cols-2 gap-3">
-                  {/* Card 1 */}
-                  <div className="rounded-[18px] sm:rounded-[24px] bg-white border border-slate-100 p-4 sm:p-6 shadow-[0_16px_40px_-8px_rgba(15,23,42,0.06)] hover:border-purple-200 transition-all">
-                    <div className="flex items-center justify-between">
-                      <div className="w-9 h-9 rounded-xl bg-purple-50 text-purple-700 flex items-center justify-center font-bold text-sm">
-                        $
-                      </div>
-                      <span className="text-[11px] font-mono font-semibold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-full">
-                        ↑ +28.4%
-                      </span>
-                    </div>
-                    <span className="text-xs font-medium text-slate-500 block mt-4">
-                      Pipeline Value
-                    </span>
-                    <div className="font-display text-3xl font-extrabold text-slate-900 mt-1">
-                      $184.5k
-                    </div>
-                    {/* Minimalist Sparkline */}
-                    <div className="mt-3 pt-2 border-t border-slate-100 flex items-center justify-between">
-                      <span className="text-[11px] font-mono text-slate-400">Target: $250k</span>
-                      <span className="text-[11px] font-mono font-semibold text-purple-700">73.8% to goal</span>
-                    </div>
-                  </div>
+              {currentWf.connections.map((conn, idx) => {
+                const fromNode = currentWf.nodes.find((n) => n.id === conn.from);
+                const toNode = currentWf.nodes.find((n) => n.id === conn.to);
+                if (!fromNode || !toNode) return null;
 
-                  {/* Card 2 */}
-                  <div className="rounded-[18px] sm:rounded-[24px] bg-white border border-slate-100 p-4 sm:p-6 shadow-[0_16px_40px_-8px_rgba(15,23,42,0.06)] hover:border-purple-200 transition-all">
-                    <div className="flex items-center justify-between">
-                      <div className="w-9 h-9 rounded-xl bg-blue-50 text-blue-700 flex items-center justify-center font-bold text-sm">
-                        <Users className="w-4 h-4" />
-                      </div>
-                      <span className="text-[11px] font-mono font-semibold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-full">
-                        ↑ +38 new
-                      </span>
-                    </div>
-                    <span className="text-xs font-medium text-slate-500 block mt-4">
-                      Inbound Enquiries
-                    </span>
-                    <div className="font-display text-3xl font-extrabold text-slate-900 mt-1">
-                      1,482
-                    </div>
-                    <div className="mt-3 pt-2 border-t border-slate-100 flex items-center justify-between">
-                      <span className="text-[11px] font-mono text-slate-400">WhatsApp & Web</span>
-                      <span className="text-[11px] font-mono font-semibold text-blue-700">Zero Leakage</span>
-                    </div>
-                  </div>
+                const startX = fromNode.x + 155;
+                const startY = fromNode.y + 38;
+                const endX = toNode.x - 3;
+                const endY = toNode.y + 38;
 
-                  {/* Card 3 */}
-                  <div className="rounded-[18px] sm:rounded-[24px] bg-white border border-slate-100 p-4 sm:p-6 shadow-[0_16px_40px_-8px_rgba(15,23,42,0.06)] hover:border-purple-200 transition-all">
-                    <div className="flex items-center justify-between">
-                      <div className="w-9 h-9 rounded-xl bg-emerald-50 text-emerald-700 flex items-center justify-center font-bold text-sm">
-                        <Clock className="w-4 h-4" />
-                      </div>
-                      <span className="text-[11px] font-mono font-semibold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-full">
-                        &lt; 30s SLA
-                      </span>
-                    </div>
-                    <span className="text-xs font-medium text-slate-500 block mt-4">
-                      Median Response
-                    </span>
-                    <div className="font-display text-3xl font-extrabold text-emerald-600 mt-1">
-                      18.4s
-                    </div>
-                    <div className="mt-3 pt-2 border-t border-slate-100 flex items-center justify-between">
-                      <span className="text-[11px] font-mono text-slate-400">Manual Lag: 4.2h</span>
-                      <span className="text-[11px] font-mono font-semibold text-emerald-600">99.2% faster</span>
-                    </div>
-                  </div>
+                const midX = (startX + endX) / 2;
+                const pathD = `M ${startX} ${startY} C ${midX} ${startY}, ${midX} ${endY}, ${endX} ${endY}`;
 
-                  {/* Card 4 */}
-                  <div className="rounded-[18px] sm:rounded-[24px] bg-white border border-slate-100 p-4 sm:p-6 shadow-[0_16px_40px_-8px_rgba(15,23,42,0.06)] hover:border-purple-200 transition-all">
-                    <div className="flex items-center justify-between">
-                      <div className="w-9 h-9 rounded-xl bg-indigo-50 text-indigo-700 flex items-center justify-center font-bold text-sm">
-                        <Calendar className="w-4 h-4" />
-                      </div>
-                      <span className="text-[11px] font-mono font-semibold text-purple-700 bg-purple-50 px-2 py-0.5 rounded-full">
-                        92% show rate
-                      </span>
-                    </div>
-                    <span className="text-xs font-medium text-slate-500 block mt-4">
-                      Booked Meetings
-                    </span>
-                    <div className="font-display text-3xl font-extrabold text-slate-900 mt-1">
-                      318 Calls
-                    </div>
-                    <div className="mt-3 pt-2 border-t border-slate-100 flex items-center justify-between">
-                      <span className="text-[11px] font-mono text-slate-400">Direct CRM sync</span>
-                      <span className="text-[11px] font-mono font-semibold text-indigo-700">Qualified Only</span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            )}
+                const fromIndex = currentWf.nodes.findIndex((n) => n.id === conn.from);
+                const isWireActive = activeStepIndex > fromIndex;
+                const isCurrentWire = activeStepIndex === fromIndex;
 
-            {/* TAB 1: 02 OMNICHANNEL STREAM */}
-            {activeTab === 1 && (
-              <div className="relative z-10 flex flex-col lg:grid lg:grid-cols-12 gap-4 items-stretch animate-in fade-in duration-300">
-                {/* Left Live Volume Box */}
-                <div className="lg:col-span-5 rounded-[20px] bg-white border border-slate-100 p-4 sm:p-6 shadow-[0_20px_50px_rgba(15,23,42,0.06)] flex flex-col justify-between">
-                  <div>
-                    <div className="flex items-center justify-between">
-                      <span className="font-bold text-slate-900 text-base sm:text-lg">Interactive system demo</span>
-                      <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[11px] font-mono font-semibold bg-emerald-50 text-emerald-700">
-                        <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
-                        Live Demo
-                      </span>
-                    </div>
-                    <div className="mt-3 text-xs sm:text-sm text-slate-600 leading-relaxed font-medium">
-                      See how Buildicy captures, qualifies, and books inbound leads across WhatsApp, web, and voice.
-                    </div>
-                    <div className="inline-flex items-center gap-1 text-xs font-mono font-semibold text-purple-700 bg-purple-50 px-2.5 py-1 rounded-full mt-3">
-                      ⚡ &lt; 18s sub-minute response SLA
-                    </div>
-                  </div>
+                return (
+                  <g key={`${conn.from}-${conn.to}-${idx}`}>
+                    <path
+                      d={pathD}
+                      fill="none"
+                      stroke={isWireActive ? "#7c3aed" : "#cbd5e1"}
+                      strokeWidth={isWireActive ? "2.5" : "1.8"}
+                      strokeDasharray={conn.dashed ? "4 4" : "none"}
+                      className="transition-colors duration-500"
+                    />
 
-                  {/* Soundwave / Activity Bars */}
-                  <div className="mt-8 flex items-end gap-2.5 h-24 pt-4">
-                    {[35, 55, 40, 75, 60, 95, 50, 80, 65, 100].map((h, i) => (
-                      <div
-                        key={i}
-                        className={`flex-1 rounded-t-md transition-all duration-500 ${
-                          i === 9 ? "bg-purple-600" : "bg-purple-200"
-                        }`}
-                        style={{ height: `${h}%` }}
-                      />
-                    ))}
-                  </div>
-                </div>
+                    {isCurrentWire && (
+                      <circle r="4" fill="#7c3aed" filter="url(#wireGlow)">
+                        <animateMotion path={pathD} dur="1.2s" repeatCount="indefinite" />
+                      </circle>
+                    )}
+                  </g>
+                );
+              })}
+            </svg>
 
-                {/* Right Live Activity Feed */}
-                <div className="lg:col-span-7 rounded-[20px] bg-white border border-slate-100 p-4 sm:p-6 shadow-[0_20px_50px_rgba(15,23,42,0.06)]">
-                  <div className="flex items-center justify-between mb-5">
-                    <span className="font-bold text-slate-900 text-lg">Live Inbound Activity</span>
-                    <span className="text-xs font-mono text-purple-700 font-semibold">Sub-30s Triage</span>
-                  </div>
+            {/* Workflow Step Nodes */}
+            {currentWf.nodes.map((node, index) => {
+              const isNodeActive = activeStepIndex === index;
+              const isNodeCompleted = activeStepIndex > index;
+              const isSelected = selectedNodeId === node.id;
 
-                  <div className="space-y-3.5">
-                    {[
-                      {
-                        initials: "WA",
-                        color: "bg-emerald-50 text-emerald-700 border-emerald-200",
-                        name: "Rajesh V.",
-                        company: "Commercial Real Estate (Bangalore)",
-                        msg: "Need automated booking for 8 commercial office parks",
-                        time: "Just now",
-                      },
-                      {
-                        initials: "WB",
-                        color: "bg-blue-50 text-blue-700 border-blue-200",
-                        name: "Sarah Jenkins",
-                        company: "VP Sales • Elevate Growth Partners",
-                        msg: "Inbound demo qualification for 40 monthly website leads",
-                        time: "6s ago",
-                      },
-                      {
-                        initials: "VR",
-                        color: "bg-purple-50 text-purple-700 border-purple-200",
-                        name: "Marcus Vance",
-                        company: "Principal • Executive Search",
-                        msg: "Missed call recovered • Transcribed intent: Retained search",
-                        time: "18s ago",
-                      },
-                      {
-                        initials: "WA",
-                        color: "bg-emerald-50 text-emerald-700 border-emerald-200",
-                        name: "Dr. Alan Hayes",
-                        company: "Founder • Private Aesthetic Clinic",
-                        msg: "After-hours WhatsApp consultation booking inquiry",
-                        time: "34s ago",
-                      },
-                    ].map((row, idx) => (
-                      <div
-                        key={idx}
-                        className="flex items-start justify-between gap-3 p-3.5 rounded-2xl bg-slate-50/80 hover:bg-purple-50/40 transition-colors"
-                      >
-                        <div className="flex items-center gap-3">
-                          <span
-                            className={`w-9 h-9 rounded-xl flex items-center justify-center font-mono font-bold text-xs border shrink-0 ${row.color}`}
-                          >
-                            {row.initials}
-                          </span>
-                          <div>
-                            <div className="text-xs font-semibold text-slate-900">
-                              {row.name}{" "}
-                              <span className="font-normal text-slate-500">• {row.company}</span>
-                            </div>
-                            <div className="text-xs text-slate-600 mt-0.5 line-clamp-1">
-                              "{row.msg}"
-                            </div>
-                          </div>
-                        </div>
-                        <span className="text-[11px] font-mono text-slate-400 shrink-0">
-                          {row.time}
-                        </span>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              </div>
-            )}
-
-            {/* TAB 2: 03 SUB-MINUTE TRIAGE */}
-            {activeTab === 2 && (
-              <div className="relative z-10 flex flex-col lg:grid lg:grid-cols-12 gap-4 items-stretch animate-in fade-in duration-300">
-                {/* Left Conversational AI Box */}
-                <div className="lg:col-span-7 rounded-[20px] bg-white border border-slate-100 p-4 sm:p-6 shadow-[0_20px_50px_rgba(15,23,42,0.06)] flex flex-col justify-between">
-                  <div>
-                    <div className="flex items-center justify-between mb-4">
-                      <span className="font-bold text-slate-900 text-lg">Autonomous AI Exchange</span>
-                      <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[11px] font-mono font-semibold bg-emerald-50 text-emerald-700">
-                        <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
-                        Active Chat
-                      </span>
-                    </div>
-
-                    <div className="space-y-3.5 mt-2">
-                      {/* Prospect message */}
-                      <div className="bg-slate-50 p-4 rounded-2xl border border-slate-200/80 max-w-lg">
-                        <span className="text-[11px] font-mono font-semibold text-slate-500 block mb-1">
-                          Sarah Jenkins (Website Chat • 18s ago)
-                        </span>
-                        <p className="text-xs sm:text-sm text-slate-800 leading-relaxed font-normal">
-                          "Hi! We are losing after-hours leads on our website. Can Buildicy help qualify and book them automatically?"
-                        </p>
-                      </div>
-
-                      {/* AI Concierge response */}
-                      <div className="bg-purple-50/80 p-4 rounded-2xl border border-purple-200/80 ml-auto max-w-lg">
-                        <span className="text-[11px] font-mono font-bold text-purple-700 block mb-1">
-                          Buildicy AI Concierge • Dispatched in 18.2s
-                        </span>
-                        <p className="text-xs sm:text-sm text-slate-900 leading-relaxed font-medium">
-                          "Hi Sarah! Absolutely. We install systems that qualify and book prospects in under 60 seconds across WhatsApp, web & voice. How many active monthly inquiries do you currently handle?"
-                        </p>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between text-xs font-mono text-purple-700 font-semibold">
-                    <span>✓ ZERO HUMAN LATENCY</span>
-                    <span>1-CLICK MEETING SCHEDULING</span>
-                  </div>
-                </div>
-
-                {/* Right Latency Benchmark Box */}
-                <div className="lg:col-span-5 rounded-[20px] bg-white border border-slate-100 p-4 sm:p-6 shadow-[0_20px_50px_rgba(15,23,42,0.06)] flex flex-col justify-between">
-                  <div>
-                    <span className="font-bold text-slate-900 text-lg block">Speed-to-Lead</span>
-                    <span className="text-xs text-slate-500 font-normal mt-0.5 block">
-                      Buying intent peaks within the first 10 minutes.
-                    </span>
-
-                    <div className="font-display text-5xl sm:text-6xl font-extrabold text-slate-900 mt-6 tracking-tight">
-                      18.2s
-                    </div>
-                    <span className="text-xs font-mono text-purple-700 font-semibold block mt-1">
-                      Buildicy AI Median Latency
-                    </span>
-
-                    <div className="mt-6 space-y-3">
-                      <div>
-                        <div className="flex justify-between text-xs font-mono mb-1">
-                          <span className="font-semibold text-slate-800">Buildicy AI</span>
-                          <span className="text-emerald-600 font-bold">&lt; 20s (Instant)</span>
-                        </div>
-                        <div className="w-full h-3 rounded-full bg-slate-100 overflow-hidden">
-                          <div className="h-full bg-emerald-500 rounded-full w-[95%]" />
-                        </div>
-                      </div>
-
-                      <div>
-                        <div className="flex justify-between text-xs font-mono mb-1 text-slate-400">
-                          <span>Traditional Manual Delay</span>
-                          <span className="text-rose-500 font-semibold">4.2 Hours</span>
-                        </div>
-                        <div className="w-full h-3 rounded-full bg-slate-100 overflow-hidden">
-                          <div className="h-full bg-rose-400 rounded-full w-[12%]" />
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className="p-3 rounded-xl bg-emerald-50 text-emerald-800 text-xs font-semibold text-center border border-emerald-200 mt-4">
-                    ✓ 99.2% faster engagement than standard teams
-                  </div>
-                </div>
-              </div>
-            )}
-
-            {/* TAB 3: 04 QUALIFICATION & BOOKING */}
-            {activeTab === 3 && (
-              <div className="relative z-10 flex flex-col lg:grid lg:grid-cols-12 gap-4 items-stretch animate-in fade-in duration-300">
-                {/* Left Channel Attribution */}
-                <div className="lg:col-span-5 rounded-[20px] bg-white border border-slate-100 p-4 sm:p-6 shadow-[0_20px_50px_rgba(15,23,42,0.06)] flex flex-col justify-between">
-                  <div>
-                    <div className="flex items-center justify-between mb-2">
-                      <span className="font-bold text-slate-900 text-lg">Channel Distribution</span>
-                      <span className="text-xs font-mono text-slate-500">All Sources</span>
-                    </div>
-
-                    {/* Donut Simulation */}
-                    <div className="my-6 flex items-center justify-center">
-                      <div className="relative w-40 h-40 rounded-full border-[18px] border-purple-600 flex items-center justify-center border-t-blue-500 border-l-emerald-500 shadow-inner">
-                        <div className="text-center">
-                          <div className="font-display text-2xl font-extrabold text-slate-900">
-                            1,482
-                          </div>
-                          <div className="text-[10px] font-mono text-slate-400 uppercase">
-                            Ingested
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-
-                    <div className="space-y-2 text-xs font-medium">
-                      <div className="flex items-center justify-between">
-                        <span className="flex items-center gap-2">
-                          <span className="w-2.5 h-2.5 rounded-full bg-emerald-500" />
-                          WhatsApp Business
-                        </span>
-                        <span className="font-mono font-bold text-slate-900">42% (622 leads)</span>
-                      </div>
-                      <div className="flex items-center justify-between">
-                        <span className="flex items-center gap-2">
-                          <span className="w-2.5 h-2.5 rounded-full bg-blue-500" />
-                          Website Concierge
-                        </span>
-                        <span className="font-mono font-bold text-slate-900">36% (534 leads)</span>
-                      </div>
-                      <div className="flex items-center justify-between">
-                        <span className="flex items-center gap-2">
-                          <span className="w-2.5 h-2.5 rounded-full bg-purple-600" />
-                          Voice AI Reception
-                        </span>
-                        <span className="font-mono font-bold text-slate-900">22% (326 leads)</span>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                {/* Right Confirmed Booking & CRM Sync */}
-                <div className="lg:col-span-7 rounded-[20px] bg-white border border-slate-100 p-4 sm:p-6 shadow-[0_20px_50px_rgba(15,23,42,0.06)] flex flex-col justify-between">
-                  <div>
-                    <div className="flex items-center justify-between mb-4">
-                      <span className="font-bold text-slate-900 text-lg">Confirmed Booking</span>
-                      <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-mono font-bold bg-emerald-50 text-emerald-700 border border-emerald-200">
-                        ✓ SLOTTED & SYNCED
-                      </span>
-                    </div>
-
-                    <div className="p-4 rounded-2xl bg-purple-50/60 border border-purple-200/80 mb-5">
-                      <div className="text-xs font-mono text-purple-700 font-bold uppercase tracking-wider">
-                        Discovery Call Reserved
-                      </div>
-                      <div className="font-display text-2xl font-bold text-slate-900 mt-1">
-                        Tomorrow, Thursday • 2:30 PM EST
-                      </div>
-                      <div className="text-xs text-slate-600 mt-1">
-                        Attendee: Sarah Jenkins (VP Sales • Elevate Growth Partners)
-                      </div>
-                    </div>
-
-                    <div className="space-y-2.5 text-xs">
-                      <div className="flex items-center gap-2 text-slate-800">
-                        <span className="text-emerald-600 font-bold">✓</span>
-                        <span>Google Meet invitation generated and delivered</span>
-                      </div>
-                      <div className="flex items-center gap-2 text-slate-800">
-                        <span className="text-emerald-600 font-bold">✓</span>
-                        <span>HubSpot CRM deal ($24,000 value) automatically created</span>
-                      </div>
-                      <div className="flex items-center gap-2 text-slate-800">
-                        <span className="text-emerald-600 font-bold">✓</span>
-                        <span>WhatsApp & SMS reminder sequences armed (T-24h & T-1h)</span>
-                      </div>
-                      <div className="flex items-center gap-2 text-slate-800">
-                        <span className="text-emerald-600 font-bold">✓</span>
-                        <span>Slack notification dispatched to sales leadership</span>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className="mt-5 pt-3 border-t border-slate-100 flex items-center justify-between">
-                    <span className="text-xs font-mono text-slate-500">ICP Score: 96/100 (Tier 1)</span>
-                    <button
-                      onClick={onOpenAudit}
-                      className="text-xs font-semibold text-purple-700 hover:text-purple-800 cursor-pointer inline-flex items-center gap-1"
-                    >
-                      Install this engine →
-                    </button>
-                  </div>
-                </div>
-              </div>
-            )}
-
-            {/* Minimalist Bottom Caption & Progress Bar (Matching reference video's clean caption) */}
-            <div className="relative z-10 mt-8 pt-4 border-t border-slate-200/70 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs">
-              <div className="flex items-center gap-2.5">
-                <span className="w-2 h-2 rounded-full bg-purple-600 animate-pulse" />
-                <span className="font-mono text-slate-700 font-medium">
-                  {STAGES[activeTab]?.subtitle || ""}
-                </span>
-              </div>
-
-              {/* Progress Bar */}
-              <div className="w-full sm:w-48 h-1.5 rounded-full bg-slate-200 overflow-hidden">
+              return (
                 <div
-                  className="h-full bg-purple-600 rounded-full transition-all duration-75"
-                  style={{ width: `${progress}%` }}
-                />
+                  key={node.id}
+                  onClick={() => setSelectedNodeId(node.id)}
+                  style={{ left: `${node.x}px`, top: `${node.y}px` }}
+                  className={`absolute w-[155px] rounded-2xl bg-white border cursor-pointer transition-all duration-300 z-10 p-3 shadow-sm hover:shadow-md ${
+                    isSelected
+                      ? "ring-2 ring-purple-600 border-purple-500 shadow-purple-500/15 shadow-lg scale-105"
+                      : isNodeActive
+                      ? "border-purple-500 shadow-purple-500/20 shadow-lg ring-1 ring-purple-400"
+                      : isNodeCompleted
+                      ? "border-purple-200 bg-purple-50/20"
+                      : "border-slate-200"
+                  }`}
+                >
+                  {index > 0 && (
+                    <span className={`w-2.5 h-2.5 rounded-full bg-white border-2 absolute -left-1.5 top-1/2 -translate-y-1/2 z-20 ${
+                      isNodeActive || isNodeCompleted ? "border-purple-600" : "border-slate-400"
+                    }`} />
+                  )}
+
+                  {index < currentWf.nodes.length - 1 && (
+                    <span className={`w-2.5 h-2.5 rounded-full bg-white border-2 absolute -right-1.5 top-1/2 -translate-y-1/2 z-20 ${
+                      isNodeCompleted ? "border-purple-600" : "border-slate-400"
+                    }`} />
+                  )}
+
+                  <div className="flex items-center gap-2 mb-1.5">
+                    <div className={`w-7 h-7 rounded-xl flex items-center justify-center flex-shrink-0 transition-colors ${
+                      isNodeActive
+                        ? "bg-purple-600 text-white shadow-sm"
+                        : isNodeCompleted
+                        ? "bg-purple-100 text-purple-700"
+                        : "bg-slate-100 text-slate-600"
+                    }`}>
+                      {renderNodeIcon(node.icon)}
+                    </div>
+                    <div className="overflow-hidden">
+                      <span className="text-[9px] font-mono font-bold uppercase text-purple-700 block leading-tight">
+                        Step {node.stepNumber}
+                      </span>
+                      <h4 className="text-xs font-bold text-slate-900 leading-tight">
+                        {node.label}
+                      </h4>
+                    </div>
+                  </div>
+
+                  <p className="text-[10px] text-slate-500 leading-snug">
+                    {node.sublabel}
+                  </p>
+
+                  <div className="mt-2 pt-2 border-t border-slate-100 flex items-center justify-between text-[9px] font-mono">
+                    <span className="text-slate-400">{node.category}</span>
+                    {isNodeActive ? (
+                      <span className="text-purple-600 font-bold flex items-center gap-1">
+                        <span className="w-1.5 h-1.5 rounded-full bg-purple-600 animate-ping" />
+                        Active
+                      </span>
+                    ) : isNodeCompleted ? (
+                      <span className="text-emerald-600 font-semibold">✓ Done</span>
+                    ) : (
+                      <span className="text-slate-400">Idle</span>
+                    )}
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+
+          {/* Floating Center Execution Status */}
+          <div className="absolute left-1/2 -translate-x-1/2 bottom-3 sm:bottom-4 z-20 w-max max-w-[90%]">
+            <button
+              onClick={() => {
+                setActiveStepIndex(0);
+                setIsAutoPlaying(true);
+              }}
+              className="px-4 sm:px-5 py-2 sm:py-2.5 rounded-full bg-slate-900 hover:bg-slate-800 text-white font-mono text-[11px] sm:text-xs font-semibold shadow-xl shadow-slate-900/20 flex items-center gap-2 border border-slate-700 hover:scale-105 active:scale-95 transition-all cursor-pointer"
+            >
+              <div className="w-4 h-4 rounded-full bg-purple-500 flex items-center justify-center text-[10px] font-bold text-white">
+                ▶
               </div>
-            </div>
+              <span>Simulate Lead Execution</span>
+              <span className="px-1.5 py-0.5 rounded bg-slate-800 text-purple-300 text-[10px]">
+                {activeStepIndex + 1}/{nodeCount}
+              </span>
+            </button>
           </div>
         </div>
 
-        {/* Minimalist CTA Below Dashboard */}
-        <div className="reveal-flip mt-8 flex flex-col sm:flex-row items-center justify-between gap-4 p-6 rounded-2xl bg-white border border-slate-200 shadow-xs" style={{ transitionDelay: "200ms" }}>
-          <div>
-            <div className="font-display text-lg font-bold text-slate-900">
-              Want this autonomous engine installed into your business?
+        {/* Minimalist Lower Information Panel */}
+        <div className="border-t border-slate-200 bg-white px-4 py-3 sm:px-6 sm:py-4">
+          <div className="max-w-6xl mx-auto flex flex-col md:flex-row md:items-center justify-between gap-3">
+            <div className="flex-1 min-w-0">
+              <div className="flex flex-wrap items-center gap-2 mb-1">
+                <span className="text-[10px] font-mono font-bold uppercase px-2 py-0.5 rounded-md bg-purple-100 text-purple-800">
+                  Step {selectedNode.stepNumber} · {selectedNode.category}
+                </span>
+                <span className="text-xs font-mono text-slate-400 hidden sm:inline">
+                  {currentWf.name}
+                </span>
+
+                {/* Inline Minimalist Metrics */}
+                <div className="flex items-center gap-1.5 ml-auto sm:ml-2">
+                  {selectedNode.metrics.map((metric, i) => (
+                    <span
+                      key={i}
+                      className="inline-flex items-center gap-1 text-[10px] font-mono px-2 py-0.5 rounded-md bg-slate-100 text-slate-700"
+                    >
+                      <span className="text-slate-400">{metric.label}:</span>
+                      <strong className="text-slate-900 font-bold">{metric.value}</strong>
+                    </span>
+                  ))}
+                </div>
+              </div>
+
+              {/* Title & Description */}
+              <h3 className="text-sm sm:text-base font-bold text-slate-900">
+                {selectedNode.label}
+              </h3>
+              <p className="mt-0.5 text-xs text-slate-500 leading-relaxed">
+                {selectedNode.description}
+              </p>
+
+              {/* Clean Single-Line Business Impact */}
+              <div className="mt-1.5 flex items-center gap-1.5 text-xs text-purple-900 font-medium">
+                <span className="w-1.5 h-1.5 rounded-full bg-purple-600 shrink-0" />
+                <span className="text-slate-400 text-[10px] uppercase font-mono font-semibold">Impact:</span>
+                <span>{selectedNode.businessImpact}</span>
+              </div>
             </div>
-            <div className="text-xs sm:text-sm text-slate-600 mt-0.5">
-              We audit your inbound channels, design your custom blueprint, and connect your CRM within 7–14 days.
+
+            {/* Sleek Minimalist CTA */}
+            <div className="pt-1 md:pt-0 shrink-0">
+              <button
+                onClick={onOpenAudit}
+                className="w-full md:w-auto px-4 py-2 rounded-xl bg-purple-600 hover:bg-purple-700 text-white font-semibold text-xs shadow-sm hover:shadow-purple-600/20 transition-all flex items-center justify-center gap-1.5 cursor-pointer"
+              >
+                <span>Deploy This System</span>
+                <ArrowRight className="w-3.5 h-3.5" />
+              </button>
             </div>
           </div>
-          <button
-            onClick={onOpenAudit}
-            className="w-full sm:w-auto shrink-0 rounded-full bg-purple-600 hover:bg-purple-700 text-white px-6 py-3 text-xs sm:text-sm font-semibold transition-all cursor-pointer shadow-md shadow-purple-600/20"
-          >
-            Book a Free AI Growth Audit →
-          </button>
         </div>
       </div>
     </section>
@@ -1522,8 +1721,17 @@ function VideoDashboardSection({ onOpenAudit }: { onOpenAudit: () => void }) {
 }
 
 /* =========================================================================
-   THE THREE AI GROWTH SYSTEMS (React Bits Pricing 6: Highlighted Middle)
+   THE THREE AI GROWTH SYSTEMS (Minimalist 10-Row Matrix & Mobile Plan Card)
    ========================================================================= */
+
+const INDUSTRIES = [
+  "Dental & Healthcare",
+  "Real Estate",
+  "Education",
+  "Coaching & Consulting",
+  "Hospitality",
+  "Other",
+] as const;
 
 function AIGrowthSystemsPackages({
   onSelectPkg,
@@ -1531,99 +1739,185 @@ function AIGrowthSystemsPackages({
   onSelectPkg: (name: string, market: string) => void;
 }) {
   const [market, setMarket] = useState<"india" | "intl">("india");
+  const [selectedIndustry, setSelectedIndustry] = useState<string>("Dental & Healthcare");
+  const [mobilePlanTab, setMobilePlanTab] = useState<"starter" | "growth" | "scale">("growth");
   const isIntl = market === "intl";
-  const marketLabel = isIntl ? "International — USD" : "India — INR";
 
-  const systems = [
+  const starter = {
+    id: "starter",
+    name: "Starter — AI Funnel & Booking",
+    badge: "Starter",
+    systemNumber: "01",
+    tagline: "For inbound web enquiry capture & booking",
+    popular: false,
+    indiaSetup: "₹40,000",
+    indiaMonthly: "₹8,000/mo",
+    intlSetup: "$2,000",
+    intlMonthly: "$500/mo",
+    cta: "Get Starter",
+    features: [
+      "AI enquiry capture & instant responses",
+      "Lead qualification & automated scoring",
+      "Personalised follow-ups & FAQ handling",
+      "Appointment booking & calendar integration",
+      "Automated reminders & AI No-show recovery",
+      "Lead dashboard & human handover",
+      "Basic WhatsApp lead notifications",
+    ],
+  };
+
+  const growth = {
+    id: "growth",
+    name: "Growth — AI Funnel + AI Receptionist",
+    badge: "Growth",
+    systemNumber: "02",
+    tagline: "For 24/7 Voice & WhatsApp Front Desk",
+    popular: true,
+    indiaSetup: "₹65,000",
+    indiaMonthly: "₹15,000/mo",
+    intlSetup: "$3,500",
+    intlMonthly: "$900/mo",
+    cta: "Deploy Growth",
+    features: [
+      "Everything in Starter, plus:",
+      "24/7 AI Receptionist (Inbound Front Desk)",
+      "Voice AI (Inbound phone calls triage & booking)",
+      "Full AI WhatsApp conversations & booking",
+      "Missed-call recovery (automated call-to-text)",
+      "Full 2-way CRM sync (HubSpot, GHL, Pipedrive)",
+      "Slack & team alerts with call audio transcripts",
+    ],
+  };
+
+  const scale = {
+    id: "scale",
+    name: "Scale — AI Growth Intelligence",
+    badge: "Scale",
+    systemNumber: "03",
+    tagline: "For complete autonomous revenue engine",
+    popular: false,
+    indiaSetup: "₹1,25,000",
+    indiaMonthly: "₹35,000–₹40,000/mo",
+    intlSetup: "$6,000",
+    intlMonthly: "$2,000/mo",
+    cta: "Deploy Full Engine",
+    features: [
+      "Everything in Growth, plus:",
+      "AI Lead Reactivation (wakes dormant CRM leads)",
+      "AI Conversation Insights (objection & trend mining)",
+      "AI Conversion Optimisation (monthly loop tuning)",
+      "Omnichannel capture across all digital & phone channels",
+      "Custom multi-rep round-robin calendar routing",
+      "Dedicated systems architect & priority support",
+    ],
+  };
+
+  // Concise 10-row comparison table (No bloated text, cuts height by 50%)
+  const coreComparisonRows = [
     {
-      id: "starter",
-      name: "Starter — AI Lead Capture & Booking",
-      systemNumber: "01",
-      tagline: 'AI Lead Machine: "Turn website and ad traffic into qualified booked calls."',
-      popular: false,
-      indiaSetup: "₹40,000",
-      indiaMonthly: "₹8,000/mo",
-      intlSetup: "$2,000",
-      intlMonthly: "$500/mo",
-      includes: [
-        "Turn website and ad traffic into qualified booked calls",
-        "Custom AI Lead Capture Landing Funnel",
-        "Interactive Qualification & Scoring Form",
-        "Automated calendar booking & reminder sequences",
-        "Instant WhatsApp & email lead notification alerts",
-      ],
-      cta: "Get Starter System",
+      name: "Inbound Enquiry Capture",
+      desc: "Web forms vs 24/7 Calls & WhatsApp",
+      starter: "Web Forms",
+      growth: "Web, WhatsApp & Phone",
+      scale: "Omnichannel",
     },
     {
-      id: "growth",
-      name: "Growth — 24/7 AI Receptionist",
-      systemNumber: "02",
-      tagline: 'AI Front Desk + Funnel: "Never miss an inbound call or WhatsApp enquiry again."',
-      popular: true,
-      indiaSetup: "₹65,000",
-      indiaMonthly: "₹15,000/mo",
-      intlSetup: "$3,500",
-      intlMonthly: "$900/mo",
-      includes: [
-        "Everything in Starter System",
-        "Never miss an inbound call or WhatsApp enquiry again",
-        "24/7 AI Voice Receptionist for inbound calls",
-        "24/7 WhatsApp AI Chat Agent for instant replies (< 18s)",
-        "Missed-call to text/WhatsApp automated recovery",
-        "Live lead triage & calendar booking over voice & chat",
-      ],
-      cta: "Deploy Growth Receptionist",
+      name: "Instant Speed-to-Lead (< 3s)",
+      desc: "Sub-3-second autonomous response",
+      starter: "✓",
+      growth: "✓",
+      scale: "✓",
     },
     {
-      id: "scale",
-      name: "Scale — Full AI Growth Engine",
-      systemNumber: "03",
-      tagline: 'Complete AI Growth Engine: "Run lead capture, follow-up, CRM, and reporting on one automated system."',
-      popular: false,
-      indiaSetup: "₹1,25,000",
-      indiaMonthly: "₹35,000–₹40,000/mo",
-      intlSetup: "$6,000",
-      intlMonthly: "$2,000/mo",
-      includes: [
-        "Everything in Growth Receptionist",
-        "Run lead capture, follow-up, CRM, and reporting on one system",
-        "Full 2-way sync with HubSpot / GoHighLevel / Salesforce",
-        "Automated closer routing & multi-stage pipeline automation",
-        "Multi-touch no-show recovery & long-term nurture campaigns",
-        "Executive owner analytics & monthly conversion tuning",
-      ],
-      cta: "Deploy Full Engine",
+      name: "Lead Qualification & Scoring",
+      desc: "BANT fit assessment filters tire-kickers",
+      starter: "✓",
+      growth: "✓",
+      scale: "✓",
+    },
+    {
+      name: "Appointment Booking & Calendar Sync",
+      desc: "Direct integration with Cal.com / Google Calendar",
+      starter: "✓",
+      growth: "✓",
+      scale: "✓",
+    },
+    {
+      name: "AI No-Show Recovery",
+      desc: "1-Click auto-reschedule cuts no-shows to < 8%",
+      starter: "✓",
+      growth: "✓",
+      scale: "✓",
+      highlight: true,
+    },
+    {
+      name: "WhatsApp AI Integration",
+      desc: "Lead alerts vs 2-way AI conversational booking",
+      starter: "Lead Alerts",
+      growth: "✓ Full 2-Way AI",
+      scale: "✓ Full 2-Way AI",
+    },
+    {
+      name: "24/7 AI Receptionist (Inbound Calls)",
+      desc: "Voice phone call triage & booking in < 400ms",
+      starter: "—",
+      growth: "✓",
+      scale: "✓",
+    },
+    {
+      name: "Missed-Call Recovery",
+      desc: "Immediate call-to-text when callers drop off",
+      starter: "—",
+      growth: "✓",
+      scale: "✓",
+    },
+    {
+      name: "AI Lead Reactivation",
+      desc: "Wakes cold dormant CRM leads without ad spend",
+      starter: "—",
+      growth: "—",
+      scale: "✓",
+    },
+    {
+      name: "2-Way CRM Integration",
+      desc: "HubSpot, GoHighLevel, Pipedrive sync",
+      starter: "✓",
+      growth: "✓",
+      scale: "✓",
     },
   ];
+
+  const activeMobilePkg = mobilePlanTab === "starter" ? starter : mobilePlanTab === "growth" ? growth : scale;
 
   return (
     <section
       id="systems"
-      className="px-6 py-20 md:px-12 md:py-28 bg-[#faf8f5] text-slate-900 border-t border-slate-200"
+      className="px-4 py-16 sm:px-6 md:px-12 md:py-24 bg-[#faf8f5] text-slate-900 border-t border-slate-200"
     >
-      <div className="mx-auto max-w-[1380px]">
-        {/* Minimalist Section Header */}
-        <div className="reveal-blur text-center max-w-2xl mx-auto mb-12 sm:mb-14">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-mono font-semibold bg-purple-50 text-purple-700 border border-purple-200/80 mb-3.5">
-            <span className="w-1.5 h-1.5 rounded-full bg-purple-600 animate-pulse" />
-            CORE SYSTEMS
+      <div className="mx-auto max-w-[1280px]">
+        {/* Header with Title and Currency Toggle */}
+        <div className="reveal-blur flex flex-col md:flex-row md:items-end justify-between gap-6 mb-8 sm:mb-10">
+          <div>
+            <span className="text-xs font-mono font-bold uppercase tracking-widest text-purple-700 block mb-2">
+              PRICING &amp; PACKAGES
+            </span>
+            <h2 className="font-display text-3xl sm:text-4xl md:text-5xl font-extrabold tracking-tight text-slate-900 leading-[1.12]">
+              Simple, transparent pricing.
+            </h2>
+            <p className="mt-2 text-slate-600 text-sm sm:text-base leading-relaxed">
+              Fixed one-time setup plus managed monthly optimization. No surprise fees.
+            </p>
           </div>
-          <h2 className="font-display text-3xl sm:text-4xl md:text-5xl font-extrabold tracking-tight text-slate-900 leading-[1.12]">
-            The Three AI Growth Systems.
-          </h2>
-          <p className="mt-3 text-slate-600 text-sm sm:text-base leading-relaxed">
-            Transparent pricing: Fixed one-time setup plus managed monthly optimization.
-          </p>
 
-          {/* Minimalist Currency Pill Toggle */}
-          <div className="mt-6 flex justify-center">
+          {/* Currency Toggle Pill */}
+          <div className="shrink-0">
             <div className="inline-flex items-center p-1 rounded-full bg-white border border-slate-200 shadow-2xs">
               <button
                 type="button"
                 onClick={() => setMarket("india")}
-                className={`px-4 py-1.5 rounded-full text-xs font-medium transition-all cursor-pointer ${
+                className={`px-4 py-1.5 rounded-full text-xs font-semibold transition-all cursor-pointer ${
                   market === "india"
-                    ? "bg-purple-600 text-white shadow-xs font-semibold"
+                    ? "bg-purple-600 text-white shadow-xs"
                     : "text-slate-600 hover:text-slate-900"
                 }`}
               >
@@ -1632,9 +1926,9 @@ function AIGrowthSystemsPackages({
               <button
                 type="button"
                 onClick={() => setMarket("intl")}
-                className={`px-4 py-1.5 rounded-full text-xs font-medium transition-all cursor-pointer ${
+                className={`px-4 py-1.5 rounded-full text-xs font-semibold transition-all cursor-pointer ${
                   market === "intl"
-                    ? "bg-purple-600 text-white shadow-xs font-semibold"
+                    ? "bg-purple-600 text-white shadow-xs"
                     : "text-slate-600 hover:text-slate-900"
                 }`}
               >
@@ -1644,213 +1938,376 @@ function AIGrowthSystemsPackages({
           </div>
         </div>
 
-        {/* Mobile: one card at a time — full width snap */}
-        <div className="lg:hidden overflow-x-auto snap-x snap-mandatory no-scrollbar -mx-6">
-          <div className="flex w-max px-6 gap-3">
-          {systems.map((sys, idx) => {
-            const setup = isIntl ? sys.intlSetup : sys.indiaSetup;
-            const monthly = isIntl ? sys.intlMonthly : sys.indiaMonthly;
-            const isPopular = sys.popular;
-            return (
-              <div
-                key={sys.id}
-                style={{ width: "calc(100vw - 48px)" }}
-                className={`snap-start snap-always shrink-0 rounded-3xl p-6 flex flex-col ${
-                  isPopular
-                    ? "bg-slate-950 text-white border-2 border-purple-500 shadow-xl"
-                    : "bg-white border border-slate-200"
-                }`}
-              >
-                {isPopular && (
-                  <div className="mb-3">
-                    <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[10px] font-mono font-bold bg-purple-600 text-white">
-                      <Sparkles className="w-2.5 h-2.5" /> Most Popular
-                    </span>
-                  </div>
-                )}
-                <span className={`text-[10px] font-mono font-semibold ${isPopular ? "text-purple-400" : "text-slate-500"}`}>System {sys.systemNumber}</span>
-                <h3 className={`font-display text-xl font-bold mt-1 mb-2 ${isPopular ? "text-white" : "text-slate-900"}`}>{sys.name}</h3>
-                <p className={`text-xs mb-4 leading-relaxed ${isPopular ? "text-slate-400" : "text-slate-500"}`}>{sys.tagline}</p>
-                <div className={`p-3 rounded-xl mb-4 ${isPopular ? "bg-white/5 border border-white/10" : "bg-[#faf8f5] border border-slate-200"}`}>
-                  <span className={`font-display text-2xl font-extrabold ${isPopular ? "text-white" : "text-slate-900"}`}>{setup}</span>
-                  <span className={`text-[10px] font-mono ml-1 ${isPopular ? "text-slate-400" : "text-slate-500"}`}>setup</span>
-                  <span className={`text-xs font-mono font-bold block mt-0.5 ${isPopular ? "text-purple-400" : "text-purple-700"}`}>+ {monthly}</span>
-                </div>
-                <div className="space-y-2 flex-1">
-                  {sys.includes.map((item) => (
-                    <div key={item} className={`flex items-start gap-2 text-[11px] ${isPopular ? "text-slate-300" : "text-slate-600"}`}>
-                      <CheckCircle2 className={`w-3.5 h-3.5 shrink-0 mt-0.5 ${isPopular ? "text-purple-400" : "text-purple-600"}`} />
-                      <span>{item}</span>
-                    </div>
-                  ))}
-                </div>
+        {/* Industry Selector */}
+        <div className="max-w-4xl mx-auto my-6 sm:my-8 text-center">
+          <div className="inline-flex items-center gap-2 mb-2.5">
+            <span className="text-[11px] font-mono uppercase tracking-widest text-slate-500 font-semibold">
+              Select Your Industry
+            </span>
+            <span className="px-2 py-0.5 rounded-full bg-slate-100 text-slate-600 text-[10px] font-mono">
+              Tailored Architecture
+            </span>
+          </div>
+          <div className="flex flex-wrap items-center justify-center p-1 rounded-2xl bg-white border border-slate-200/90 shadow-2xs gap-1">
+            {INDUSTRIES.map((ind) => {
+              const isSelected = selectedIndustry === ind;
+              return (
                 <button
-                  onClick={() => onSelectPkg(sys.name, marketLabel)}
-                  className={`mt-5 w-full py-3 rounded-full text-xs font-semibold flex items-center justify-center gap-1.5 cursor-pointer ${
-                    isPopular ? "bg-purple-600 hover:bg-purple-500 text-white" : "bg-slate-900 hover:bg-purple-600 text-white"
+                  key={ind}
+                  type="button"
+                  onClick={() => setSelectedIndustry(ind)}
+                  className={`px-3 py-1.5 rounded-xl text-xs font-semibold transition-all cursor-pointer ${
+                    isSelected
+                      ? "bg-slate-900 text-white shadow-xs"
+                      : "text-slate-600 hover:text-slate-900 hover:bg-slate-50"
                   }`}
                 >
-                  {sys.cta} <ArrowRight className="w-3.5 h-3.5" />
+                  {ind}
                 </button>
-              </div>
-            );
-          })}
+              );
+            })}
           </div>
         </div>
-        {/* swipe hint dots */}
-        <div className="lg:hidden flex justify-center gap-1.5 mt-3">
-          {systems.map((_, i) => (
-            <span key={i} className="w-1.5 h-1.5 rounded-full bg-slate-300" />
-          ))}
-        </div>
 
-        {/* Desktop: 3-col grid */}
-        <div className="hidden lg:grid grid-cols-3 gap-6 lg:gap-7 items-stretch pt-4">
-          {systems.map((sys, idx) => {
-            const setup = isIntl ? sys.intlSetup : sys.indiaSetup;
-            const monthly = isIntl ? sys.intlMonthly : sys.indiaMonthly;
-            const isPopular = sys.popular;
+        {/* 3 Packages Cards (Responsive Stack on Mobile) */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8 items-stretch mb-12 sm:mb-16">
+          {/* Card 1: Starter */}
+          <div className="bg-white rounded-3xl p-6 sm:p-8 border border-slate-200/90 shadow-sm flex flex-col justify-between hover:shadow-md transition-shadow">
+            <div>
+              <div className="flex items-center justify-between mb-4">
+                <span className="text-xs font-mono font-bold uppercase tracking-wider text-slate-500">
+                  {starter.systemNumber} · {starter.badge}
+                </span>
+              </div>
+              <h3 className="font-display text-xl sm:text-2xl font-bold text-slate-900">
+                {starter.name}
+              </h3>
+              <p className="mt-1.5 text-xs text-slate-500 min-h-[32px]">
+                {starter.tagline}
+              </p>
 
-            if (isPopular) {
-              /* HIGHLIGHTED MIDDLE CARD (Centerpiece) */
-              return (
-                <div
-                  key={sys.id}
-                  className="reveal-zoom rounded-3xl p-7 sm:p-9 bg-slate-950 text-white border-2 border-purple-500 shadow-2xl shadow-purple-950/25 lg:-translate-y-4 relative flex flex-col justify-between transition-all duration-300"
-                  style={{ transitionDelay: `${idx * 100}ms` }}
-                >
-                  {/* Floating Highlight Badge */}
-                  <div className="absolute -top-3.5 left-1/2 -translate-x-1/2">
-                    <span className="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full text-[11px] font-mono font-bold uppercase tracking-wider bg-purple-600 text-white shadow-md shadow-purple-600/30">
-                      <Sparkles className="w-3 h-3 text-purple-200" />
-                      <span>Most Popular</span>
-                    </span>
-                  </div>
-
-                  <div>
-                    {/* Header */}
-                    <div className="flex items-center justify-between mb-3">
-                      <span className="text-xs font-mono font-semibold text-purple-400">
-                        System {sys.systemNumber}
-                      </span>
-                    </div>
-
-                    <h3 className="font-display text-2xl sm:text-3xl font-extrabold text-white tracking-tight">
-                      {sys.name}
-                    </h3>
-
-                    <p className="text-xs sm:text-sm text-slate-400 mt-2 mb-6 leading-relaxed">
-                      {sys.tagline}
-                    </p>
-
-                    {/* Price Box */}
-                    <div className="mb-7 p-4 rounded-2xl bg-white/5 border border-white/10">
-                      <div className="flex items-baseline justify-between">
-                        <div>
-                          <span className="font-display text-3xl sm:text-4xl font-extrabold text-white tracking-tight">
-                            {setup}
-                          </span>
-                          <span className="text-xs text-slate-400 font-mono uppercase ml-1.5">
-                            Setup
-                          </span>
-                        </div>
-                        <div className="text-xs font-mono font-bold text-purple-400">
-                          + {monthly}
-                        </div>
-                      </div>
-                    </div>
-
-                    {/* Features List */}
-                    <div className="space-y-3 mb-8">
-                      {sys.includes.map((item) => (
-                        <div key={item} className="flex items-start gap-2.5 text-xs sm:text-sm text-slate-300">
-                          <CheckCircle2 className="w-4 h-4 text-purple-400 shrink-0 mt-0.5" />
-                          <span className="leading-snug">{item}</span>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-
-                  {/* CTA */}
-                  <div className="pt-4 border-t border-white/10">
-                    <button
-                      onClick={() => onSelectPkg(sys.name, marketLabel)}
-                      className="w-full py-4 rounded-full text-xs sm:text-sm font-semibold bg-purple-600 hover:bg-purple-500 text-white shadow-lg shadow-purple-600/30 transition-all duration-300 flex items-center justify-center gap-2 cursor-pointer group"
-                    >
-                      <span>{sys.cta}</span>
-                      <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-0.5" />
-                    </button>
-                  </div>
+              <div className="mt-6 pt-6 border-t border-slate-100">
+                <div className="flex items-baseline gap-2">
+                  <span className="text-3xl sm:text-4xl font-extrabold text-slate-900 font-mono tracking-tight">
+                    {isIntl ? starter.intlSetup : starter.indiaSetup}
+                  </span>
+                  <span className="text-xs text-slate-500 font-medium">one-time setup</span>
                 </div>
-              );
-            }
-
-            /* STANDARD TIER CARDS (Left & Right) */
-            return (
-              <div
-                key={sys.id}
-                className="reveal-scale rounded-3xl p-7 sm:p-9 bg-white text-slate-900 border border-slate-200 shadow-xs hover:border-purple-300 hover:shadow-md relative flex flex-col justify-between transition-all duration-300"
-                style={{ transitionDelay: `${idx * 100}ms` }}
-              >
-                <div>
-                  {/* Header */}
-                  <div className="flex items-center justify-between mb-3">
-                    <span className="text-xs font-mono font-semibold text-slate-500">
-                      System {sys.systemNumber}
-                    </span>
-                  </div>
-
-                  <h3 className="font-display text-2xl font-bold text-slate-900 tracking-tight">
-                    {sys.name}
-                  </h3>
-
-                  <p className="text-xs sm:text-sm text-slate-600 mt-2 mb-6 leading-relaxed">
-                    {sys.tagline}
-                  </p>
-
-                  {/* Price Box */}
-                  <div className="mb-7 p-4 rounded-2xl bg-[#faf8f5] border border-slate-200/80">
-                    <div className="flex items-baseline justify-between">
-                      <div>
-                        <span className="font-display text-3xl sm:text-4xl font-extrabold text-slate-900 tracking-tight">
-                          {setup}
-                        </span>
-                        <span className="text-xs text-slate-500 font-mono uppercase ml-1.5">
-                          Setup
-                        </span>
-                      </div>
-                      <div className="text-xs font-mono font-bold text-purple-700">
-                        + {monthly}
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Features List */}
-                  <div className="space-y-3 mb-8">
-                    {sys.includes.map((item) => (
-                      <div key={item} className="flex items-start gap-2.5 text-xs sm:text-sm text-slate-700">
-                        <CheckCircle2 className="w-4 h-4 text-purple-600 shrink-0 mt-0.5" />
-                        <span className="leading-snug">{item}</span>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-
-                {/* CTA */}
-                <div className="pt-4 border-t border-slate-100">
-                  <button
-                    onClick={() => onSelectPkg(sys.name, marketLabel)}
-                    className="w-full py-3.5 rounded-full text-xs sm:text-sm font-semibold bg-slate-900 hover:bg-purple-600 text-white transition-all duration-300 flex items-center justify-center gap-2 cursor-pointer group"
-                  >
-                    <span>{sys.cta}</span>
-                    <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-0.5" />
-                  </button>
+                <div className="mt-1 text-sm font-semibold text-purple-700 font-mono">
+                  + {isIntl ? starter.intlMonthly : starter.indiaMonthly}
                 </div>
               </div>
-            );
-          })}
+
+              <div className="mt-6 pt-6 border-t border-slate-100 space-y-2.5">
+                {starter.features.map((feat, i) => (
+                  <div key={i} className="flex items-start gap-2 text-xs text-slate-700">
+                    <Check className="w-4 h-4 text-emerald-600 shrink-0 mt-0.5" />
+                    <span>{feat}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            <button
+              onClick={() => onSelectPkg(starter.name, market)}
+              className="mt-8 w-full py-3 px-4 rounded-xl border border-slate-300 hover:border-slate-400 bg-white hover:bg-slate-50 text-slate-900 font-semibold text-xs transition-colors cursor-pointer"
+            >
+              {starter.cta}
+            </button>
+          </div>
+
+          {/* Card 2: Growth (Most Popular) */}
+          <div className="bg-white rounded-3xl p-6 sm:p-8 border-2 border-purple-600 shadow-xl shadow-purple-600/10 flex flex-col justify-between relative scale-[1.01] z-10">
+            <div className="absolute -top-3.5 left-1/2 -translate-x-1/2">
+              <span className="px-4 py-1 rounded-full bg-purple-600 text-white text-[11px] font-mono font-bold uppercase tracking-wider shadow-sm">
+                Most Popular Plan
+              </span>
+            </div>
+
+            <div>
+              <div className="flex items-center justify-between mb-4">
+                <span className="text-xs font-mono font-bold uppercase tracking-wider text-purple-700">
+                  {growth.systemNumber} · {growth.badge}
+                </span>
+              </div>
+              <h3 className="font-display text-xl sm:text-2xl font-bold text-slate-900">
+                {growth.name}
+              </h3>
+              <p className="mt-1.5 text-xs text-slate-500 min-h-[32px]">
+                {growth.tagline}
+              </p>
+
+              <div className="mt-6 pt-6 border-t border-slate-100">
+                <div className="flex items-baseline gap-2">
+                  <span className="text-3xl sm:text-4xl font-extrabold text-slate-900 font-mono tracking-tight">
+                    {isIntl ? growth.intlSetup : growth.indiaSetup}
+                  </span>
+                  <span className="text-xs text-slate-500 font-medium">one-time setup</span>
+                </div>
+                <div className="mt-1 text-sm font-semibold text-purple-700 font-mono">
+                  + {isIntl ? growth.intlMonthly : growth.indiaMonthly}
+                </div>
+              </div>
+
+              <div className="mt-6 pt-6 border-t border-slate-100 space-y-2.5">
+                {growth.features.map((feat, i) => (
+                  <div key={i} className={`flex items-start gap-2 text-xs ${i === 0 ? "font-bold text-slate-900" : "text-slate-700"}`}>
+                    <Check className="w-4 h-4 text-purple-600 shrink-0 mt-0.5" />
+                    <span>{feat}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            <button
+              onClick={() => onSelectPkg(growth.name, market)}
+              className="mt-8 w-full py-3.5 px-4 rounded-xl bg-purple-600 hover:bg-purple-700 text-white font-semibold text-xs shadow-md shadow-purple-600/20 transition-all cursor-pointer"
+            >
+              {growth.cta}
+            </button>
+          </div>
+
+          {/* Card 3: Scale */}
+          <div className="bg-white rounded-3xl p-6 sm:p-8 border border-slate-200/90 shadow-sm flex flex-col justify-between hover:shadow-md transition-shadow">
+            <div>
+              <div className="flex items-center justify-between mb-4">
+                <span className="text-xs font-mono font-bold uppercase tracking-wider text-slate-500">
+                  {scale.systemNumber} · {scale.badge}
+                </span>
+              </div>
+              <h3 className="font-display text-xl sm:text-2xl font-bold text-slate-900">
+                {scale.name}
+              </h3>
+              <p className="mt-1.5 text-xs text-slate-500 min-h-[32px]">
+                {scale.tagline}
+              </p>
+
+              <div className="mt-6 pt-6 border-t border-slate-100">
+                <div className="flex items-baseline gap-2">
+                  <span className="text-3xl sm:text-4xl font-extrabold text-slate-900 font-mono tracking-tight">
+                    {isIntl ? scale.intlSetup : scale.indiaSetup}
+                  </span>
+                  <span className="text-xs text-slate-500 font-medium">one-time setup</span>
+                </div>
+                <div className="mt-1 text-sm font-semibold text-purple-700 font-mono">
+                  + {isIntl ? scale.intlMonthly : scale.indiaMonthly}
+                </div>
+              </div>
+
+              <div className="mt-6 pt-6 border-t border-slate-100 space-y-2.5">
+                {scale.features.map((feat, i) => (
+                  <div key={i} className={`flex items-start gap-2 text-xs ${i === 0 ? "font-bold text-slate-900" : "text-slate-700"}`}>
+                    <Check className="w-4 h-4 text-emerald-600 shrink-0 mt-0.5" />
+                    <span>{feat}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            <button
+              onClick={() => onSelectPkg(scale.name, market)}
+              className="mt-8 w-full py-3 px-4 rounded-xl border border-slate-300 hover:border-slate-400 bg-white hover:bg-slate-50 text-slate-900 font-semibold text-xs transition-colors cursor-pointer"
+            >
+              {scale.cta}
+            </button>
+          </div>
         </div>
-        {/* end desktop grid */}
+
+        {/* =========================================================================
+            MOBILE PLAN COMPARISON CARD (Shown on mobile phones < 768px for zero lag)
+            ========================================================================= */}
+        <div className="block md:hidden bg-white rounded-3xl border border-slate-200 p-5 shadow-sm">
+          <div className="text-center mb-4">
+            <span className="text-xs font-mono font-bold uppercase tracking-wider text-slate-800 block">
+              Mobile Plan Comparison
+            </span>
+            <p className="text-[11px] text-slate-500 mt-0.5">
+              Tap a plan to see its complete feature breakdown
+            </p>
+          </div>
+
+          {/* Plan Selector Pills */}
+          <div className="grid grid-cols-3 gap-1 p-1 bg-slate-100 rounded-2xl mb-5">
+            <button
+              type="button"
+              onClick={() => setMobilePlanTab("starter")}
+              className={`py-2 rounded-xl text-xs font-semibold transition-all ${
+                mobilePlanTab === "starter" ? "bg-white text-slate-900 shadow-xs font-bold" : "text-slate-600"
+              }`}
+            >
+              Starter
+            </button>
+            <button
+              type="button"
+              onClick={() => setMobilePlanTab("growth")}
+              className={`py-2 rounded-xl text-xs font-semibold transition-all ${
+                mobilePlanTab === "growth" ? "bg-purple-600 text-white shadow-xs font-bold" : "text-slate-600"
+              }`}
+            >
+              Growth ★
+            </button>
+            <button
+              type="button"
+              onClick={() => setMobilePlanTab("scale")}
+              className={`py-2 rounded-xl text-xs font-semibold transition-all ${
+                mobilePlanTab === "scale" ? "bg-white text-slate-900 shadow-xs font-bold" : "text-slate-600"
+              }`}
+            >
+              Scale
+            </button>
+          </div>
+
+          {/* Active Mobile Plan Summary Card */}
+          <div className="p-4 rounded-2xl bg-slate-50 border border-slate-200 mb-4">
+            <div className="flex items-center justify-between mb-1">
+              <span className="text-xs font-mono uppercase text-purple-700 font-bold">
+                {activeMobilePkg.badge}
+              </span>
+              <span className="text-xs font-bold font-mono text-slate-900">
+                {isIntl ? activeMobilePkg.intlSetup : activeMobilePkg.indiaSetup}
+              </span>
+            </div>
+            <h4 className="text-sm font-bold text-slate-900">
+              {activeMobilePkg.name}
+            </h4>
+            <div className="text-xs font-mono text-purple-700 mt-0.5">
+              + {isIntl ? activeMobilePkg.intlMonthly : activeMobilePkg.indiaMonthly}
+            </div>
+          </div>
+
+          {/* Clean Checklist of the 10 Core Features */}
+          <div className="space-y-2.5 divide-y divide-slate-100">
+            {coreComparisonRows.map((row, idx) => {
+              const val = row[mobilePlanTab];
+              const isExcluded = val === "—";
+              const isTick = val === "✓";
+
+              return (
+                <div key={idx} className="pt-2 flex items-start justify-between gap-3 text-xs">
+                  <div>
+                    <span className="font-semibold text-slate-800 block leading-tight">
+                      {row.name}
+                    </span>
+                    <span className="text-[10px] text-slate-500 leading-snug">
+                      {row.desc}
+                    </span>
+                  </div>
+
+                  {isExcluded ? (
+                    <span className="inline-flex items-center justify-center w-5 h-5 rounded-full bg-rose-50 border border-rose-200 text-rose-500 shrink-0">
+                      <X className="w-3 h-3 stroke-[3]" />
+                    </span>
+                  ) : isTick ? (
+                    <span className="inline-flex items-center justify-center w-5 h-5 rounded-full bg-emerald-50 border border-emerald-200 text-emerald-600 shrink-0">
+                      <Check className="w-3 h-3 stroke-[3]" />
+                    </span>
+                  ) : (
+                    <span className="px-2 py-0.5 rounded bg-purple-50 text-purple-800 text-[10px] font-mono font-semibold shrink-0">
+                      {val.replace(/^✓\s*/, "")}
+                    </span>
+                  )}
+                </div>
+              );
+            })}
+          </div>
+
+          <button
+            onClick={() => onSelectPkg(activeMobilePkg.name, market)}
+            className="mt-6 w-full py-3 rounded-xl bg-purple-600 text-white font-semibold text-xs shadow-md shadow-purple-600/20 cursor-pointer"
+          >
+            Choose {activeMobilePkg.badge} Plan
+          </button>
+        </div>
+
+        {/* =========================================================================
+            DESKTOP 10-ROW COMPARISON MATRIX (Shown on screens >= 768px)
+            ========================================================================= */}
+        <div className="hidden md:block bg-white rounded-3xl border border-slate-200 overflow-hidden shadow-sm">
+          <div className="px-6 py-4 bg-slate-50 border-b border-slate-200 flex items-center justify-between">
+            <div>
+              <span className="text-xs font-mono font-bold uppercase tracking-wider text-slate-800">
+                Detailed Feature Comparison
+              </span>
+              <p className="text-[11px] text-slate-500 mt-0.5">
+                Core deliverables across Starter, Growth, and Scale
+              </p>
+            </div>
+            <span className="text-xs text-slate-500 font-mono">
+              Industry: <strong className="text-purple-700">{selectedIndustry}</strong>
+            </span>
+          </div>
+
+          <div className="overflow-x-auto">
+            <table className="w-full text-left text-xs border-collapse">
+              <thead>
+                <tr className="border-b border-slate-200 bg-slate-50/70">
+                  <th className="py-3.5 px-6 font-bold text-slate-800 w-[38%]">Feature</th>
+                  <th className="py-3.5 px-4 font-bold text-slate-800 text-center w-[20%]">Starter</th>
+                  <th className="py-3.5 px-4 font-bold text-purple-900 bg-purple-50/50 text-center w-[22%]">
+                    Growth <span className="text-[10px] font-mono text-purple-600 font-normal">(Most Popular)</span>
+                  </th>
+                  <th className="py-3.5 px-4 font-bold text-slate-800 text-center w-[20%]">Scale</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-slate-100">
+                {coreComparisonRows.map((row, rowIdx) => {
+                  const renderCell = (val: string, isPop: boolean = false) => {
+                    if (val === "—") {
+                      return (
+                        <span className="inline-flex items-center justify-center w-5 h-5 rounded-full bg-rose-50 border border-rose-200 text-rose-500 mx-auto" title="Not Included">
+                          <X className="w-3 h-3 stroke-[3]" />
+                        </span>
+                      );
+                    }
+                    if (val === "✓") {
+                      return (
+                        <span className={`inline-flex items-center justify-center w-5 h-5 rounded-full ${isPop ? "bg-purple-100 border border-purple-300 text-purple-700" : "bg-emerald-50 border border-emerald-200 text-emerald-600"} mx-auto`} title="Included">
+                          <Check className="w-3 h-3 stroke-[3]" />
+                        </span>
+                      );
+                    }
+                    if (val.startsWith("✓")) {
+                      const label = val.replace(/^✓\s*/, "");
+                      return (
+                        <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-purple-50 border border-purple-200 text-[11px] font-semibold text-purple-900 mx-auto">
+                          <Check className="w-3 h-3 text-purple-600 stroke-[3]" />
+                          <span>{label}</span>
+                        </span>
+                      );
+                    }
+                    return (
+                      <span className="inline-block px-2 py-0.5 rounded bg-slate-100 text-slate-700 text-[11px] font-mono mx-auto">
+                        {val}
+                      </span>
+                    );
+                  };
+
+                  return (
+                    <tr key={rowIdx} className={`hover:bg-slate-50/80 transition-colors ${(row as any).highlight ? "bg-purple-50/20" : ""}`}>
+                      <td className="py-3 px-6">
+                        <div className="font-semibold text-slate-900 text-xs">
+                          {row.name}
+                        </div>
+                        <div className="text-[11px] text-slate-500 mt-0.5 leading-snug">
+                          {row.desc}
+                        </div>
+                      </td>
+                      <td className="py-3 px-4 text-center">
+                        {renderCell(row.starter)}
+                      </td>
+                      <td className="py-3 px-4 text-center bg-purple-50/30">
+                        {renderCell(row.growth, true)}
+                      </td>
+                      <td className="py-3 px-4 text-center">
+                        {renderCell(row.scale)}
+                      </td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
+          </div>
+        </div>
       </div>
     </section>
   );
@@ -1982,10 +2439,7 @@ function FeaturedProjectsSection({
       <div className="mx-auto max-w-[1380px]">
         {/* Minimalist Section Header */}
         <div className="reveal-blur text-center max-w-xl mx-auto mb-6 sm:mb-8">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-mono font-semibold bg-purple-50 text-purple-700 border border-purple-200/80 mb-3">
-            <span className="w-1.5 h-1.5 rounded-full bg-purple-600 animate-pulse" />
-            CLIENT SYSTEMS
-          </div>
+          <span className="text-xs font-mono font-bold uppercase tracking-widest text-purple-700 block mb-3">Client Systems</span>
           <h2 className="font-display text-3xl sm:text-4xl font-extrabold tracking-tight text-slate-900">
             Systems We've Deployed.
           </h2>
@@ -2127,27 +2581,23 @@ function DeploymentProtocol({ onOpenAudit }: { onOpenAudit: () => void }) {
   return (
     <section
       id="protocol"
-      className="px-6 py-20 md:px-12 md:py-28 bg-[#faf8f5] text-slate-900 border-t border-slate-200"
+      className="px-6 py-14 md:px-12 md:py-20 bg-[#faf8f5] text-slate-900 border-t border-slate-200"
     >
       <div className="mx-auto max-w-[1380px]">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14 items-center">
-          {/* Left Column: Minimalist Context with Direct Arrow Pointer */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14 items-start">
+          {/* Left Column */}
           <div className="reveal-left lg:col-span-5 flex flex-col justify-center">
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-mono font-semibold bg-purple-50 text-purple-700 border border-purple-200/80 mb-4 w-fit">
-              <span className="w-1.5 h-1.5 rounded-full bg-purple-600 animate-pulse" />
-              DEPLOYMENT PROTOCOL
-            </div>
+            <span className="text-xs font-mono font-bold uppercase tracking-widest text-purple-700 block mb-4">Deployment Protocol</span>
 
             <h2 className="font-display text-3xl sm:text-4xl md:text-5xl font-extrabold tracking-tight text-slate-900 leading-[1.12]">
               From Audit to Live System.
             </h2>
 
             <p className="mt-3 text-slate-600 text-sm sm:text-base leading-relaxed max-w-lg">
-              Every system deliverable calibrated, stress-tested, and launched with zero downtime to your existing operations.
+              8 modules. 14 days. Zero downtime. We audit your pipeline, build the system, stress-test it, and hand it over fully running.
             </p>
 
-            {/* Clean Arrow Pointer to Folder */}
-            <div className="mt-8 flex items-center gap-3">
+            <div className="hidden lg:flex mt-6 items-center gap-3">
               <div className="inline-flex items-center gap-3 px-4 py-2.5 rounded-2xl bg-purple-100/70 border border-purple-200 text-purple-900 shadow-sm">
                 <span className="text-xs font-mono font-bold tracking-tight">
                   Hover or click the dossier
@@ -2156,11 +2606,10 @@ function DeploymentProtocol({ onOpenAudit }: { onOpenAudit: () => void }) {
               </div>
             </div>
 
-            {/* Clean CTA */}
-            <div className="mt-8 flex flex-wrap items-center gap-4">
+            <div className="mt-6 flex flex-wrap items-center gap-4">
               <button
                 onClick={onOpenAudit}
-                className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-slate-900 hover:bg-purple-700 text-white text-xs font-mono font-semibold transition-all shadow-md group"
+                className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-slate-900 hover:bg-purple-700 text-white text-xs font-mono font-semibold transition-all shadow-md group cursor-pointer"
               >
                 <span>Book a Free AI Growth Audit</span>
                 <ArrowRight className="w-3.5 h-3.5 transition-transform group-hover:translate-x-0.5" />
@@ -2169,29 +2618,36 @@ function DeploymentProtocol({ onOpenAudit }: { onOpenAudit: () => void }) {
             </div>
           </div>
 
-          {/* Right Column: Folder on desktop, clean list on mobile */}
-          <div className="reveal-right lg:col-span-7 flex flex-col items-center justify-center relative overflow-hidden">
+          {/* Right Column: FolderFloat on both mobile and desktop */}
+          <div className="reveal-right lg:col-span-7 flex flex-col items-center justify-center relative">
 
-            {/* Mobile: clean numbered step list */}
-            <div className="lg:hidden w-full space-y-2">
-              {DELIVERABLES.map((item, i) => (
-                <div key={i} className="flex items-center gap-3 px-4 py-3 rounded-2xl bg-white border border-slate-200 text-xs font-mono text-slate-700">
-                  <span className="w-6 h-6 rounded-full bg-purple-50 border border-purple-200 text-purple-700 text-[10px] font-bold flex items-center justify-center shrink-0">
-                    {String(i + 1).padStart(2, "0")}
-                  </span>
-                  <span>{item.replace(/^\d+ • /, "")}</span>
-                </div>
-              ))}
+            {/* Mobile: clean 2-col module grid instead of FolderFloat (avoids overflow/bleed issues) */}
+            <div className="lg:hidden w-full">
+              <div className="grid grid-cols-2 gap-2">
+                {DELIVERABLES.map((item, i) => (
+                  <div
+                    key={i}
+                    className="relative flex flex-col justify-end p-3 rounded-xl bg-transparent border border-slate-300/70 hover:border-slate-500 transition-colors min-h-[72px]"
+                  >
+                    <span className="absolute top-2.5 right-3 text-[10px] font-mono text-slate-400">
+                      {String(i + 1).padStart(2, "0")}
+                    </span>
+                    <span className="text-xs font-medium text-slate-700 leading-snug pr-6">
+                      {item.replace(/^\d+ • /, "")}
+                    </span>
+                  </div>
+                ))}
+              </div>
               <button
                 onClick={onOpenAudit}
-                className="w-full mt-2 py-3 rounded-full bg-slate-900 hover:bg-purple-700 text-white text-xs font-semibold transition-all cursor-pointer"
+                className="w-full mt-4 py-3 rounded-full bg-slate-900 hover:bg-purple-700 text-white text-xs font-semibold transition-all cursor-pointer"
               >
                 Book a Free AI Growth Audit →
               </button>
             </div>
 
-            {/* Desktop: FolderFloat animation — contained in fixed height box */}
-            <div className="hidden lg:flex flex-col items-center justify-center w-full" style={{ height: 520 }}>
+            {/* Desktop: FolderFloat with hover trigger */}
+            <div className="hidden lg:flex flex-col items-center justify-center w-full" style={{ minHeight: 460 }}>
               <FolderFloat
                 items={DELIVERABLES}
                 label="Buildicy Deployment Dossier"
@@ -2215,12 +2671,12 @@ function DeploymentProtocol({ onOpenAudit }: { onOpenAudit: () => void }) {
                 tilt={10}
                 bounce={0.32}
               />
-              {selectedDeliverable && (
-                <div className="mt-6 px-4 py-1.5 rounded-full bg-white/95 backdrop-blur-sm border border-purple-200 text-xs font-mono text-purple-900 shadow-sm animate-in fade-in">
-                  Active: <span className="font-bold">{selectedDeliverable}</span>
-                </div>
-              )}
             </div>
+            {selectedDeliverable && (
+              <div className="mt-3 px-4 py-1.5 rounded-full bg-white border border-purple-200 text-xs font-mono text-purple-900 shadow-sm animate-in fade-in">
+                Selected: <span className="font-bold">{selectedDeliverable}</span>
+              </div>
+            )}
           </div>
         </div>
       </div>
@@ -2236,20 +2692,49 @@ function DeploymentProtocol({ onOpenAudit }: { onOpenAudit: () => void }) {
 function RealEstateProofOfImpact({ onOpenAudit }: { onOpenAudit: () => void }) {
   const testimonials = [
     {
-      quote:
-        "Buildicy answered WhatsApp enquiries in under 20 seconds while our team was off the clock. Within the first month, we booked 14 verified private viewings without adding a single extra staff member.",
+      quote: "We went from replying to leads the next morning to under 20 seconds. First month — 14 extra viewings, zero new hires.",
       author: "Marcus Vance",
       role: "Managing Director",
       company: "Prime Realty Partners",
       metric: "+14 Viewings/Mo",
+      initials: "MV",
+      color: "bg-purple-100 text-purple-700",
     },
     {
-      quote:
-        "Before Buildicy, our closers spent half their day screening tire-kickers. Now, every call on our calendar is already budget-qualified with financing verified.",
+      quote: "Every call on our calendar is now pre-qualified. Our closers stopped wasting time on tire-kickers the week we went live.",
       author: "Elena Rostova",
       role: "Head of Operations",
       company: "Prestige Advisory Group",
       metric: "100% ICP Qualified",
+      initials: "ER",
+      color: "bg-blue-100 text-blue-700",
+    },
+    {
+      quote: "Missed calls used to just disappear. Now they get a WhatsApp follow-up in seconds and half of them book a slot.",
+      author: "Arjun Mehta",
+      role: "Founder",
+      company: "Elevate Clinics",
+      metric: "−60% Missed Leads",
+      initials: "AM",
+      color: "bg-emerald-100 text-emerald-700",
+    },
+    {
+      quote: "The AI handled 300+ WhatsApp enquiries in our first campaign week. We only touched the ones that were ready to sign.",
+      author: "Sarah Jenkins",
+      role: "VP Sales",
+      company: "Elevate Growth Partners",
+      metric: "300+ Leads Handled",
+      initials: "SJ",
+      color: "bg-amber-100 text-amber-700",
+    },
+    {
+      quote: "Setup took 11 days. The system was live before I expected it. Response time went from hours to under a minute.",
+      author: "Rohan Pillai",
+      role: "CEO",
+      company: "NestFinder Realty",
+      metric: "11-Day Go-Live",
+      initials: "RP",
+      color: "bg-rose-100 text-rose-700",
     },
   ];
 
@@ -2261,9 +2746,7 @@ function RealEstateProofOfImpact({ onOpenAudit }: { onOpenAudit: () => void }) {
       <div className="mx-auto max-w-[1380px]">
         {/* Header - Clean, Minimalist, Punchy */}
         <div className="reveal-left max-w-2xl mb-10">
-          <span className="font-mono text-xs font-bold uppercase tracking-wider text-purple-700 block mb-2">
-            • Named Case Study & Impact
-          </span>
+          <span className="font-mono text-xs font-bold uppercase tracking-widest text-purple-700 block mb-2">Named Case Study & Impact</span>
           <h2 className="font-display text-3xl sm:text-4xl md:text-5xl font-extrabold tracking-tight text-slate-900 leading-[1.12]">
             Before vs. After Buildicy.
           </h2>
@@ -2289,27 +2772,15 @@ function RealEstateProofOfImpact({ onOpenAudit }: { onOpenAudit: () => void }) {
               <ul className="space-y-4 text-xs sm:text-sm text-slate-700">
                 <li className="flex items-start gap-3">
                   <span className="text-rose-500 font-bold text-sm shrink-0">✕</span>
-                  <span>
-                    <strong>Lost warm prospects:</strong> Slow replies and missed after-hours enquiries can send warm buyers to competitors.
-                  </span>
+                  <span><strong>Slow replies:</strong> Enquiries sat unread until morning — intent already cold.</span>
                 </li>
                 <li className="flex items-start gap-3">
                   <span className="text-rose-500 font-bold text-sm shrink-0">✕</span>
-                  <span>
-                    <strong>Hours of response delay:</strong> Enquiries sat in unread inboxes until the next morning when intent was already cold.
-                  </span>
+                  <span><strong>Wasted rep hours:</strong> 15+ hrs/week on FAQs for leads that were never going to buy.</span>
                 </li>
                 <li className="flex items-start gap-3">
                   <span className="text-rose-500 font-bold text-sm shrink-0">✕</span>
-                  <span>
-                    <strong>Wasted rep hours:</strong> Sales team spent 15+ hours weekly answering basic FAQs for unqualified inquiries.
-                  </span>
-                </li>
-                <li className="flex items-start gap-3">
-                  <span className="text-rose-500 font-bold text-sm shrink-0">✕</span>
-                  <span>
-                    <strong>High appointment drop-off:</strong> Lack of instant calendar slotting and reminder sequences led to missed consultations.
-                  </span>
+                  <span><strong>High no-shows:</strong> No reminders, no reschedule flow — consultations just disappeared.</span>
                 </li>
               </ul>
             </div>
@@ -2334,27 +2805,15 @@ function RealEstateProofOfImpact({ onOpenAudit }: { onOpenAudit: () => void }) {
               <ul className="space-y-4 text-xs sm:text-sm text-slate-800">
                 <li className="flex items-start gap-3">
                   <span className="text-purple-600 font-bold text-sm shrink-0">✓</span>
-                  <span>
-                    <strong>Sub-20s multi-channel reply:</strong> Inbound calls and WhatsApp messages get answered instantly 24/7 with interactive qualification.
-                  </span>
+                  <span><strong>Sub-20s reply:</strong> Calls and WhatsApp answered instantly 24/7 with live qualification.</span>
                 </li>
                 <li className="flex items-start gap-3">
                   <span className="text-purple-600 font-bold text-sm shrink-0">✓</span>
-                  <span>
-                    <strong>Autonomous qualification:</strong> AI verifies budget, timeline, and purchase requirements before offering calendar slots.
-                  </span>
+                  <span><strong>Autonomous qualification:</strong> AI verifies budget and timeline before offering calendar slots.</span>
                 </li>
                 <li className="flex items-start gap-3">
                   <span className="text-purple-600 font-bold text-sm shrink-0">✓</span>
-                  <span>
-                    <strong>Direct calendar booking:</strong> Vetted buyers schedule meetings straight to the sales rep's calendar.
-                  </span>
-                </li>
-                <li className="flex items-start gap-3">
-                  <span className="text-purple-600 font-bold text-sm shrink-0">✓</span>
-                  <span>
-                    <strong>Automated reminders:</strong> Multi-channel WhatsApp confirmation briefings keep appointment attendance near 90%.
-                  </span>
+                  <span><strong>Attendance near 90%:</strong> Multi-touch WhatsApp reminders with 1-click reschedule.</span>
                 </li>
               </ul>
             </div>
@@ -2375,39 +2834,8 @@ function RealEstateProofOfImpact({ onOpenAudit }: { onOpenAudit: () => void }) {
           </div>
         </div>
 
-        {/* Testimonials Block */}
-        <div className="mt-12 pt-10 border-t border-slate-200">
-          <div className="mb-6">
-            <span className="font-mono text-xs font-bold uppercase tracking-wider text-purple-700 block mb-1">
-              Client Feedback & Proof
-            </span>
-            <h3 className="font-display text-xl sm:text-2xl font-bold text-slate-900">
-              What partners say after deployment.
-            </h3>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-            {testimonials.map((t, idx) => (
-              <div
-                key={idx}
-                className="rounded-2xl p-6 bg-white border border-slate-200 shadow-xs flex flex-col justify-between"
-              >
-                <p className="text-sm text-slate-700 italic leading-relaxed mb-4">
-                  "{t.quote}"
-                </p>
-                <div className="flex items-center justify-between pt-3 border-t border-slate-100 text-xs">
-                  <div>
-                    <div className="font-bold text-slate-900">{t.author}</div>
-                    <div className="text-slate-500">{t.role}, {t.company}</div>
-                  </div>
-                  <span className="font-mono font-semibold text-emerald-700 bg-emerald-50 px-2.5 py-1 rounded-md text-[11px]">
-                    {t.metric}
-                  </span>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
+        {/* Testimonials Marquee */}
+        <TestimonialsMarquee testimonials={testimonials} />
       </div>
     </section>
   );
@@ -2497,80 +2925,196 @@ function BuildicyStudioSection({ onOpenAudit }: { onOpenAudit: () => void }) {
    MINIMALIST FAQ (Concise Answers)
    ========================================================================= */
 
+const StarIcon = () => (
+  <svg className="w-3.5 h-3.5 fill-amber-400" viewBox="0 0 20 20">
+    <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+  </svg>
+);
+
+function TestimonialsMarquee({ testimonials }: { testimonials: { quote: string; author: string; role: string; company: string; metric: string; initials: string; color: string }[] }) {
+  const extended = [...testimonials, ...testimonials, ...testimonials];
+  return (
+    <div className="mt-10 pt-8 border-t border-slate-200 overflow-hidden">
+      <div className="mb-6 flex items-center justify-between">
+        <div>
+          <span className="text-xs font-mono font-bold uppercase tracking-widest text-purple-700 block mb-1">Client Words</span>
+          <h3 className="font-display text-xl sm:text-2xl font-bold text-slate-900">What partners say.</h3>
+        </div>
+        <div className="hidden sm:flex items-center gap-1">
+          {[...Array(5)].map((_, i) => <StarIcon key={i} />)}
+          <span className="text-xs font-mono text-slate-500 ml-1.5">5.0</span>
+        </div>
+      </div>
+      <div className="relative">
+        <div className="absolute left-0 top-0 bottom-0 w-16 bg-gradient-to-r from-[#faf8f5] to-transparent z-10 pointer-events-none" />
+        <div className="absolute right-0 top-0 bottom-0 w-16 bg-gradient-to-l from-[#faf8f5] to-transparent z-10 pointer-events-none" />
+        <div className="flex gap-4 animate-marquee hover:[animation-play-state:paused]" style={{ width: "max-content" }}>
+          {extended.map((t, idx) => (
+            <div key={idx} className="w-[300px] shrink-0 rounded-2xl p-5 bg-white border border-slate-200/80 shadow-sm hover:shadow-md hover:border-purple-200 transition-all duration-200 flex flex-col gap-4">
+              {/* Top: avatar + name + stars */}
+              <div className="flex items-center gap-3">
+                <div className={`w-10 h-10 rounded-full flex items-center justify-center font-bold text-sm shrink-0 ${t.color}`}>
+                  {t.initials}
+                </div>
+                <div className="min-w-0">
+                  <div className="text-sm font-semibold text-slate-900 truncate">{t.author}</div>
+                  <div className="text-[11px] text-slate-400 truncate">{t.role} · {t.company}</div>
+                </div>
+              </div>
+              {/* Stars */}
+              <div className="flex items-center gap-0.5">
+                {[...Array(5)].map((_, i) => <StarIcon key={i} />)}
+              </div>
+              {/* Quote */}
+              <p className="text-sm text-slate-700 leading-relaxed flex-1">
+                &ldquo;{t.quote}&rdquo;
+              </p>
+              {/* Metric badge */}
+              <div className="pt-3 border-t border-slate-100">
+                <span className="inline-flex items-center gap-1 text-[11px] font-mono font-bold text-emerald-700 bg-emerald-50 border border-emerald-200 px-2.5 py-1 rounded-full">
+                  ✓ {t.metric}
+                </span>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
+
 function MinimalistFAQ({ onOpenAudit }: { onOpenAudit: () => void }) {
-  const [openIdx, setOpenIdx] = useState<number | null>(0);
+  const [openIdx, setOpenIdx] = useState<number | null>(null);
 
   const faqs = [
     {
       topic: "Ownership",
-      q: "Do we own the AI system, prompts, and workflows?",
-      a: "Yes, 100%. All custom prompts, pipeline architectures, conversational dialogue trees, and automation code are transferred directly to your company upon launch. You are never locked into proprietary black-box software.",
+      q: "Do we own the AI system after launch?",
+      a: "Yes — everything. Prompts, workflows, dialogue trees, automation code. All transferred to you on day 14. No black-box lock-in, ever.",
     },
     {
-      topic: "Data & Privacy",
-      q: "How is our business and customer data protected?",
-      a: "Your lead records, customer transcripts, and CRM data remain 100% confidential and reside within your private accounts. We implement end-to-end encryption and enterprise privacy controls.",
+      topic: "Data",
+      q: "Where does our customer data live?",
+      a: "In your own accounts. We never store your lead records or transcripts on Buildicy infrastructure. End-to-end encrypted, fully private.",
     },
     {
       topic: "Channels",
-      q: "Which communication channels can Buildicy connect?",
-      a: "We deploy across WhatsApp Business API, live website chat, telephony & inbound voice agents, email, and social messaging (Instagram DMs, LinkedIn).",
+      q: "Which channels do you connect?",
+      a: "WhatsApp Business API, website chat, inbound voice, email, Instagram DMs, and LinkedIn — all feeding into one unified pipeline.",
     },
     {
       topic: "Integrations",
-      q: "Which CRMs, calendars, and sales tools do you integrate with?",
-      a: "We build seamless 2-way sync with HubSpot, GoHighLevel (GHL), Salesforce, Zoho, Pipedrive, Google Sheets, Calendly, Cal.com, and custom PostgreSQL/REST APIs.",
+      q: "Which CRMs and calendars work with this?",
+      a: "HubSpot, GoHighLevel, Salesforce, Zoho, Pipedrive, Calendly, Cal.com, Google Sheets, and custom REST APIs. If you use it, we connect it.",
+    },
+    {
+      topic: "Timeline",
+      q: "How fast is the 14-day deployment?",
+      a: "Day 1–3: audit & blueprint. Day 4–10: build & integrate. Day 11–13: stress test. Day 14: zero-downtime go-live. You're live in two weeks, guaranteed.",
     },
     {
       topic: "Support",
-      q: "What ongoing support is included after the 14-day launch?",
-      a: "Every tier includes continuous transcript monitoring, periodic model tuning, SLA response auditing, and dedicated technical support to keep conversion rates compounding.",
+      q: "What happens after we go live?",
+      a: "Ongoing transcript monitoring, model tuning, SLA auditing, and a dedicated support line. Your system gets sharper every month, not stale.",
     },
   ];
 
   return (
-    <section
-      id="faq"
-      className="px-6 py-20 md:px-12 md:py-28 bg-[#faf8f5] text-slate-900 border-t border-slate-200"
-    >
-      <div className="mx-auto max-w-[900px]">
-        <div className="reveal-blur text-center mb-10">
-          <span className="font-mono text-xs font-bold uppercase tracking-wider text-purple-700 block mb-2">
-            FAQ • Ownership, Data, Channels, Integrations & Support
-          </span>
-          <h2 className="font-display text-3xl sm:text-4xl font-extrabold tracking-tight text-slate-900">
-            Frequently Asked Questions
-          </h2>
-          <p className="mt-2 text-slate-600 text-sm">
-            Everything you need to know about ownership, integrations, and deployment.
-          </p>
+    <section id="faq" className="px-6 py-20 md:px-12 md:py-28 bg-[#faf8f5] text-slate-900 border-t border-slate-200">
+      <div className="mx-auto max-w-[920px]">
+        {/* Minimalist Editorial Headline */}
+        <div className="reveal-blur mb-10 sm:mb-14">
+          <div className="inline-block relative">
+            <span className="text-[10px] sm:text-xs font-mono uppercase tracking-[0.2em] text-purple-700 font-bold block mb-2 pl-0.5">
+              FAQS
+            </span>
+            <div className="flex flex-col items-start gap-1">
+              {/* Box 1: "More" */}
+              <div className="bg-slate-950 text-white px-5 py-2 sm:px-6 sm:py-2.5 rounded-sm shadow-md inline-block">
+                <h2 className="font-display text-3xl sm:text-4xl md:text-5xl font-extrabold tracking-tight leading-none text-white">
+                  More
+                </h2>
+              </div>
+              {/* Box 2: "information" */}
+              <div className="bg-slate-950 text-white px-5 py-2 sm:px-6 sm:py-2.5 rounded-sm shadow-md inline-block ml-6 sm:ml-10 -mt-1 sm:-mt-1.5">
+                <span className="font-serif italic text-3xl sm:text-4xl md:text-5xl font-light tracking-wide text-purple-200 leading-none">
+                  information
+                </span>
+              </div>
+            </div>
+          </div>
         </div>
 
-        <div className="divide-y divide-slate-200">
+        {/* Minimalist Seamless Accordion (Plain & Simple, Matching Theme Background) */}
+        <div className="divide-y divide-slate-200 border-t border-b border-slate-200">
           {faqs.map((faq, i) => {
             const isOpen = openIdx === i;
             return (
-              <div key={faq.q} className="py-4">
+              <div key={faq.q} className="transition-colors duration-200">
                 <button
+                  type="button"
                   onClick={() => setOpenIdx(isOpen ? null : i)}
-                  className="w-full flex items-center justify-between text-left py-2 font-display text-base sm:text-lg font-bold text-slate-900 cursor-pointer"
+                  className="w-full flex items-center justify-between text-left py-5 sm:py-6 hover:text-purple-700 transition-colors group cursor-pointer gap-4"
                 >
-                  <div className="flex items-center gap-3">
-                    <span className="text-[10px] font-mono uppercase tracking-wider px-2 py-0.5 rounded bg-purple-50 text-purple-700 border border-purple-100 shrink-0">
-                      {faq.topic}
+                  <div className="flex items-center gap-3 sm:gap-4.5 min-w-0">
+                    <span
+                      className={`shrink-0 inline-flex items-center justify-center px-2.5 py-0.5 rounded-full border text-[11px] sm:text-xs font-mono transition-colors ${
+                        isOpen
+                          ? "border-purple-600 bg-purple-50 text-purple-700 font-semibold"
+                          : "border-slate-300 text-slate-500 group-hover:border-purple-400 group-hover:text-purple-700"
+                      }`}
+                    >
+                      0{i + 1}
                     </span>
-                    <span>{faq.q}</span>
+                    <span
+                      className={`font-display text-base sm:text-lg font-bold tracking-tight transition-colors leading-snug ${
+                        isOpen ? "text-purple-900" : "text-slate-900 group-hover:text-purple-700"
+                      }`}
+                    >
+                      {faq.q}
+                    </span>
                   </div>
-                  <span className="text-slate-400 text-sm ml-4 shrink-0">{isOpen ? "−" : "+"}</span>
+                  <ChevronDown
+                    className={`w-4 h-4 sm:w-5 sm:h-5 text-slate-400 transition-transform duration-300 shrink-0 ${
+                      isOpen ? "rotate-180 text-purple-600" : "group-hover:text-slate-600"
+                    }`}
+                  />
                 </button>
                 {isOpen && (
-                  <p className="mt-2 text-xs sm:text-sm text-slate-600 leading-relaxed pl-1 sm:pl-16">
-                    {faq.a}
-                  </p>
+                  <div className="pb-5 sm:pb-6 animate-in fade-in slide-in-from-top-1 duration-150">
+                    <div className="pl-0 sm:pl-11 pt-1">
+                      <p className="text-xs sm:text-sm md:text-base text-slate-600 leading-relaxed font-sans max-w-2xl">
+                        {faq.a}
+                      </p>
+                    </div>
+                  </div>
                 )}
               </div>
             );
           })}
+        </div>
+
+        {/* Plain & Simple Contact Prompt */}
+        <div className="mt-8 sm:mt-10 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 text-xs sm:text-sm text-slate-500">
+          <p>
+            Have a different question? Email us at{" "}
+            <a
+              href="mailto:hello@buildicy.com"
+              className="text-purple-700 font-semibold hover:underline"
+            >
+              hello@buildicy.com
+            </a>{" "}
+            or message us on{" "}
+            <a
+              href={WHATSAPP_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-purple-700 font-semibold hover:underline"
+            >
+              WhatsApp
+            </a>
+            .
+          </p>
         </div>
       </div>
     </section>
@@ -2619,40 +3163,39 @@ function ResourcesSection() {
             </div>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
             {docs.map((doc, i) => (
               <div
                 key={doc.title}
-                className="reveal-zoom group flex items-center justify-between gap-4 px-5 py-4 rounded-2xl bg-white border border-slate-200 hover:border-purple-300 hover:shadow-sm transition-all duration-200"
+                className="reveal-zoom flex flex-col gap-3 px-4 py-4 rounded-2xl bg-white border border-slate-200 hover:border-purple-300 hover:shadow-sm transition-all duration-200"
                 style={{ transitionDelay: `${i * 70}ms` }}
               >
-                <div className="min-w-0">
-                  <div className="flex items-center gap-2 mb-1">
-                    <span className="text-[9px] font-mono font-bold px-1.5 py-0.5 rounded bg-slate-100 text-slate-500 border border-slate-200">
-                      {doc.ext}
-                    </span>
-                  </div>
-                  <p className="text-sm font-semibold text-slate-900 truncate">{doc.title}</p>
-                  <p className="text-[11px] text-slate-400 mt-0.5 leading-snug">{doc.desc}</p>
+                <div>
+                  <span className="text-[9px] font-mono font-bold px-1.5 py-0.5 rounded bg-slate-100 text-slate-500 border border-slate-200">
+                    {doc.ext}
+                  </span>
+                  <p className="text-sm font-semibold text-slate-900 mt-2 leading-snug">{doc.title}</p>
+                  <p className="text-[11px] text-slate-400 mt-1 leading-snug">{doc.desc}</p>
                 </div>
-
-                <div className="flex items-center gap-2 shrink-0">
+                <div className="flex items-center gap-2 pt-1 border-t border-slate-100">
                   {doc.preview && (
                     <button
                       onClick={() => setPreviewing(doc.preview!)}
-                      className="w-8 h-8 rounded-xl bg-slate-50 border border-slate-200 flex items-center justify-center text-slate-500 hover:text-purple-600 hover:border-purple-300 transition-colors cursor-pointer"
+                      className="flex-1 py-1.5 rounded-lg bg-slate-50 border border-slate-200 text-xs font-medium text-slate-600 hover:text-purple-600 hover:border-purple-300 transition-colors cursor-pointer flex items-center justify-center gap-1"
                       title="Preview"
                     >
-                      <ExternalLink className="w-3.5 h-3.5" />
+                      <ExternalLink className="w-3 h-3" />
+                      Preview
                     </button>
                   )}
                   <a
                     href={doc.file}
                     download
-                    className="w-8 h-8 rounded-xl bg-purple-600 flex items-center justify-center text-white hover:bg-purple-700 transition-colors cursor-pointer"
+                    className="flex-1 py-1.5 rounded-lg bg-purple-600 text-xs font-medium text-white hover:bg-purple-700 transition-colors cursor-pointer flex items-center justify-center gap-1"
                     title="Download"
                   >
-                    <ArrowUpRight className="w-3.5 h-3.5" />
+                    <ArrowUpRight className="w-3 h-3" />
+                    Download
                   </a>
                 </div>
               </div>
@@ -2703,64 +3246,45 @@ function ResourcesSection() {
 }
 
 /* =========================================================================
-   FINAL CTA
+   FREE AUDIT OFFER BANNER (Clean Minimalist Dark Background - No Marquee)
    ========================================================================= */
 
-function FinalCTA({ onOpenAudit }: { onOpenAudit: () => void }) {
-  const deliverables = [
-    {
-      title: "Lead Leakage Audit",
-      desc: "Identify exactly where enquiries are dropping off across WhatsApp, website, and phone calls.",
-    },
-    {
-      title: "Custom AI System Blueprint",
-      desc: "Map the right AI system architecture, conversational dialogue flows, and CRM integration.",
-    },
-    {
-      title: "Fixed Implementation Estimate",
-      desc: "Guaranteed 14-day zero-downtime implementation roadmap with fixed transparent pricing.",
-    },
-  ];
-
+function AuditBanner({ onOpenAudit }: { onOpenAudit: () => void }) {
   return (
-    <section className="px-6 py-20 md:px-12 md:py-28 bg-[#faf8f5] text-slate-900 border-t border-slate-200">
-      <div className="mx-auto max-w-3xl text-center">
-        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-mono font-semibold bg-purple-50 text-purple-700 border border-purple-200/80 mb-4">
-          <span className="w-1.5 h-1.5 rounded-full bg-purple-600 animate-pulse" />
-          FREE 30-MINUTE AUDIT
-        </div>
-        <h2 className="font-display text-3xl sm:text-4xl md:text-5xl font-extrabold tracking-tight text-slate-900">
-          Get Your Free Lead-Leak Audit
-        </h2>
-        <p className="mt-4 text-slate-600 text-sm sm:text-base leading-relaxed max-w-xl mx-auto">
-          In 30 minutes, we’ll identify where enquiries are being missed, map the right AI system, and give you a fixed implementation estimate.
-        </p>
+    <section className="bg-[#07090e] text-white relative overflow-hidden border-y border-slate-800">
+      {/* Ambient background glow */}
+      <div className="absolute inset-0 bg-[radial-gradient(ellipse_70%_60%_at_50%_0%,rgba(168,85,247,0.18)_0%,transparent_70%)] pointer-events-none" />
+      <div className="absolute inset-0 opacity-[0.03] bg-[radial-gradient(#fff_1px,transparent_1px)] [background-size:24px_24px] pointer-events-none" />
 
-        {/* Explicit Deliverables Grid */}
-        <div className="mt-8 grid grid-cols-1 sm:grid-cols-3 gap-4 text-left">
-          {deliverables.map((item, idx) => (
-            <div
-              key={idx}
-              className="p-4 rounded-2xl bg-white border border-slate-200 shadow-2xs flex flex-col justify-between"
+      {/* Main Banner Content */}
+      <div className="relative z-10 mx-auto max-w-[1280px] px-5 sm:px-8 py-16 sm:py-20 md:px-12">
+        <div className="max-w-4xl mx-auto text-center">
+          {/* Heading */}
+          <h2 className="font-display text-3xl sm:text-4xl md:text-5xl font-extrabold tracking-tight text-white leading-tight">
+            Stop losing leads to slow response times.
+          </h2>
+
+          {/* Core Offer Statement with distinct serif italic styling */}
+          <div className="my-6 p-6 sm:p-8 rounded-3xl bg-white/[0.04] border border-white/10 backdrop-blur-sm text-left sm:text-center shadow-2xl">
+            <p className="font-serif italic text-lg sm:text-xl md:text-2xl font-normal text-slate-100 leading-relaxed">
+              &ldquo;In <strong className="font-sans font-bold text-purple-400 not-italic">30 minutes</strong>, we&apos;ll identify where enquiries are being missed, map the right AI system, and give you a <strong className="font-sans font-bold text-white not-italic underline decoration-purple-500 underline-offset-4">fixed implementation estimate</strong>.&rdquo;
+            </p>
+          </div>
+
+          {/* CTA Button */}
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+            <button
+              onClick={onOpenAudit}
+              className="w-full sm:w-auto px-8 py-4 rounded-full bg-purple-600 hover:bg-purple-500 text-white font-semibold text-sm transition-all shadow-xl shadow-purple-600/30 flex items-center justify-center gap-2 cursor-pointer group"
             >
-              <div>
-                <span className="text-purple-600 font-mono font-bold text-xs block mb-1">
-                  0{idx + 1} • Deliverable
-                </span>
-                <h4 className="font-bold text-slate-900 text-sm mb-1.5">{item.title}</h4>
-                <p className="text-xs text-slate-500 leading-relaxed">{item.desc}</p>
-              </div>
-            </div>
-          ))}
-        </div>
+              <span>Claim Your Free 30-Minute Audit</span>
+              <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
+            </button>
+          </div>
 
-        <div className="mt-8 flex justify-center">
-          <button
-            onClick={onOpenAudit}
-            className="rounded-full bg-purple-600 hover:bg-purple-700 text-white px-8 py-4 text-sm font-semibold transition-all shadow-md shadow-purple-600/20 cursor-pointer"
-          >
-            Get Your Free Lead-Leak Audit
-          </button>
+          <p className="mt-4 text-xs font-mono text-slate-400">
+            100% Free · Zero sales pressure · 4 slots remaining this week
+          </p>
         </div>
       </div>
     </section>
@@ -2866,52 +3390,28 @@ function Footer({ onOpenAudit }: { onOpenAudit?: () => void }) {
           </div>
         </div>
 
-        {/* Studio Systems & Live Ecosystem Portals */}
-        <div className="mt-16 md:mt-24 pt-12 border-t border-white/10">
-          <div className="flex flex-col sm:flex-row sm:items-end justify-between mb-8 gap-4">
-            <div>
-              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-purple-500/10 border border-purple-500/25 text-[11px] font-mono text-purple-300 tracking-wider uppercase mb-3">
-                <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse shadow-[0_0_8px_#34d399]" />
-                Live Systems & Founder Ecosystem
-              </div>
-              <h3 className="font-display text-2xl sm:text-3xl font-light text-white tracking-tight">
-                Studio Portals & Engines
-              </h3>
-            </div>
-            <p className="text-xs sm:text-sm font-mono text-white/50 max-w-md">
-              Direct access to Buildicy’s production consoles, interactive multiplayer engines, and internal operations portals.
-            </p>
+        {/* Studio Systems & Live Ecosystem Portals (Minimalist Text Style) */}
+        <div className="mt-14 md:mt-18 pt-8 border-t border-white/10 flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+          <div className="flex items-center gap-2 shrink-0">
+            <span className="w-1.5 h-1.5 rounded-full bg-purple-400" />
+            <span className="text-xs font-mono uppercase tracking-wider text-white/50">
+              Studio Systems &amp; Portals:
+            </span>
           </div>
 
-          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3 sm:gap-3.5">
+          <div className="flex flex-wrap items-center gap-x-6 gap-y-2 text-xs font-mono text-white/60">
             {PORTAL_ITEMS.map((portal) => (
               <a
                 key={portal.id}
                 href={portal.url}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="group relative p-4 rounded-2xl bg-white/[0.03] hover:bg-white/[0.07] border border-white/[0.08] hover:border-purple-500/50 transition-all duration-300 flex flex-col justify-between overflow-hidden hover:shadow-[0_0_30px_rgba(168,85,247,0.16)] hover:-translate-y-1"
+                className="hover:text-purple-300 transition-colors flex items-center gap-1 group"
               >
-                {/* Ambient glow effect on hover */}
-                <div className="absolute top-0 right-0 w-24 h-24 bg-purple-500/10 rounded-full blur-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none" />
-
-                <div>
-                  <div className="flex items-center justify-between gap-1 mb-3">
-                    <span className="text-[10px] font-mono uppercase tracking-wider px-2 py-0.5 rounded-md bg-purple-500/15 text-purple-300 border border-purple-500/20 group-hover:border-purple-400/40 group-hover:bg-purple-500/25 transition-colors">
-                      {portal.badge}
-                    </span>
-                    <span className="text-xs text-white/30 group-hover:text-purple-300 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5">
-                      ↗
-                    </span>
-                  </div>
-                  <div className="font-display text-sm sm:text-base font-semibold text-white group-hover:text-purple-200 transition-colors">
-                    {portal.name}
-                  </div>
-                </div>
-
-                <div className="text-[11px] text-white/50 font-light leading-snug mt-2.5 group-hover:text-white/75 transition-colors">
-                  {portal.desc}
-                </div>
+                <span>{portal.name}</span>
+                <span className="text-[10px] text-white/30 group-hover:text-purple-400 group-hover:translate-x-0.5 transition-transform">
+                  ↗
+                </span>
               </a>
             ))}
           </div>
