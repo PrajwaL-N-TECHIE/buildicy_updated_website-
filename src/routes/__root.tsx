@@ -159,36 +159,27 @@ const SCHEMA_ORG_JSON = {
             "@type": "Offer",
             "itemOffered": {
               "@type": "Service",
-              "name": "AI Funnel System",
+              "name": "Starter — AI Lead Machine & Funnel",
               "description":
-                "Turn traffic into qualified leads and booked calls with automated qualification and CRM tracking.",
+                "Turn website and ad traffic into qualified booked calls with automated scoring, booking, and reminders.",
             },
           },
           {
             "@type": "Offer",
             "itemOffered": {
               "@type": "Service",
-              "name": "AI Receptionist & Voice Telephony",
+              "name": "Growth — 24/7 AI Receptionist & Front Desk",
               "description":
-                "Answer calls and WhatsApp 24/7, capture leads, answer FAQs, and book appointments automatically.",
+                "Never miss an inbound call or WhatsApp enquiry again. Instant voice triage, 2-way chat consultation, and missed-call recovery.",
             },
           },
           {
             "@type": "Offer",
             "itemOffered": {
               "@type": "Service",
-              "name": "AI Workflow Automation",
+              "name": "Scale — Complete AI Growth Engine",
               "description":
-                "Automate follow-ups, reminders, CRM updates, and repetitive business operations.",
-            },
-          },
-          {
-            "@type": "Offer",
-            "itemOffered": {
-              "@type": "Service",
-              "name": "Digital Product System",
-              "description":
-                "Sell and deliver digital products, courses, and SaaS subscriptions automatically.",
+                "Run lead capture, follow-up, CRM triage, dormant lead reactivation, and reporting on one automated autonomous revenue system.",
             },
           },
         ],
@@ -204,6 +195,70 @@ const SCHEMA_ORG_JSON = {
         "@id": "https://www.buildicy.com/#organization",
       },
       "inLanguage": "en-US",
+    },
+    {
+      "@type": "ItemList",
+      "@id": "https://www.buildicy.com/#sitenavigation",
+      "name": "Buildicy Primary Navigation",
+      "description": "Primary architectural sections and pages of Buildicy AI Growth Systems Studio",
+      "itemListElement": [
+        {
+          "@type": "SiteNavigationElement",
+          "position": 1,
+          "name": "Problem: Lead Leakage",
+          "description": "Stop losing warm leads to slow replies and missed after-hours enquiries.",
+          "url": "https://www.buildicy.com/#problem"
+        },
+        {
+          "@type": "SiteNavigationElement",
+          "position": 2,
+          "name": "Interactive System Demo",
+          "description": "Interactive autonomous engine demo showing automated lead capture, qualification, and booking.",
+          "url": "https://www.buildicy.com/#demo"
+        },
+        {
+          "@type": "SiteNavigationElement",
+          "position": 3,
+          "name": "Proof & Case Studies",
+          "description": "Named case studies and real estate lead recovery metrics producing 14 additional viewings/mo.",
+          "url": "https://www.buildicy.com/#proof"
+        },
+        {
+          "@type": "SiteNavigationElement",
+          "position": 4,
+          "name": "AI Growth Systems & Packages",
+          "description": "One clean package ladder: Starter (Lead Capture), Growth (AI Receptionist), and Scale (Growth Engine).",
+          "url": "https://www.buildicy.com/#systems"
+        },
+        {
+          "@type": "SiteNavigationElement",
+          "position": 5,
+          "name": "14-Day Implementation Protocol",
+          "description": "Fixed 14-day delivery sprint from audit to live multi-channel deployment.",
+          "url": "https://www.buildicy.com/#protocol"
+        },
+        {
+          "@type": "SiteNavigationElement",
+          "position": 6,
+          "name": "Frequently Asked Questions",
+          "description": "System ownership, zero hallucination guardrails, WhatsApp/telephony setup, and CRM integrations.",
+          "url": "https://www.buildicy.com/#faq"
+        },
+        {
+          "@type": "SiteNavigationElement",
+          "position": 7,
+          "name": "Founders & Story",
+          "description": "Meet the founders of Buildicy: Mayur P (CTO) and Prajwal N (CEO) — 10 years of engineering collaboration.",
+          "url": "https://www.buildicy.com/founders"
+        },
+        {
+          "@type": "SiteNavigationElement",
+          "position": 8,
+          "name": "Get Free Lead-Leak Audit",
+          "description": "30-minute strategic audit, custom AI architecture map, and fixed implementation scope estimate.",
+          "url": "https://www.buildicy.com/contact"
+        }
+      ]
     },
   ],
 };

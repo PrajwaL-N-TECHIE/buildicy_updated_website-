@@ -83,7 +83,7 @@ export function Navbar({ onOpenAudit, activeRoute }: NavbarProps) {
             Problem
           </a>
           <a
-            href={`${linkPrefix}#dashboard`}
+            href={`${linkPrefix}#demo`}
             className="link-line hover:text-slate-900 transition-colors"
           >
             Demo
@@ -167,7 +167,7 @@ export function Navbar({ onOpenAudit, activeRoute }: NavbarProps) {
               <span className="text-xs font-mono text-purple-700">01</span>
             </a>
             <a
-              href={`${linkPrefix}#dashboard`}
+              href={`${linkPrefix}#demo`}
               onClick={() => setMobileMenuOpen(false)}
               className="p-3 min-h-[48px] rounded-2xl hover:bg-slate-100 transition-colors flex items-center justify-between"
             >

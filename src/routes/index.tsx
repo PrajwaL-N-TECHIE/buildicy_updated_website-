@@ -1235,6 +1235,7 @@ function VideoDashboardSection({ onOpenAudit }: { onOpenAudit: () => void }) {
 
   return (
     <section id="demo" className="px-3 sm:px-6 py-14 md:px-8 md:py-24 bg-[#faf8f5] text-slate-900 overflow-hidden relative">
+      <div id="dashboard" className="sr-only" />
       {/* Section Header */}
       <div className="max-w-5xl mx-auto mb-8 sm:mb-10 text-center">
         <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-purple-100/80 border border-purple-200 text-purple-800 text-xs font-mono uppercase tracking-widest font-semibold mb-3">
