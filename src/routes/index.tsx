@@ -834,10 +834,10 @@ function Hero({ onOpenAudit }: { onOpenAudit: () => void }) {
 
 
 
-          {/* Italic Quote Banner */}
-          <div className="mt-6 w-full max-w-xl p-4 sm:p-5 rounded-2xl bg-slate-900 border border-slate-700 text-left">
-            <p className="font-serif italic text-sm sm:text-base font-normal text-slate-200 leading-relaxed">
-              &ldquo;In <strong className="font-sans font-bold text-purple-400 not-italic">30 minutes</strong>, we&apos;ll identify where enquiries are being missed, map the right AI system, and give you a <strong className="font-sans font-bold text-white not-italic">fixed implementation estimate</strong>.&rdquo;
+          {/* Quote Banner in Buildicy Brand Purple */}
+          <div className="mt-6 w-full max-w-xl p-4 sm:p-5 rounded-2xl bg-gradient-to-r from-purple-900 via-purple-800 to-indigo-900 border border-purple-500/40 text-left shadow-lg shadow-purple-900/15">
+            <p className="font-serif italic text-sm sm:text-base font-normal text-purple-100 leading-relaxed">
+              &ldquo;In <strong className="font-sans font-bold text-purple-300 not-italic">30 minutes</strong>, we&apos;ll identify where enquiries are being missed, map the right AI system, and give you a <strong className="font-sans font-bold text-white not-italic underline decoration-purple-400 underline-offset-4">fixed implementation estimate</strong>.&rdquo;
             </p>
           </div>
 
