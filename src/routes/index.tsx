@@ -1758,37 +1758,275 @@ const INDUSTRIES = [
   "Other",
 ] as const;
 
+type IndustryType = (typeof INDUSTRIES)[number];
+
+interface IndustryTierData {
+  tagline: string;
+  features: string[];
+}
+
+interface IndustryData {
+  starter: IndustryTierData;
+  growth: IndustryTierData;
+  scale: IndustryTierData;
+}
+
+const INDUSTRY_DATA: Record<IndustryType, IndustryData> = {
+  "Dental & Healthcare": {
+    starter: {
+      tagline: "For patient appointment requests & treatment enquiry capture",
+      features: [
+        "Patient intake forms & instant emergency response",
+        "Treatment qualification & medical urgency scoring",
+        "Automated dental slot booking & clinic calendar sync",
+        "Automated appointment reminders cutting clinic no-shows",
+        "Front-desk patient dashboard & reception handover",
+        "Instant WhatsApp alert to clinic coordinator",
+      ],
+    },
+    growth: {
+      tagline: "24/7 AI Clinic Receptionist for emergency calls & WhatsApp patient booking",
+      features: [
+        "Everything in Starter, plus:",
+        "24/7 AI Clinic Receptionist (Emergency triage & FAQs)",
+        "Voice AI phone agent (Inbound appointments & inquiries)",
+        "2-Way WhatsApp patient consultation & rescheduling",
+        "Missed-call recovery (Instant SMS to dropped callers)",
+        "2-Way CRM & EMR integration (Dentrix, Practo, HubSpot)",
+        "Staff alerts with patient summary & call recording",
+      ],
+    },
+    scale: {
+      tagline: "Full clinic growth engine with dormant patient recall & multi-doctor routing",
+      features: [
+        "Everything in Growth, plus:",
+        "AI Patient Recall (wakes dormant 6-month checkup lists)",
+        "AI Conversation Insights (treatment hesitation mining)",
+        "Treatment plan conversion loop optimization",
+        "Multi-doctor & multi-branch round-robin calendar routing",
+        "Omnichannel patient capture across web, ads & phone",
+        "Dedicated clinic systems architect & priority SLA",
+      ],
+    },
+  },
+
+  "Real Estate": {
+    starter: {
+      tagline: "Capture property buyers & schedule verified site visits on autopilot",
+      features: [
+        "Inbound property enquiry capture & instant lead response",
+        "BANT qualification (Budget, Locality, Possession timeline)",
+        "Automated site visit booking synced with broker calendar",
+        "Instant property brochure delivery via SMS & WhatsApp",
+        "Automated viewing reminders cutting client no-shows",
+        "Lead scoring dashboard & sales agent handover",
+      ],
+    },
+    growth: {
+      tagline: "24/7 AI Real Estate Desk for instant ad call response & WhatsApp viewing booking",
+      features: [
+        "Everything in Starter, plus:",
+        "24/7 AI Property Desk (Answers pricing, floorplans & specs)",
+        "Voice AI answering inbound buyer calls in < 350ms",
+        "2-Way WhatsApp property consultant & slot booking",
+        "Missed-call recovery (Call-to-text when agents are touring)",
+        "Full CRM sync (LeadSquared, Salesforce, HubSpot)",
+        "Instant agent alerts with buyer budget & audio transcript",
+      ],
+    },
+    scale: {
+      tagline: "Autonomous real estate engine with cold database reactivation & buyer matching",
+      features: [
+        "Everything in Growth, plus:",
+        "AI Database Reactivation (wakes 90-day cold buyer leads)",
+        "AI Objection Mining (tracks pricing & locality hesitations)",
+        "Dynamic property inventory matching & follow-up tuning",
+        "Multi-agent round-robin territory & project routing",
+        "Omnichannel capture across 99acres, MagicBricks, Meta & Google",
+        "Dedicated real estate systems architect & priority support",
+      ],
+    },
+  },
+
+  "Education": {
+    starter: {
+      tagline: "Automated student enquiry capture & campus tour scheduling",
+      features: [
+        "Course enquiry intake & sub-second lead response",
+        "Eligibility & intake year qualification scoring",
+        "Counselor consultation & campus visit calendar booking",
+        "Prospectus & fee structure delivery via email/WhatsApp",
+        "Reminder cadences cutting counseling no-show rates",
+        "Admissions lead dashboard & counselor handover",
+      ],
+    },
+    growth: {
+      tagline: "24/7 AI Admissions Desk for course FAQs & instant WhatsApp counseling booking",
+      features: [
+        "Everything in Starter, plus:",
+        "24/7 AI Admissions Receptionist (Curriculum & fee FAQs)",
+        "Voice AI hotline handling admission inquiries in real-time",
+        "Full WhatsApp 2-way student counseling & slot scheduling",
+        "Instant missed-call triage for high-volume admissions peaks",
+        "Admissions CRM sync (LeadSquared, ExtraaEdge, HubSpot)",
+        "Counselor alerts with student academic background summary",
+      ],
+    },
+    scale: {
+      tagline: "Complete admissions engine with past-applicant reactivation & batch conversion",
+      features: [
+        "Everything in Growth, plus:",
+        "AI Applicant Reactivation (wakes past-cycle enquiries)",
+        "AI Drop-off Analysis (pinpoints application friction points)",
+        "Admission conversion loop & fee objection handling tuning",
+        "Multi-counselor round-robin routing by department/course",
+        "Omnichannel capture across campus ads, web & phone",
+        "Dedicated education systems architect & priority SLA",
+      ],
+    },
+  },
+
+  "Coaching & Consulting": {
+    starter: {
+      tagline: "High-ticket discovery call booking & pre-qualification funnel",
+      features: [
+        "Inbound client application capture & instant greeting",
+        "Strict budget & business revenue fit qualification",
+        "Automated discovery call booking on Google Cal / Calendly",
+        "Pre-call intake dossier sent to consultant before call",
+        "Multi-touch reminder cadences cutting client no-shows",
+        "Lead tracking dashboard & high-intent handover",
+      ],
+    },
+    growth: {
+      tagline: "24/7 AI Front Desk for inbound client calls & instant WhatsApp triage",
+      features: [
+        "Everything in Starter, plus:",
+        "24/7 AI Client Concierge (Answers methodology & pricing FAQs)",
+        "Voice AI qualifying prospective clients over phone",
+        "2-Way WhatsApp consultation scheduling & vetting",
+        "Missed-call recovery (Immediate WhatsApp continuation)",
+        "Full 2-way CRM sync (HubSpot, GoHighLevel, Pipedrive)",
+        "Slack/Email alerts with enriched client business brief",
+      ],
+    },
+    scale: {
+      tagline: "Complete advisory growth engine with cold pipeline reactivation & objection mining",
+      features: [
+        "Everything in Growth, plus:",
+        "AI Proposal Reactivation (re-engages lost deals from 3-6 mos)",
+        "AI Objection Mining (extracts hesitation patterns from sales calls)",
+        "Monthly pitch & close-rate conversion optimization loop",
+        "Multi-partner round-robin calendar & advisory routing",
+        "Omnichannel capture across LinkedIn, YouTube, web & ads",
+        "Dedicated systems architect & white-glove advisory support",
+      ],
+    },
+  },
+
+  "Hospitality": {
+    starter: {
+      tagline: "Direct reservation enquiries & private event booking funnel",
+      features: [
+        "Direct guest enquiry capture & instant confirmation",
+        "Party size, date & dining preference qualification",
+        "Table & private event calendar booking integration",
+        "Instant booking confirmation via SMS & WhatsApp",
+        "Automated arrival reminders cutting cancellation rates",
+        "Reservation dashboard & front-of-house handover",
+      ],
+    },
+    growth: {
+      tagline: "24/7 AI Front Desk Concierge for guest calls, room FAQs & WhatsApp booking",
+      features: [
+        "Everything in Starter, plus:",
+        "24/7 AI Front Desk Concierge (Room rates & menu FAQs)",
+        "Voice AI taking phone inquiries & table reservations",
+        "Full 2-way WhatsApp guest booking & concierge chat",
+        "Zero missed reservation calls during peak dinner rush",
+        "Integration with hotel PMS / restaurant reservation system",
+        "Host alerts with VIP guest notes & special requests",
+      ],
+    },
+    scale: {
+      tagline: "Autonomous guest engine with repeat stay reactivation & occupancy optimization",
+      features: [
+        "Everything in Growth, plus:",
+        "AI Guest Reactivation (prompts past guests with seasonal offers)",
+        "AI Guest Review & Sentiment Mining (actionable feedback loops)",
+        "Dynamic occupancy tuning & high-demand rate notifications",
+        "Multi-property & outlet reservation routing",
+        "Omnichannel capture across Google, social, web & phone",
+        "Dedicated hospitality systems architect & priority support",
+      ],
+    },
+  },
+
+  "Other": {
+    starter: {
+      tagline: "For inbound web enquiry capture & high-intent meeting booking",
+      features: [
+        "AI enquiry capture & instant sub-second responses",
+        "Lead qualification & automated ICP scoring",
+        "Personalised follow-ups & FAQ objection handling",
+        "Appointment booking & calendar integration (Cal/Google)",
+        "Automated reminders & AI No-show recovery cadences",
+        "Lead dashboard & human sales rep handover",
+      ],
+    },
+    growth: {
+      tagline: "For 24/7 Voice & WhatsApp Front Desk with missed-call recovery",
+      features: [
+        "Everything in Starter, plus:",
+        "24/7 AI Receptionist (Inbound Front Desk & FAQs)",
+        "Voice AI phone calls triage & appointment booking",
+        "Full AI WhatsApp conversations & conversational booking",
+        "Missed-call recovery (automated call-to-text in < 10s)",
+        "Full 2-way CRM sync (HubSpot, GoHighLevel, Pipedrive)",
+        "Slack & team alerts with call audio transcripts",
+      ],
+    },
+    scale: {
+      tagline: "For complete autonomous revenue engine with dormant lead reactivation",
+      features: [
+        "Everything in Growth, plus:",
+        "AI Lead Reactivation (wakes dormant CRM leads without ad spend)",
+        "AI Conversation Insights (objection & market trend mining)",
+        "AI Conversion Optimisation (monthly feedback loop tuning)",
+        "Omnichannel capture across all digital & phone channels",
+        "Custom multi-rep round-robin calendar routing",
+        "Dedicated systems architect & priority SLA",
+      ],
+    },
+  },
+};
+
 function AIGrowthSystemsPackages({
   onSelectPkg,
 }: {
   onSelectPkg: (name: string, market: string) => void;
 }) {
-  const [market, setMarket] = useState<"india" | "intl">("india");
+  // Dollars first (International - USD $) by default
+  const [market, setMarket] = useState<"india" | "intl">("intl");
   const [selectedIndustry, setSelectedIndustry] = useState<string>("Dental & Healthcare");
   const [mobilePlanTab, setMobilePlanTab] = useState<"starter" | "growth" | "scale">("growth");
   const isIntl = market === "intl";
+
+  const indData = INDUSTRY_DATA[selectedIndustry as IndustryType] || INDUSTRY_DATA["Other"];
 
   const starter = {
     id: "starter",
     name: "Starter — AI Funnel & Booking",
     badge: "Starter",
     systemNumber: "01",
-    tagline: "For inbound web enquiry capture & booking",
+    tagline: indData.starter.tagline,
     popular: false,
     indiaSetup: "₹40,000",
     indiaMonthly: "₹8,000/mo",
     intlSetup: "$2,000",
     intlMonthly: "$500/mo",
     cta: "Get Starter",
-    features: [
-      "AI enquiry capture & instant responses",
-      "Lead qualification & automated scoring",
-      "Personalised follow-ups & FAQ handling",
-      "Appointment booking & calendar integration",
-      "Automated reminders & AI No-show recovery",
-      "Lead dashboard & human handover",
-      "Basic WhatsApp lead notifications",
-    ],
+    features: indData.starter.features,
   };
 
   const growth = {
@@ -1796,22 +2034,14 @@ function AIGrowthSystemsPackages({
     name: "Growth — AI Funnel + AI Receptionist",
     badge: "Growth",
     systemNumber: "02",
-    tagline: "For 24/7 Voice & WhatsApp Front Desk",
+    tagline: indData.growth.tagline,
     popular: true,
     indiaSetup: "₹65,000",
     indiaMonthly: "₹15,000/mo",
     intlSetup: "$3,500",
     intlMonthly: "$900/mo",
     cta: "Deploy Growth",
-    features: [
-      "Everything in Starter, plus:",
-      "24/7 AI Receptionist (Inbound Front Desk)",
-      "Voice AI (Inbound phone calls triage & booking)",
-      "Full AI WhatsApp conversations & booking",
-      "Missed-call recovery (automated call-to-text)",
-      "Full 2-way CRM sync (HubSpot, GHL, Pipedrive)",
-      "Slack & team alerts with call audio transcripts",
-    ],
+    features: indData.growth.features,
   };
 
   const scale = {
@@ -1819,22 +2049,14 @@ function AIGrowthSystemsPackages({
     name: "Scale — AI Growth Intelligence",
     badge: "Scale",
     systemNumber: "03",
-    tagline: "For complete autonomous revenue engine",
+    tagline: indData.scale.tagline,
     popular: false,
     indiaSetup: "₹1,25,000",
     indiaMonthly: "₹35,000–₹40,000/mo",
     intlSetup: "$6,000",
     intlMonthly: "$2,000/mo",
     cta: "Deploy Full Engine",
-    features: [
-      "Everything in Growth, plus:",
-      "AI Lead Reactivation (wakes dormant CRM leads)",
-      "AI Conversation Insights (objection & trend mining)",
-      "AI Conversion Optimisation (monthly loop tuning)",
-      "Omnichannel capture across all digital & phone channels",
-      "Custom multi-rep round-robin calendar routing",
-      "Dedicated systems architect & priority support",
-    ],
+    features: indData.scale.features,
   };
 
   // Concise 10-row comparison table (No bloated text, cuts height by 50%)
@@ -1934,20 +2156,9 @@ function AIGrowthSystemsPackages({
             </p>
           </div>
 
-          {/* Currency Toggle Pill */}
+          {/* Currency Toggle Pill - International USD is first by default */}
           <div className="shrink-0">
             <div className="inline-flex items-center p-1 rounded-full bg-white border border-slate-200 shadow-2xs">
-              <button
-                type="button"
-                onClick={() => setMarket("india")}
-                className={`px-4 py-1.5 rounded-full text-xs font-semibold transition-all cursor-pointer ${
-                  market === "india"
-                    ? "bg-purple-600 text-white shadow-xs"
-                    : "text-slate-600 hover:text-slate-900"
-                }`}
-              >
-                India — INR (₹)
-              </button>
               <button
                 type="button"
                 onClick={() => setMarket("intl")}
@@ -1959,6 +2170,17 @@ function AIGrowthSystemsPackages({
               >
                 International — USD ($)
               </button>
+              <button
+                type="button"
+                onClick={() => setMarket("india")}
+                className={`px-4 py-1.5 rounded-full text-xs font-semibold transition-all cursor-pointer ${
+                  market === "india"
+                    ? "bg-purple-600 text-white shadow-xs"
+                    : "text-slate-600 hover:text-slate-900"
+                }`}
+              >
+                India — INR (₹)
+              </button>
             </div>
           </div>
         </div>
@@ -1969,7 +2191,7 @@ function AIGrowthSystemsPackages({
             <span className="text-[11px] font-mono uppercase tracking-widest text-slate-500 font-semibold">
               Select Your Industry
             </span>
-            <span className="px-2 py-0.5 rounded-full bg-slate-100 text-slate-600 text-[10px] font-mono">
+            <span className="px-2.5 py-0.5 rounded-full bg-purple-100/80 border border-purple-200 text-purple-800 text-[10px] font-mono font-bold">
               Tailored Architecture
             </span>
           </div>
@@ -1983,7 +2205,7 @@ function AIGrowthSystemsPackages({
                   onClick={() => setSelectedIndustry(ind)}
                   className={`px-3 py-1.5 rounded-xl text-xs font-semibold transition-all cursor-pointer ${
                     isSelected
-                      ? "bg-slate-900 text-white shadow-xs"
+                      ? "bg-purple-600 text-white shadow-sm"
                       : "text-slate-600 hover:text-slate-900 hover:bg-slate-50"
                   }`}
                 >
@@ -2003,11 +2225,14 @@ function AIGrowthSystemsPackages({
                 <span className="text-xs font-mono font-bold uppercase tracking-wider text-slate-500">
                   {starter.systemNumber} · {starter.badge}
                 </span>
+                <span className="text-[10px] font-mono text-purple-700 bg-purple-50 px-2 py-0.5 rounded border border-purple-100">
+                  {selectedIndustry}
+                </span>
               </div>
               <h3 className="font-display text-xl sm:text-2xl font-bold text-slate-900">
                 {starter.name}
               </h3>
-              <p className="mt-1.5 text-xs text-slate-500 min-h-[32px]">
+              <p className="mt-1.5 text-xs text-slate-600 min-h-[34px] leading-relaxed transition-all duration-300">
                 {starter.tagline}
               </p>
 
@@ -2054,11 +2279,14 @@ function AIGrowthSystemsPackages({
                 <span className="text-xs font-mono font-bold uppercase tracking-wider text-purple-700">
                   {growth.systemNumber} · {growth.badge}
                 </span>
+                <span className="text-[10px] font-mono text-purple-700 bg-purple-100 px-2 py-0.5 rounded border border-purple-200 font-bold">
+                  {selectedIndustry}
+                </span>
               </div>
               <h3 className="font-display text-xl sm:text-2xl font-bold text-slate-900">
                 {growth.name}
               </h3>
-              <p className="mt-1.5 text-xs text-slate-500 min-h-[32px]">
+              <p className="mt-1.5 text-xs text-slate-600 min-h-[34px] leading-relaxed transition-all duration-300">
                 {growth.tagline}
               </p>
 
@@ -2099,11 +2327,14 @@ function AIGrowthSystemsPackages({
                 <span className="text-xs font-mono font-bold uppercase tracking-wider text-slate-500">
                   {scale.systemNumber} · {scale.badge}
                 </span>
+                <span className="text-[10px] font-mono text-purple-700 bg-purple-50 px-2 py-0.5 rounded border border-purple-100">
+                  {selectedIndustry}
+                </span>
               </div>
               <h3 className="font-display text-xl sm:text-2xl font-bold text-slate-900">
                 {scale.name}
               </h3>
-              <p className="mt-1.5 text-xs text-slate-500 min-h-[32px]">
+              <p className="mt-1.5 text-xs text-slate-600 min-h-[34px] leading-relaxed transition-all duration-300">
                 {scale.tagline}
               </p>
 
@@ -2246,32 +2477,42 @@ function AIGrowthSystemsPackages({
 
         {/* =========================================================================
             DESKTOP 10-ROW COMPARISON MATRIX (Shown on screens >= 768px)
+            Improvised with luxury purple accents, enhanced column hierarchy & crisp badges
             ========================================================================= */}
-        <div className="hidden md:block bg-white rounded-3xl border border-slate-200 overflow-hidden shadow-sm">
-          <div className="px-6 py-4 bg-slate-50 border-b border-slate-200 flex items-center justify-between">
-            <div>
-              <span className="text-xs font-mono font-bold uppercase tracking-wider text-slate-800">
-                Detailed Feature Comparison
-              </span>
-              <p className="text-[11px] text-slate-500 mt-0.5">
-                Core deliverables across Starter, Growth, and Scale
-              </p>
+        <div className="hidden md:block bg-white rounded-3xl border border-purple-200/70 overflow-hidden shadow-lg shadow-purple-500/5">
+          <div className="px-6 py-4.5 bg-gradient-to-r from-slate-50 via-purple-50/40 to-slate-50 border-b border-slate-200 flex items-center justify-between">
+            <div className="flex items-center gap-3">
+              <span className="w-2.5 h-2.5 rounded-full bg-purple-600 shadow-sm shadow-purple-500/50 animate-pulse" />
+              <div>
+                <span className="text-xs font-mono font-bold uppercase tracking-wider text-slate-900">
+                  Detailed Feature Comparison
+                </span>
+                <p className="text-[11px] text-slate-500 mt-0.5">
+                  Core deliverables across Starter, Growth, and Scale architectures
+                </p>
+              </div>
             </div>
-            <span className="text-xs text-slate-500 font-mono">
-              Industry: <strong className="text-purple-700">{selectedIndustry}</strong>
-            </span>
+            <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-purple-100/80 border border-purple-200 text-xs font-mono">
+              <span className="text-slate-600 text-[11px]">Active Industry:</span>
+              <strong className="text-purple-900 font-bold">{selectedIndustry}</strong>
+            </div>
           </div>
 
           <div className="overflow-x-auto">
             <table className="w-full text-left text-xs border-collapse">
               <thead>
                 <tr className="border-b border-slate-200 bg-slate-50/70">
-                  <th className="py-3.5 px-6 font-bold text-slate-800 w-[38%]">Feature</th>
-                  <th className="py-3.5 px-4 font-bold text-slate-800 text-center w-[20%]">Starter</th>
-                  <th className="py-3.5 px-4 font-bold text-purple-900 bg-purple-50/50 text-center w-[22%]">
-                    Growth <span className="text-[10px] font-mono text-purple-600 font-normal">(Most Popular)</span>
+                  <th className="py-4 px-6 font-bold text-slate-800 w-[38%]">Feature</th>
+                  <th className="py-4 px-4 font-bold text-slate-800 text-center w-[20%]">Starter</th>
+                  <th className="py-4 px-4 font-bold text-purple-950 bg-purple-100/40 text-center w-[22%] border-x border-purple-200/60">
+                    <div className="inline-flex items-center justify-center gap-1.5">
+                      <span>Growth</span>
+                      <span className="px-2 py-0.5 rounded-full bg-purple-600 text-white text-[9px] font-mono font-bold uppercase tracking-wider shadow-xs">
+                        Popular
+                      </span>
+                    </div>
                   </th>
-                  <th className="py-3.5 px-4 font-bold text-slate-800 text-center w-[20%]">Scale</th>
+                  <th className="py-4 px-4 font-bold text-slate-800 text-center w-[20%]">Scale</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-slate-100">
@@ -2286,7 +2527,14 @@ function AIGrowthSystemsPackages({
                     }
                     if (val === "✓") {
                       return (
-                        <span className={`inline-flex items-center justify-center w-5 h-5 rounded-full ${isPop ? "bg-purple-100 border border-purple-300 text-purple-700" : "bg-emerald-50 border border-emerald-200 text-emerald-600"} mx-auto`} title="Included">
+                        <span
+                          className={`inline-flex items-center justify-center rounded-full mx-auto ${
+                            isPop
+                              ? "w-6 h-6 bg-purple-600 text-white shadow-xs shadow-purple-600/30"
+                              : "w-5 h-5 bg-emerald-50 border border-emerald-200 text-emerald-600"
+                          }`}
+                          title="Included"
+                        >
                           <Check className="w-3 h-3 stroke-[3]" />
                         </span>
                       );
@@ -2294,22 +2542,22 @@ function AIGrowthSystemsPackages({
                     if (val.startsWith("✓")) {
                       const label = val.replace(/^✓\s*/, "");
                       return (
-                        <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-purple-50 border border-purple-200 text-[11px] font-semibold text-purple-900 mx-auto">
+                        <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-purple-100 text-purple-900 text-[11px] font-semibold border border-purple-200/80 mx-auto shadow-2xs">
                           <Check className="w-3 h-3 text-purple-600 stroke-[3]" />
                           <span>{label}</span>
                         </span>
                       );
                     }
                     return (
-                      <span className="inline-block px-2 py-0.5 rounded bg-slate-100 text-slate-700 text-[11px] font-mono mx-auto">
+                      <span className="inline-block px-2.5 py-1 rounded-lg bg-slate-100 text-slate-800 text-[11px] font-mono font-medium border border-slate-200/70 mx-auto">
                         {val}
                       </span>
                     );
                   };
 
                   return (
-                    <tr key={rowIdx} className={`hover:bg-slate-50/80 transition-colors ${(row as any).highlight ? "bg-purple-50/20" : ""}`}>
-                      <td className="py-3 px-6">
+                    <tr key={rowIdx} className={`hover:bg-purple-50/20 transition-colors ${(row as any).highlight ? "bg-purple-50/30" : ""}`}>
+                      <td className="py-3.5 px-6">
                         <div className="font-semibold text-slate-900 text-xs">
                           {row.name}
                         </div>
@@ -2317,13 +2565,13 @@ function AIGrowthSystemsPackages({
                           {row.desc}
                         </div>
                       </td>
-                      <td className="py-3 px-4 text-center">
+                      <td className="py-3.5 px-4 text-center">
                         {renderCell(row.starter)}
                       </td>
-                      <td className="py-3 px-4 text-center bg-purple-50/30">
+                      <td className="py-3.5 px-4 text-center bg-purple-50/40 border-x border-purple-100/80">
                         {renderCell(row.growth, true)}
                       </td>
-                      <td className="py-3 px-4 text-center">
+                      <td className="py-3.5 px-4 text-center">
                         {renderCell(row.scale)}
                       </td>
                     </tr>
@@ -2621,15 +2869,6 @@ function DeploymentProtocol({ onOpenAudit }: { onOpenAudit: () => void }) {
             <p className="mt-3 text-slate-600 text-sm sm:text-base leading-relaxed max-w-lg">
               8 modules. 14 days. Zero downtime. We audit your pipeline, build the system, stress-test it, and hand it over fully running.
             </p>
-
-            <div className="hidden lg:flex mt-6 items-center gap-3">
-              <div className="inline-flex items-center gap-3 px-4 py-2.5 rounded-2xl bg-purple-100/70 border border-purple-200 text-purple-900 shadow-sm">
-                <span className="text-xs font-mono font-bold tracking-tight">
-                  Hover or click the dossier
-                </span>
-                <ArrowRight className="w-4 h-4 text-purple-700 animate-pulse" />
-              </div>
-            </div>
 
             <div className="mt-6 flex flex-wrap items-center gap-4">
               <button
@@ -3276,23 +3515,34 @@ function ResourcesSection() {
 
 function AuditBanner({ onOpenAudit }: { onOpenAudit: () => void }) {
   return (
-    <section className="bg-[#07090e] text-white relative overflow-hidden border-y border-slate-800">
-      {/* Ambient background glow */}
-      <div className="absolute inset-0 bg-[radial-gradient(ellipse_70%_60%_at_50%_0%,rgba(168,85,247,0.18)_0%,transparent_70%)] pointer-events-none" />
-      <div className="absolute inset-0 opacity-[0.03] bg-[radial-gradient(#fff_1px,transparent_1px)] [background-size:24px_24px] pointer-events-none" />
+    <section className="bg-gradient-to-b from-[#18072e] via-[#0d031c] to-[#070112] text-white relative overflow-hidden border-y border-purple-700/40 py-20 sm:py-24">
+      {/* High-intensity ambient purple glow orbs */}
+      <div className="absolute inset-0 bg-[radial-gradient(ellipse_80%_60%_at_50%_-10%,rgba(168,85,247,0.55)_0%,rgba(124,58,237,0.25)_45%,transparent_75%)] pointer-events-none" />
+      <div className="absolute bottom-0 inset-x-0 h-64 bg-[radial-gradient(ellipse_70%_50%_at_50%_100%,rgba(147,51,234,0.35)_0%,transparent_70%)] pointer-events-none" />
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[350px] bg-purple-600/15 blur-[120px] rounded-full pointer-events-none" />
+      <div className="absolute inset-0 opacity-[0.035] bg-[radial-gradient(#fff_1px,transparent_1px)] [background-size:24px_24px] pointer-events-none" />
 
       {/* Main Banner Content */}
-      <div className="relative z-10 mx-auto max-w-[1280px] px-5 sm:px-8 py-16 sm:py-20 md:px-12">
+      <div className="relative z-10 mx-auto max-w-[1280px] px-5 sm:px-8 md:px-12">
         <div className="max-w-4xl mx-auto text-center">
+          {/* Top Pill */}
+          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-purple-500/15 border border-purple-400/30 text-purple-200 text-xs font-mono font-semibold mb-6 shadow-[0_0_20px_rgba(168,85,247,0.25)]">
+            <span className="w-2 h-2 rounded-full bg-purple-400 animate-ping" />
+            <span>LIMITED DISCOVERY CAPACITY</span>
+          </div>
+
           {/* Heading */}
-          <h2 className="font-display text-3xl sm:text-4xl md:text-5xl font-extrabold tracking-tight text-white leading-tight">
-            Stop losing leads to slow response times.
+          <h2 className="font-display text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold tracking-tight text-white leading-[1.15]">
+            Stop losing leads to{" "}
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-300 via-purple-200 to-indigo-200">
+              slow response times.
+            </span>
           </h2>
 
-          {/* Core Offer Statement with distinct serif italic styling */}
-          <div className="my-6 p-6 sm:p-8 rounded-3xl bg-white/[0.04] border border-white/10 backdrop-blur-sm text-left sm:text-center shadow-2xl">
-            <p className="font-serif italic text-lg sm:text-xl md:text-2xl font-normal text-slate-100 leading-relaxed">
-              &ldquo;In <strong className="font-sans font-bold text-purple-400 not-italic">30 minutes</strong>, we&apos;ll identify where enquiries are being missed, map the right AI system, and give you a <strong className="font-sans font-bold text-white not-italic underline decoration-purple-500 underline-offset-4">fixed implementation estimate</strong>.&rdquo;
+          {/* Core Offer Statement with distinct serif italic styling and intense glowing purple aura */}
+          <div className="my-8 p-6 sm:p-9 rounded-3xl bg-purple-950/40 border border-purple-400/30 backdrop-blur-md text-left sm:text-center shadow-[0_0_60px_-15px_rgba(168,85,247,0.35)]">
+            <p className="font-serif italic text-lg sm:text-xl md:text-2xl font-normal text-purple-100 leading-relaxed">
+              &ldquo;In <strong className="font-sans font-bold text-purple-300 not-italic">30 minutes</strong>, we&apos;ll identify where enquiries are being missed, map the right AI system, and give you a <strong className="font-sans font-bold text-white not-italic underline decoration-purple-400 underline-offset-4">fixed implementation estimate</strong>.&rdquo;
             </p>
           </div>
 
@@ -3300,14 +3550,14 @@ function AuditBanner({ onOpenAudit }: { onOpenAudit: () => void }) {
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
             <button
               onClick={onOpenAudit}
-              className="w-full sm:w-auto px-8 py-4 rounded-full bg-purple-600 hover:bg-purple-500 text-white font-semibold text-sm transition-all shadow-xl shadow-purple-600/30 flex items-center justify-center gap-2 cursor-pointer group"
+              className="w-full sm:w-auto px-9 py-4.5 rounded-full bg-gradient-to-r from-purple-600 via-purple-500 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 text-white font-semibold text-sm transition-all shadow-[0_0_35px_rgba(147,51,234,0.5)] hover:shadow-[0_0_45px_rgba(147,51,234,0.7)] flex items-center justify-center gap-2 cursor-pointer group active:scale-95"
             >
               <span>Claim Your Free 30-Minute Audit</span>
               <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
             </button>
           </div>
 
-          <p className="mt-4 text-xs font-mono text-slate-400">
+          <p className="mt-5 text-xs font-mono text-purple-300/80">
             100% Free · Zero sales pressure · 4 slots remaining this week
           </p>
         </div>
