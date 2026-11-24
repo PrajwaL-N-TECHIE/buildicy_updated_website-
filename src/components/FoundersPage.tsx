@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Link } from "@tanstack/react-router";
 import { ArrowUpRight, ArrowRight, Linkedin, Mail } from "lucide-react";
 import { AuditBookingModal } from "./AuditBookingModal";
+import { Navbar } from "./Navbar";
 
 export function FoundersPage() {
   const [auditModalOpen, setAuditModalOpen] = useState(false);
@@ -15,56 +16,7 @@ export function FoundersPage() {
       </div>
 
       {/* Official Buildicy Fixed Header */}
-      <header className="fixed inset-x-0 top-0 z-50 border-b border-black/5 bg-[#faf8f5]/85 backdrop-blur-md text-slate-900">
-        <div className="mx-auto flex h-20 max-w-[1400px] items-center justify-between px-6 md:px-10">
-          <Link to="/" className="flex items-center gap-3 group">
-            <img
-              src="/logo.png"
-              alt="Buildicy Logo"
-              className="h-10 md:h-12 w-auto object-contain transition-transform duration-300 group-hover:scale-105"
-            />
-            <div className="flex items-center gap-1.5">
-              <span className="font-display text-2xl font-bold tracking-tight text-slate-900">
-                Buildicy
-              </span>
-              <span className="h-2 w-2 rounded-full bg-purple-600 shadow-[0_0_12px_#9333ea] animate-pulse" />
-            </div>
-          </Link>
-
-          <nav className="hidden gap-8 text-sm font-medium text-slate-700 md:flex" aria-label="Primary">
-            <Link to="/" className="link-line hover:text-slate-900 transition-colors">
-              Home
-            </Link>
-            <a href="/#services" className="link-line hover:text-slate-900 transition-colors">
-              Services
-            </a>
-            <a href="/#process" className="link-line hover:text-slate-900 transition-colors">
-              Pipeline
-            </a>
-            <a href="/#packages" className="link-line hover:text-slate-900 transition-colors">
-              Packages
-            </a>
-            <a href="/#systems" className="link-line hover:text-slate-900 transition-colors">
-              Founder Systems
-            </a>
-            <span className="text-purple-600 font-semibold border-b-2 border-purple-600 pb-0.5">
-              Founders
-            </span>
-            <Link to="/contact" className="link-line hover:text-slate-900 transition-colors">
-              Contact
-            </Link>
-          </nav>
-
-          <button
-            onClick={() => setAuditModalOpen(true)}
-            className="group inline-flex items-center gap-1.5 sm:gap-2 rounded-full bg-slate-900 px-3.5 py-2 sm:px-5 sm:py-2.5 text-xs sm:text-sm font-semibold text-white transition-all hover:bg-purple-600 hover:shadow-lg cursor-pointer shrink-0"
-          >
-            <span className="hidden sm:inline">Book Free AI Growth Audit</span>
-            <span className="sm:hidden">Book Audit</span>
-            <ArrowUpRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
-          </button>
-        </div>
-      </header>
+      <Navbar onOpenAudit={() => setAuditModalOpen(true)} activeRoute="founders" />
 
       {/* Main Page Layout */}
       <main className="relative z-10 pt-32 sm:pt-36 pb-20 md:pb-28">

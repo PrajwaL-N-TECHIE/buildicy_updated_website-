@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Link } from "@tanstack/react-router";
 import { toast } from "sonner";
 import { generateContactEmailHtml } from "../lib/email-templates";
+import { Navbar } from "./Navbar";
 import {
   ArrowLeft,
   ArrowUpRight,
@@ -196,55 +197,7 @@ export function ContactPage() {
       </div>
 
       {/* Clean Studio Header */}
-      <header className="sticky top-0 z-50 border-b border-black/5 bg-[#faf8f5]/85 backdrop-blur-md">
-        <div className="mx-auto flex h-20 max-w-[1300px] items-center justify-between px-6 md:px-10">
-          <Link to="/" className="flex items-center gap-3 group">
-            <img
-              src="/logo.png"
-              alt="Buildicy Logo"
-              className="h-10 w-auto object-contain transition-transform duration-300 group-hover:scale-105"
-            />
-            <div className="flex items-center gap-1.5">
-              <span className="font-display text-2xl font-bold tracking-tight text-slate-900">
-                Buildicy
-              </span>
-
-            </div>
-          </Link>
-
-          <div className="flex items-center gap-3 sm:gap-4">
-            {/* Email Copy Pill */}
-            <button
-              onClick={handleCopyEmail}
-              className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full text-xs font-mono text-slate-700 bg-white border border-slate-200/80 hover:bg-slate-50 hover:border-slate-300 transition-all shadow-xs cursor-pointer"
-              title="Click to copy email address"
-            >
-              <Mail className="h-3.5 w-3.5 text-purple-600" />
-              <span className="font-semibold">{TARGET_EMAIL}</span>
-              {copiedEmail ? (
-                <Check className="h-3.5 w-3.5 text-emerald-600" />
-              ) : (
-                <Copy className="h-3 w-3 text-slate-400" />
-              )}
-            </button>
-
-            <Link
-              to="/founders"
-              className="hidden sm:inline-flex items-center gap-1.5 rounded-full border border-slate-200 bg-white px-3.5 py-1.5 text-xs font-semibold text-slate-700 hover:text-slate-900 hover:bg-slate-50 transition-all shadow-xs"
-            >
-              Founders
-            </Link>
-
-            <Link
-              to="/"
-              className="group inline-flex items-center gap-1.5 rounded-full border border-slate-200 bg-white px-3.5 py-1.5 text-xs sm:text-sm font-semibold text-slate-700 hover:bg-slate-50 hover:text-slate-900 transition-all shadow-xs"
-            >
-              <ArrowLeft className="h-3.5 w-3.5 transition-transform group-hover:-translate-x-0.5 text-slate-500" />
-              <span>Home</span>
-            </Link>
-          </div>
-        </div>
-      </header>
+      <Navbar activeRoute="contact" />
 
       {/* Main Container */}
       <main className="relative z-10 mx-auto max-w-[1240px] px-6 py-12 md:py-20 flex-1 w-full">

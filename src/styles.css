@@ -246,6 +246,26 @@
 .stagger-5 { transition-delay: 400ms !important; }
 .stagger-6 { transition-delay: 480ms !important; }
 
+/* Premium Studio Card & Ambient Micro-interactions */
+.card-premium {
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.4s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.card-premium:hover {
+  transform: translateY(-4px);
+}
+
+@keyframes ambientBreathe {
+  0%, 100% { opacity: 0.28; transform: scale(1); }
+  50% { opacity: 0.45; transform: scale(1.05); }
+}
+.ambient-glow {
+  animation: ambientBreathe 7s ease-in-out infinite;
+}
+
+.glass-rim {
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.4), inset 0 1px 1px rgba(255, 255, 255, 0.15);
+}
+
 @utility img-reveal {
   overflow: hidden;
   & img { clip-path: none; opacity: 1; transform: scale(1); transition: transform 0.8s cubic-bezier(.2,.7,.2,1); }

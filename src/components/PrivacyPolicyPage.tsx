@@ -1,5 +1,6 @@
 import { Link } from "@tanstack/react-router";
 import { ArrowLeft, Shield, Lock, FileCode2, Cpu, EyeOff, Server, HelpCircle, ArrowUpRight } from "lucide-react";
+import { Navbar } from "./Navbar";
 
 export function PrivacyPolicyPage() {
   const lastUpdated = "November 2026";
@@ -7,36 +8,7 @@ export function PrivacyPolicyPage() {
   return (
     <div className="min-h-screen bg-[#faf8f5] text-slate-900 selection:bg-purple-100 selection:text-purple-900">
       {/* Top Navigation */}
-      <header className="sticky top-0 z-50 border-b border-black/5 bg-[#faf8f5]/85 backdrop-blur-md">
-        <div className="mx-auto flex h-20 max-w-[1200px] items-center justify-between px-6 md:px-10">
-          <Link to="/" className="flex items-center gap-3 group">
-            <img
-              src="/logo.png"
-              alt="Buildicy Logo"
-              className="h-9 md:h-10 w-auto object-contain transition-transform duration-300 group-hover:scale-105"
-            />
-            <span className="font-display text-2xl font-bold tracking-tight text-slate-900">
-              Buildicy
-            </span>
-          </Link>
-
-          <div className="flex items-center gap-4">
-            <Link
-              to="/contact"
-              className="hidden sm:inline-flex text-xs font-mono font-medium text-slate-600 hover:text-slate-900 transition-colors"
-            >
-              Contact Studio
-            </Link>
-            <Link
-              to="/"
-              className="group inline-flex items-center gap-2 rounded-full border border-slate-200 bg-white px-4 py-2 text-xs sm:text-sm font-semibold text-slate-700 hover:bg-slate-50 hover:text-slate-900 transition-all shadow-xs"
-            >
-              <ArrowLeft className="h-4 w-4 transition-transform group-hover:-translate-x-0.5 text-slate-500" />
-              <span>Back to Home</span>
-            </Link>
-          </div>
-        </div>
-      </header>
+      <Navbar activeRoute="privacy" />
 
       {/* Main Content Container */}
       <main className="mx-auto max-w-[960px] px-6 py-12 md:py-20">
