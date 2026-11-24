@@ -502,8 +502,8 @@ function WebGLParticleGlobe() {
 
 function MobileHeroGlobe() {
   return (
-    <div className="lg:hidden w-full flex justify-center mt-8 mb-2">
-      <div className="w-[300px] h-[300px] sm:w-[340px] sm:h-[340px] relative">
+    <div className="lg:hidden w-full flex justify-center mt-6 mb-2">
+      <div className="w-[260px] h-[260px] xs:w-[280px] xs:h-[280px] sm:w-[340px] sm:h-[340px] max-w-[85vw] max-h-[85vw] aspect-square relative touch-pan-y pointer-events-none sm:pointer-events-auto">
         <div className="absolute inset-4 bg-[radial-gradient(circle_at_center,rgba(168,85,247,0.15)_0%,transparent_70%)] rounded-full pointer-events-none" />
         <WebGLParticleGlobe />
       </div>
@@ -519,7 +519,7 @@ function Index() {
   useReveal();
   const [auditModalOpen, setAuditModalOpen] = useState(false);
   const [selectedAuditPkg, setSelectedAuditPkg] = useState<string | null>(null);
-  const [selectedMarket, setSelectedMarket] = useState<string>("India — INR");
+  const [selectedMarket, setSelectedMarket] = useState<string>("International — USD ($)");
 
   const handleOpenAudit = (pkg?: string, market?: string) => {
     setSelectedAuditPkg(pkg || null);
@@ -551,16 +551,14 @@ function Index() {
         {/* 6. Process: 14-day implementation */}
         <DeploymentProtocol onOpenAudit={() => handleOpenAudit()} />
 
-
-
         {/* Documentation & Profiles */}
         <ResourcesSection />
 
-        {/* 7. Audit Banner */}
-        <AuditBanner onOpenAudit={() => handleOpenAudit()} />
-
-        {/* 8. FAQ: ownership, data, channels, integrations, support */}
+        {/* 7. FAQ: ownership, data, channels, integrations, support */}
         <MinimalistFAQ onOpenAudit={() => handleOpenAudit()} />
+
+        {/* 8. Final CTA: audit with explicit deliverables */}
+        <AuditBanner onOpenAudit={() => handleOpenAudit()} />
       </main>
       <Footer onOpenAudit={() => handleOpenAudit()} />
       {auditModalOpen && (
@@ -691,67 +689,75 @@ function Nav({ onOpenAudit }: { onOpenAudit: () => void }) {
 
       {mobileMenuOpen && (
         <div className="lg:hidden fixed inset-x-0 top-20 bottom-0 bg-[#faf8f5]/98 backdrop-blur-2xl z-50 flex flex-col justify-between p-6 overflow-y-auto border-t border-slate-200/80 animate-in fade-in slide-in-from-top-2 duration-200">
-          <nav className="flex flex-col gap-2.5 text-base font-semibold text-slate-800 pt-2">
+          <nav className="flex flex-col gap-2 text-base font-semibold text-slate-800 pt-1">
             <a
-              href="#dashboard"
+              href="#problem"
               onClick={() => setMobileMenuOpen(false)}
-              className="p-3 rounded-2xl hover:bg-slate-100 transition-colors flex items-center justify-between"
+              className="p-3 min-h-[48px] rounded-2xl hover:bg-slate-100 transition-colors flex items-center justify-between"
             >
-              <span>Engine</span>
+              <span>Problem</span>
               <span className="text-xs font-mono text-purple-700">01</span>
             </a>
             <a
-              href="#systems"
+              href="#dashboard"
               onClick={() => setMobileMenuOpen(false)}
-              className="p-3 rounded-2xl hover:bg-slate-100 transition-colors flex items-center justify-between"
+              className="p-3 min-h-[48px] rounded-2xl hover:bg-slate-100 transition-colors flex items-center justify-between"
             >
-              <span>Systems</span>
+              <span>Demo Engine</span>
               <span className="text-xs font-mono text-purple-700">02</span>
-            </a>
-            <a
-              href="#projects"
-              onClick={() => setMobileMenuOpen(false)}
-              className="p-3 rounded-2xl hover:bg-slate-100 transition-colors flex items-center justify-between"
-            >
-              <span>Projects</span>
-              <span className="text-xs font-mono text-purple-700">03</span>
             </a>
             <a
               href="#proof"
               onClick={() => setMobileMenuOpen(false)}
-              className="p-3 rounded-2xl hover:bg-slate-100 transition-colors flex items-center justify-between"
+              className="p-3 min-h-[48px] rounded-2xl hover:bg-slate-100 transition-colors flex items-center justify-between"
             >
-              <span>Case Study</span>
+              <span>Proof &amp; Case Study</span>
+              <span className="text-xs font-mono text-purple-700">03</span>
+            </a>
+            <a
+              href="#systems"
+              onClick={() => setMobileMenuOpen(false)}
+              className="p-3 min-h-[48px] rounded-2xl hover:bg-slate-100 transition-colors flex items-center justify-between"
+            >
+              <span>Offer &amp; Packages</span>
               <span className="text-xs font-mono text-purple-700">04</span>
             </a>
-            <Link
-              to="/founders"
+            <a
+              href="#protocol"
               onClick={() => setMobileMenuOpen(false)}
-              className="p-3 rounded-2xl hover:bg-slate-100 transition-colors flex items-center justify-between"
+              className="p-3 min-h-[48px] rounded-2xl hover:bg-slate-100 transition-colors flex items-center justify-between"
             >
-              <span>Founders & Leadership</span>
-              <span className="text-xs font-mono font-bold text-purple-700">05</span>
-            </Link>
+              <span>Process (14-Day)</span>
+              <span className="text-xs font-mono text-purple-700">05</span>
+            </a>
             <a
               href="#faq"
               onClick={() => setMobileMenuOpen(false)}
-              className="p-3 rounded-2xl hover:bg-slate-100 transition-colors flex items-center justify-between"
+              className="p-3 min-h-[48px] rounded-2xl hover:bg-slate-100 transition-colors flex items-center justify-between"
             >
               <span>FAQ</span>
               <span className="text-xs font-mono text-purple-700">06</span>
             </a>
             <Link
+              to="/founders"
+              onClick={() => setMobileMenuOpen(false)}
+              className="p-3 min-h-[48px] rounded-2xl hover:bg-slate-100 transition-colors flex items-center justify-between"
+            >
+              <span>Founders &amp; Leadership</span>
+              <span className="text-xs font-mono font-bold text-purple-700">07</span>
+            </Link>
+            <Link
               to="/contact"
               onClick={() => setMobileMenuOpen(false)}
-              className="p-3 rounded-2xl bg-purple-50 text-purple-900 border border-purple-200/80 transition-colors flex items-center justify-between"
+              className="p-3 min-h-[48px] rounded-2xl bg-purple-50 text-purple-900 border border-purple-200/80 transition-colors flex items-center justify-between"
             >
-              <span>Contact Studio & Inquiries</span>
+              <span>Contact Studio &amp; Inquiries</span>
               <span className="text-xs font-mono font-bold text-purple-700">↗</span>
             </Link>
             <Link
               to="/privacy"
               onClick={() => setMobileMenuOpen(false)}
-              className="p-3 rounded-2xl hover:bg-slate-100 text-xs font-mono text-slate-500 transition-colors flex items-center justify-between"
+              className="p-3 min-h-[48px] rounded-2xl hover:bg-slate-100 text-xs font-mono text-slate-500 transition-colors flex items-center justify-between"
             >
               <span>Privacy Policy</span>
               <span>↗</span>
@@ -806,7 +812,7 @@ function Hero({ onOpenAudit }: { onOpenAudit: () => void }) {
         <div className="lg:col-span-8 order-1 flex flex-col justify-center items-start text-left max-w-3xl pl-0 sm:pl-8 lg:pl-12 mt-4 lg:mt-16 reveal-left">
           <h1 className="font-sans text-[clamp(2.2rem,5.4vw,5.2rem)] leading-[1.12] tracking-tight text-slate-900 font-extrabold text-left animate-in fade-in duration-500">
             Stop losing warm leads to{" "}
-            <span className="inline-block text-purple-700 whitespace-nowrap align-bottom">
+            <span className="inline-block text-purple-700 whitespace-normal sm:whitespace-nowrap break-words align-bottom">
               <HeroTypewriter
                 words={["slow replies.", "missed calls.", "delayed follow-ups."]}
               />
@@ -1500,11 +1506,12 @@ function VideoDashboardSection({ onOpenAudit }: { onOpenAudit: () => void }) {
             ========================================================================= */}
         <div
           ref={canvasContainerRef}
-          className="relative w-full h-[450px] sm:h-[480px] bg-[#faf8f5] overflow-x-auto overflow-y-hidden select-none cursor-grab active:cursor-grabbing touch-pan-x"
+          className="relative w-full h-[450px] sm:h-[480px] bg-[#faf8f5] overflow-x-auto overflow-y-hidden select-none cursor-grab active:cursor-grabbing touch-auto overscroll-x-contain"
           style={{
             backgroundImage: "radial-gradient(#cbd5e1 1.25px, transparent 1.25px)",
             backgroundSize: "24px 24px",
             WebkitOverflowScrolling: "touch",
+            overscrollBehaviorX: "contain",
           }}
         >
           {/* Mobile Drag / Swipe Guidance Pill */}
@@ -2195,7 +2202,7 @@ function AIGrowthSystemsPackages({
               Tailored Architecture
             </span>
           </div>
-          <div className="flex flex-wrap items-center justify-center p-1 rounded-2xl bg-white border border-slate-200/90 shadow-2xs gap-1">
+          <div className="flex sm:flex-wrap items-center sm:justify-center overflow-x-auto no-scrollbar p-1.5 rounded-2xl bg-white border border-slate-200/90 shadow-2xs gap-1.5 max-w-full overscroll-x-contain">
             {INDUSTRIES.map((ind) => {
               const isSelected = selectedIndustry === ind;
               return (
@@ -2203,7 +2210,7 @@ function AIGrowthSystemsPackages({
                   key={ind}
                   type="button"
                   onClick={() => setSelectedIndustry(ind)}
-                  className={`px-3 py-1.5 rounded-xl text-xs font-semibold transition-all cursor-pointer ${
+                  className={`shrink-0 px-3.5 py-2 rounded-xl text-xs font-semibold transition-all cursor-pointer whitespace-nowrap min-h-[40px] flex items-center justify-center ${
                     isSelected
                       ? "bg-purple-600 text-white shadow-sm"
                       : "text-slate-600 hover:text-slate-900 hover:bg-slate-50"
@@ -2383,11 +2390,11 @@ function AIGrowthSystemsPackages({
           </div>
 
           {/* Plan Selector Pills */}
-          <div className="grid grid-cols-3 gap-1 p-1 bg-slate-100 rounded-2xl mb-5">
+          <div className="grid grid-cols-3 gap-1.5 p-1 bg-slate-100 rounded-2xl mb-5">
             <button
               type="button"
               onClick={() => setMobilePlanTab("starter")}
-              className={`py-2 rounded-xl text-xs font-semibold transition-all ${
+              className={`py-2.5 min-h-[44px] flex items-center justify-center rounded-xl text-xs font-semibold transition-all cursor-pointer ${
                 mobilePlanTab === "starter" ? "bg-white text-slate-900 shadow-xs font-bold" : "text-slate-600"
               }`}
             >
@@ -2396,7 +2403,7 @@ function AIGrowthSystemsPackages({
             <button
               type="button"
               onClick={() => setMobilePlanTab("growth")}
-              className={`py-2 rounded-xl text-xs font-semibold transition-all ${
+              className={`py-2.5 min-h-[44px] flex items-center justify-center rounded-xl text-xs font-semibold transition-all cursor-pointer ${
                 mobilePlanTab === "growth" ? "bg-purple-600 text-white shadow-xs font-bold" : "text-slate-600"
               }`}
             >
@@ -2405,7 +2412,7 @@ function AIGrowthSystemsPackages({
             <button
               type="button"
               onClick={() => setMobilePlanTab("scale")}
-              className={`py-2 rounded-xl text-xs font-semibold transition-all ${
+              className={`py-2.5 min-h-[44px] flex items-center justify-center rounded-xl text-xs font-semibold transition-all cursor-pointer ${
                 mobilePlanTab === "scale" ? "bg-white text-slate-900 shadow-xs font-bold" : "text-slate-600"
               }`}
             >
@@ -2685,6 +2692,7 @@ function FeaturedProjectsSection({
 }) {
   const [selectedProject, setSelectedProject] = useState<FeaturedProject | null>(null);
   const [isClient, setIsClient] = useState(false);
+  const isDesktop = useIsDesktop();
 
   useEffect(() => {
     setIsClient(true);
@@ -2722,12 +2730,12 @@ function FeaturedProjectsSection({
         </div>
 
         {/* 3D Circular Carousel Container */}
-        <div className="w-full h-[500px] sm:h-[550px] md:h-[580px] relative overflow-hidden flex items-center justify-center select-none">
+        <div className="w-full h-[460px] sm:h-[550px] md:h-[580px] relative overflow-hidden flex items-center justify-center select-none touch-pan-y">
           <CircularCarousel
             items={FEATURED_PROJECTS}
             preset="cylinder"
             intro="rise"
-            cardWidth={260}
+            cardWidth={isDesktop ? 260 : 210}
             aspectRatio={1.35}
             speed={11}
             captions={true}
@@ -3515,18 +3523,18 @@ function ResourcesSection() {
 
 function AuditBanner({ onOpenAudit }: { onOpenAudit: () => void }) {
   return (
-    <section className="bg-gradient-to-b from-[#18072e] via-[#0d031c] to-[#070112] text-white relative overflow-hidden border-y border-purple-700/40 py-20 sm:py-24">
+    <section className="bg-gradient-to-b from-[#2a084e] via-[#16032c] to-[#0a0118] text-white relative overflow-hidden border-y border-purple-600/50 py-20 sm:py-24">
       {/* High-intensity ambient purple glow orbs */}
-      <div className="absolute inset-0 bg-[radial-gradient(ellipse_80%_60%_at_50%_-10%,rgba(168,85,247,0.55)_0%,rgba(124,58,237,0.25)_45%,transparent_75%)] pointer-events-none" />
-      <div className="absolute bottom-0 inset-x-0 h-64 bg-[radial-gradient(ellipse_70%_50%_at_50%_100%,rgba(147,51,234,0.35)_0%,transparent_70%)] pointer-events-none" />
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[350px] bg-purple-600/15 blur-[120px] rounded-full pointer-events-none" />
-      <div className="absolute inset-0 opacity-[0.035] bg-[radial-gradient(#fff_1px,transparent_1px)] [background-size:24px_24px] pointer-events-none" />
+      <div className="absolute inset-0 bg-[radial-gradient(ellipse_90%_70%_at_50%_-10%,rgba(192,132,252,0.60)_0%,rgba(147,51,234,0.35)_45%,transparent_80%)] pointer-events-none" />
+      <div className="absolute bottom-0 inset-x-0 h-72 bg-[radial-gradient(ellipse_80%_60%_at_50%_100%,rgba(168,85,247,0.45)_0%,transparent_70%)] pointer-events-none" />
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[750px] h-[400px] bg-purple-500/30 blur-[120px] rounded-full pointer-events-none" />
+      <div className="absolute inset-0 opacity-[0.04] bg-[radial-gradient(#fff_1px,transparent_1px)] [background-size:24px_24px] pointer-events-none" />
 
       {/* Main Banner Content */}
       <div className="relative z-10 mx-auto max-w-[1280px] px-5 sm:px-8 md:px-12">
         <div className="max-w-4xl mx-auto text-center">
           {/* Top Pill */}
-          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-purple-500/15 border border-purple-400/30 text-purple-200 text-xs font-mono font-semibold mb-6 shadow-[0_0_20px_rgba(168,85,247,0.25)]">
+          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-purple-500/25 border border-purple-400/40 text-purple-200 text-xs font-mono font-semibold mb-6 shadow-[0_0_25px_rgba(168,85,247,0.35)]">
             <span className="w-2 h-2 rounded-full bg-purple-400 animate-ping" />
             <span>LIMITED DISCOVERY CAPACITY</span>
           </div>
@@ -3534,13 +3542,13 @@ function AuditBanner({ onOpenAudit }: { onOpenAudit: () => void }) {
           {/* Heading */}
           <h2 className="font-display text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold tracking-tight text-white leading-[1.15]">
             Stop losing leads to{" "}
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-300 via-purple-200 to-indigo-200">
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-200 via-purple-300 to-indigo-200">
               slow response times.
             </span>
           </h2>
 
           {/* Core Offer Statement with distinct serif italic styling and intense glowing purple aura */}
-          <div className="my-8 p-6 sm:p-9 rounded-3xl bg-purple-950/40 border border-purple-400/30 backdrop-blur-md text-left sm:text-center shadow-[0_0_60px_-15px_rgba(168,85,247,0.35)]">
+          <div className="my-8 p-6 sm:p-9 rounded-3xl bg-purple-950/60 border border-purple-400/50 backdrop-blur-xl text-left sm:text-center shadow-[0_0_80px_-10px_rgba(168,85,247,0.5)]">
             <p className="font-serif italic text-lg sm:text-xl md:text-2xl font-normal text-purple-100 leading-relaxed">
               &ldquo;In <strong className="font-sans font-bold text-purple-300 not-italic">30 minutes</strong>, we&apos;ll identify where enquiries are being missed, map the right AI system, and give you a <strong className="font-sans font-bold text-white not-italic underline decoration-purple-400 underline-offset-4">fixed implementation estimate</strong>.&rdquo;
             </p>

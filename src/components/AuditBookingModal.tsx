@@ -9,9 +9,9 @@ const WHATSAPP_URL = `https://wa.me/919150890205?text=${encodeURIComponent(
 )}`;
 
 const SYSTEMS = [
-  { id: "Growth — 24/7 AI Receptionist", label: "Growth — 24/7 AI Receptionist" },
-  { id: "Starter — AI Lead Capture & Booking", label: "Starter — Lead Capture & Booking" },
-  { id: "Scale — Full AI Growth Engine", label: "Scale — Full AI Growth Engine" },
+  { id: "Growth — AI Funnel + AI Receptionist", label: "Growth — AI Funnel + AI Receptionist" },
+  { id: "Starter — AI Funnel & Booking", label: "Starter — AI Funnel & Booking" },
+  { id: "Scale — AI Growth Intelligence", label: "Scale — AI Growth Intelligence" },
   { id: "Buildicy Studio — Custom Build", label: "Custom Architecture" },
 ];
 
@@ -29,9 +29,9 @@ export function AuditBookingModal({
   const [phone, setPhone] = useState("");
   const [businessName, setBusinessName] = useState("");
   const [serviceNeeded, setServiceNeeded] = useState(
-    initialPackage || "Growth — 24/7 AI Receptionist"
+    initialPackage || "Growth — AI Funnel + AI Receptionist"
   );
-  const [market, setMarket] = useState(initialMarket || "India — INR");
+  const [market, setMarket] = useState(initialMarket || "International — USD ($)");
   const [notes, setNotes] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
