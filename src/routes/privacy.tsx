@@ -30,6 +30,8 @@ export const Route = createFileRoute("/privacy")({
     ],
     links: [
       { rel: "canonical", href: "https://www.buildicy.com/privacy" },
+      { rel: "alternate", href: "https://www.buildicy.com/privacy", hreflang: "x-default" },
+      { rel: "alternate", href: "https://www.buildicy.com/privacy", hreflang: "en" },
     ],
   }),
   component: PrivacyPolicyPage,

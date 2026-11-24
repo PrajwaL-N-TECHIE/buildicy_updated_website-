@@ -1,0 +1,32 @@
+# Buildicy — AI Growth Systems & Product Engineering Studio
+
+> Thoughtful AI systems engineered to capture, qualify, and convert leads 24/7. Built around your business.
+
+Buildicy is an AI growth systems and product engineering studio founded in February 2026 by Prajwal N (CEO) and Mayur P (CTO), headquartered in Coimbatore, Tamil Nadu, India, working with clients worldwide.
+
+## Core Systems & Solutions
+
+- **Starter — AI Lead Machine & Funnel**: Captures enquiries in sub-3 seconds across web forms, qualifies buyers using custom scoring rules, syncs directly with Cal.com or Google Calendar, and cuts no-shows below 8%.
+- **Growth — 24/7 AI Receptionist & Front Desk**: Answers phone calls and WhatsApp 24/7 with ultra-low latency, answers FAQs, qualifies prospects, books appointments, and triggers instant SMS/WhatsApp triage for dropped or missed calls.
+- **Scale — Complete AI Growth Engine**: Full-stack revenue engine featuring omnichannel capture, two-way CRM sync (HubSpot, GoHighLevel, Pipedrive), cold lead reactivation, conversation objection mining, and weekly model tuning.
+- **Custom Software & Internal Portals**: Tailored web apps, client CRMs, workflow automations, and proprietary studio infrastructure.
+
+## Delivery & Protocol
+
+- **14-Day Implementation Sprint**: Fixed 14-day guaranteed delivery from architecture audit, custom guardrail training, and telephony integration to staff handover.
+- **Client Ownership**: Clients retain 100% ownership of their data, prompts, CRM integrations, and workflows. Zero vendor lock-in.
+- **Zero Hallucination Guardrails**: Systems operate strictly on client-approved knowledge bases with real-time human escalation triggers.
+
+## Primary Pages
+
+- [Home Page](https://www.buildicy.com/): Outcome overview, interactive 7-step autonomous engine demo, transparent pricing ladder, and case studies.
+- [Founders & Leadership](https://www.buildicy.com/founders): Background on founders Prajwal N and Mayur P, 10-year technical collaboration, and engineering philosophy.
+- [Free Lead-Leak Audit](https://www.buildicy.com/contact): Book a complimentary 30-minute consultation, missed-enquiry diagnostic, and fixed project estimate.
+- [Privacy Policy](https://www.buildicy.com/privacy): Rigorous data privacy, encryption standards, and client confidentiality terms.
+
+## Contact Information
+
+- **Website**: https://www.buildicy.com
+- **Email**: hello@buildicy.com
+- **WhatsApp / Phone**: +91 91508 90205
+- **Headquarters**: Coimbatore, Tamil Nadu, India

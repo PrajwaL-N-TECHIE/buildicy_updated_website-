@@ -136,11 +136,18 @@ const SCHEMA_ORG_JSON = {
       "telephone": "+919150890205",
       "address": {
         "@type": "PostalAddress",
-        "addressCountry": "IN",
+        "streetAddress": "Coimbatore Tech Corridor",
+        "addressLocality": "Coimbatore",
+        "addressRegion": "Tamil Nadu",
+        "postalCode": "641001",
+        "addressCountry": "IN"
       },
       "sameAs": [
         "https://www.linkedin.com/company/buildicy/",
-        "https://wa.me/919150890205",
+        "https://x.com/buildicy",
+        "https://instagram.com/buildicy",
+        "https://youtube.com/@buildicy",
+        "https://wa.me/919150890205"
       ],
       "contactPoint": [
         {

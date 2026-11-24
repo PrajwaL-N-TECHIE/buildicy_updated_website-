@@ -1,0 +1,50 @@
+# Buildicy — Full Technical Specification & System Architecture
+
+> Complete guide to Buildicy AI Growth Systems, capabilities, integrations, and deployment protocols.
+
+## Company Overview
+- **Name**: Buildicy (Buildicy AI Growth Systems Studio)
+- **Founded**: February 2026
+- **Leadership**: Prajwal N (Chief Executive Officer), Mayur P (Chief Technology Officer)
+- **Headquarters**: Coimbatore, Tamil Nadu, India
+- **Operating Model**: Founder-led engineering studio serving B2B service firms, real estate brokerages, healthcare/dental clinics, education institutions, and professional advisory firms worldwide.
+
+## Architectural Systems
+
+### 1. Starter — AI Lead Machine & Funnel
+- **Purpose**: Converts website traffic and paid advertising clicks into pre-qualified calendar bookings.
+- **Key Modules**:
+  - Sub-3-second autonomous response on inbound enquiry forms.
+  - BANT (Budget, Authority, Need, Timeline) fit assessment.
+  - Automated calendar synchronization with Cal.com and Google Calendar.
+  - WhatsApp & SMS confirmation alerts with dynamic 1-click reschedule links.
+  - Front-desk intake dashboard with unified lead notes.
+
+### 2. Growth — 24/7 AI Receptionist & Front Desk
+- **Purpose**: Eliminates lost leads from missed calls, busy signals, and after-hours delays.
+- **Key Modules**:
+  - Conversational Voice AI answering inbound phone calls (<400ms voice turnaround).
+  - 2-Way conversational WhatsApp AI agent for continuous consultation and booking.
+  - Instant Missed-Call Recovery (triggers immediate SMS/WhatsApp triage when caller hangs up).
+  - Real-time Human Handover (transfers high-priority calls to human staff with live transcript).
+  - 2-Way CRM integration with HubSpot, GoHighLevel, and Pipedrive.
+
+### 3. Scale — Complete AI Growth Engine
+- **Purpose**: End-to-end autonomous revenue operations across digital, telephony, and CRM.
+- **Key Modules**:
+  - Omnichannel capture across web, ads, phone, WhatsApp, and email.
+  - AI Lead Reactivation (wakes dormant leads in CRM with personalized reactivation sequences).
+  - Conversation Insights & Objection Mining (analyzes why prospects hesitate or decline).
+  - Conversion Loop Optimization (weekly model prompt tuning and A/B tested objection scripts).
+  - Multi-location & multi-staff round-robin calendar routing.
+
+## 14-Day Implementation Sprint
+- **Day 01–03: Systems Audit & Mapping**: Identify where inquiries drop off, document business rules, and connect calendar/CRM APIs.
+- **Day 04–08: AI Build & Custom Guardrail Training**: Train conversational models on brand FAQs, pricing bounds, and strict safety guardrails.
+- **Day 09–11: Stress-Testing & Simulated Leads**: Run 100+ simulated edge-case conversations, phone calls, and missed-call dropouts.
+- **Day 12–14: Multi-Channel Go-Live & Staff Handover**: Point live phone lines, connect WhatsApp Business API, and train internal team on dashboard controls.
+
+## Contact & Governance
+- **Direct Phone / WhatsApp**: +91 91508 90205
+- **Official Email**: hello@buildicy.com
+- **Website**: https://www.buildicy.com

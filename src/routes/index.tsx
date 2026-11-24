@@ -52,12 +52,12 @@ export const Route = createFileRoute("/")({
     meta: [
       {
         title:
-          "Buildicy | AI Growth Systems & Lead Recovery for B2B Service Businesses",
+          "Buildicy | AI Growth Systems & 24/7 Lead Capture Studio",
       },
       {
         name: "description",
         content:
-          "Buildicy installs AI Growth Systems that capture every enquiry, respond instantly, qualify prospects, and book more qualified meetings for B2B service businesses.",
+          "Buildicy installs AI Growth Systems that capture enquiries, respond in seconds, qualify prospects, and book meetings for B2B businesses.",
       },
       {
         name: "keywords",
@@ -76,12 +76,12 @@ export const Route = createFileRoute("/")({
       {
         property: "og:title",
         content:
-          "Buildicy | AI Growth Systems & Lead Recovery for B2B Service Businesses",
+          "Buildicy | AI Growth Systems & 24/7 Lead Capture Studio",
       },
       {
         property: "og:description",
         content:
-          "Stop losing leads to slow follow-up. Buildicy installs AI Growth Systems that capture, qualify, and book meetings 24/7 across WhatsApp, Web & Calls.",
+          "Buildicy installs AI Growth Systems that capture enquiries, respond in seconds, qualify prospects, and book meetings for B2B businesses.",
       },
       { property: "og:type", content: "website" },
       { property: "og:url", content: "https://www.buildicy.com/" },
@@ -104,6 +104,8 @@ export const Route = createFileRoute("/")({
     ],
     links: [
       { rel: "canonical", href: "https://www.buildicy.com/" },
+      { rel: "alternate", href: "https://www.buildicy.com/", hreflang: "x-default" },
+      { rel: "alternate", href: "https://www.buildicy.com/", hreflang: "en" },
     ],
     scripts: [
       {
@@ -1490,9 +1492,9 @@ function VideoDashboardSection({ onOpenAudit }: { onOpenAudit: () => void }) {
                         <span className="text-[9px] font-mono font-bold uppercase text-purple-700 block leading-tight">
                           Step {node.stepNumber}
                         </span>
-                        <h4 className="text-xs font-bold text-slate-900 leading-tight truncate">
+                        <span className="block text-xs font-bold text-slate-900 leading-tight truncate">
                           {node.label}
-                        </h4>
+                        </span>
                       </div>
                     </div>
 
@@ -2306,9 +2308,9 @@ function AIGrowthSystemsPackages({
                 {isIntl ? activeMobilePkg.intlSetup : activeMobilePkg.indiaSetup}
               </span>
             </div>
-            <h4 className="text-sm font-bold text-slate-900">
+            <h3 className="text-sm font-bold text-slate-900">
               {activeMobilePkg.name}
-            </h4>
+            </h3>
             <div className="text-xs font-mono text-purple-700 mt-0.5">
               + {isIntl ? activeMobilePkg.intlMonthly : activeMobilePkg.indiaMonthly}
             </div>
@@ -3596,19 +3598,31 @@ function Footer({ onOpenAudit }: { onOpenAudit?: () => void }) {
 
         {/* Separator Line */}
         <div className="border-t border-white/10 mt-12 md:mt-16 pt-8 md:pt-10 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6">
-          {/* Based in... */}
-          <div className="text-xs md:text-sm font-mono text-white/50 space-y-1">
-            <div>Based in India.</div>
-            <div>Working worldwide.</div>
+          {/* Studio Physical Location & Direct Line (Local SEO Compliant) */}
+          <div className="text-xs md:text-sm font-mono text-white/50 space-y-1.5">
+            <div className="flex items-center gap-2">
+              <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
+              <span>Studio HQ: Coimbatore, Tamil Nadu, India (641001)</span>
+            </div>
+            <div>Working with high-growth businesses worldwide.</div>
+            <div className="pt-0.5">
+              <span>Direct Phone / WhatsApp: </span>
+              <a href="tel:+919150890205" className="text-purple-300 hover:text-white font-medium transition-colors">
+                +91 91508 90205
+              </a>
+            </div>
           </div>
 
           {/* Nav Links + Back to top */}
           <div className="flex flex-wrap items-center gap-6 md:gap-8 text-xs md:text-sm font-medium text-white/70">
             <a href="#problem" className="hover:text-white transition-colors">
-              Follow-Up
+              Problem
             </a>
-            <a href="#dashboard" className="hover:text-white transition-colors">
-              Autonomous Engine
+            <a href="#demo" className="hover:text-white transition-colors">
+              Demo Engine
+            </a>
+            <a href="#proof" className="hover:text-white transition-colors">
+              Proof
             </a>
             <a href="#systems" className="hover:text-white transition-colors">
               AI Growth Systems
@@ -3637,6 +3651,18 @@ function Footer({ onOpenAudit }: { onOpenAudit?: () => void }) {
               <span className="text-purple-400">↗</span>
             </button>
           </div>
+        </div>
+
+        {/* Social Channels & Authority Profiles (SEOptimer & Search Engine Graph) */}
+        <div className="mt-8 pt-6 border-t border-white/5 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 text-xs font-mono text-white/50">
+          <div className="flex flex-wrap items-center gap-4 sm:gap-6">
+            <span className="text-white/30 uppercase text-[10px] tracking-wider">Social Channels:</span>
+            <a href="https://linkedin.com/company/buildicy" target="_blank" rel="noopener noreferrer" className="hover:text-purple-300 transition-colors">LinkedIn ↗</a>
+            <a href="https://x.com/buildicy" target="_blank" rel="noopener noreferrer" className="hover:text-purple-300 transition-colors">X (Twitter) ↗</a>
+            <a href="https://instagram.com/buildicy" target="_blank" rel="noopener noreferrer" className="hover:text-purple-300 transition-colors">Instagram ↗</a>
+            <a href="https://youtube.com/@buildicy" target="_blank" rel="noopener noreferrer" className="hover:text-purple-300 transition-colors">YouTube ↗</a>
+          </div>
+          <div>© {new Date().getFullYear()} Buildicy Studio. All rights reserved.</div>
         </div>
 
         {/* Massive Bottom Wordmark: BUILDICY */}

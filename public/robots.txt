@@ -31,3 +31,5 @@ Disallow: /docs/*.docx$
 Disallow: /api/
 
 Sitemap: https://www.buildicy.com/sitemap.xml
+# LLM / AI Search Crawlers Reference
+# https://www.buildicy.com/llms.txt

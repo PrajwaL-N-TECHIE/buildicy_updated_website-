@@ -1004,7 +1004,7 @@ export const CircularCarousel = ({
           <img
             className="circular-carousel__photo"
             src={item.src}
-            alt=""
+            alt={item.title || "Buildicy Deployed System Architecture Showcase"}
             draggable={false}
             decoding="async"
             style={photoStyle}
@@ -1014,7 +1014,7 @@ export const CircularCarousel = ({
               key={`leaving-${leaving.id}`}
               className="circular-carousel__photo circular-carousel__photo--leaving"
               src={gone.src}
-              alt=""
+              alt={gone.title || "Buildicy Deployed System Architecture Showcase"}
               draggable={false}
               decoding="async"
               style={{
