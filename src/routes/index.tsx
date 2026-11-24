@@ -1533,17 +1533,23 @@ function VideoDashboardSection({ onOpenAudit }: { onOpenAudit: () => void }) {
                 const toNode = currentWf.nodes.find((n) => n.id === conn.to);
                 if (!fromNode || !toNode) return null;
 
-                const startX = fromNode.x + 155;
-                const startY = fromNode.y + 38;
-                const endX = toNode.x - 3;
-                const endY = toNode.y + 38;
+                // Card dimensions: 155px width, 110px height. Ports are vertically centered at y + 55px.
+                const NODE_WIDTH = 155;
+                const PORT_OFFSET_Y = 55;
 
-                const midX = (startX + endX) / 2;
-                const pathD = `M ${startX} ${startY} C ${midX} ${startY}, ${midX} ${endY}, ${endX} ${endY}`;
+                const startX = fromNode.x + NODE_WIDTH;
+                const startY = fromNode.y + PORT_OFFSET_Y;
+                const endX = toNode.x;
+                const endY = toNode.y + PORT_OFFSET_Y;
+
+                const dx = endX - startX;
+                const curvature = Math.max(dx * 0.5, 20);
+                const pathD = `M ${startX} ${startY} C ${startX + curvature} ${startY}, ${endX - curvature} ${endY}, ${endX} ${endY}`;
 
                 const fromIndex = currentWf.nodes.findIndex((n) => n.id === conn.from);
-                const isWireActive = activeStepIndex > fromIndex;
+                const isWireCompleted = activeStepIndex > fromIndex;
                 const isCurrentWire = activeStepIndex === fromIndex;
+                const isWireActive = isWireCompleted || isCurrentWire;
 
                 return (
                   <g key={`${conn.from}-${conn.to}-${idx}`}>
@@ -1572,14 +1578,17 @@ function VideoDashboardSection({ onOpenAudit }: { onOpenAudit: () => void }) {
               const isNodeCompleted = activeStepIndex > index;
               const isSelected = selectedNodeId === node.id;
 
+              const hasIncoming = currentWf.connections.some((c) => c.to === node.id);
+              const hasOutgoing = currentWf.connections.some((c) => c.from === node.id);
+
               return (
                 <div
                   key={node.id}
                   onClick={() => setSelectedNodeId(node.id)}
                   style={{ left: `${node.x}px`, top: `${node.y}px` }}
-                  className={`absolute w-[155px] rounded-2xl bg-white border cursor-pointer transition-all duration-300 z-10 p-3 shadow-sm hover:shadow-md ${
+                  className={`absolute w-[155px] h-[110px] rounded-2xl bg-white border cursor-pointer transition-all duration-300 z-10 p-3 shadow-sm hover:shadow-md flex flex-col justify-between ${
                     isSelected
-                      ? "ring-2 ring-purple-600 border-purple-500 shadow-purple-500/15 shadow-lg scale-105"
+                      ? "ring-2 ring-purple-600 border-purple-500 shadow-purple-500/20 shadow-lg"
                       : isNodeActive
                       ? "border-purple-500 shadow-purple-500/20 shadow-lg ring-1 ring-purple-400"
                       : isNodeCompleted
@@ -1587,44 +1596,60 @@ function VideoDashboardSection({ onOpenAudit }: { onOpenAudit: () => void }) {
                       : "border-slate-200"
                   }`}
                 >
-                  {index > 0 && (
-                    <span className={`w-2.5 h-2.5 rounded-full bg-white border-2 absolute -left-1.5 top-1/2 -translate-y-1/2 z-20 ${
-                      isNodeActive || isNodeCompleted ? "border-purple-600" : "border-slate-400"
-                    }`} />
+                  {/* Left (Input) Port Circle */}
+                  {hasIncoming && (
+                    <span
+                      className={`w-2.5 h-2.5 rounded-full bg-white border-2 absolute -left-[5px] top-1/2 -translate-y-1/2 z-20 transition-colors ${
+                        isNodeActive || isNodeCompleted
+                          ? "border-purple-600 bg-purple-50 ring-2 ring-purple-100"
+                          : "border-slate-300"
+                      }`}
+                    />
                   )}
 
-                  {index < currentWf.nodes.length - 1 && (
-                    <span className={`w-2.5 h-2.5 rounded-full bg-white border-2 absolute -right-1.5 top-1/2 -translate-y-1/2 z-20 ${
-                      isNodeCompleted ? "border-purple-600" : "border-slate-400"
-                    }`} />
+                  {/* Right (Output) Port Circle */}
+                  {hasOutgoing && (
+                    <span
+                      className={`w-2.5 h-2.5 rounded-full bg-white border-2 absolute -right-[5px] top-1/2 -translate-y-1/2 z-20 transition-colors ${
+                        isNodeActive || isNodeCompleted
+                          ? "border-purple-600 bg-purple-50 ring-2 ring-purple-100"
+                          : "border-slate-300"
+                      }`}
+                    />
                   )}
 
-                  <div className="flex items-center gap-2 mb-1.5">
-                    <div className={`w-7 h-7 rounded-xl flex items-center justify-center flex-shrink-0 transition-colors ${
-                      isNodeActive
-                        ? "bg-purple-600 text-white shadow-sm"
-                        : isNodeCompleted
-                        ? "bg-purple-100 text-purple-700"
-                        : "bg-slate-100 text-slate-600"
-                    }`}>
-                      {renderNodeIcon(node.icon)}
+                  {/* Node Header & Details */}
+                  <div>
+                    <div className="flex items-center gap-2 mb-1">
+                      <div
+                        className={`w-7 h-7 rounded-xl flex items-center justify-center flex-shrink-0 transition-colors ${
+                          isNodeActive
+                            ? "bg-purple-600 text-white shadow-sm"
+                            : isNodeCompleted
+                            ? "bg-purple-100 text-purple-700"
+                            : "bg-slate-100 text-slate-600"
+                        }`}
+                      >
+                        {renderNodeIcon(node.icon)}
+                      </div>
+                      <div className="overflow-hidden">
+                        <span className="text-[9px] font-mono font-bold uppercase text-purple-700 block leading-tight">
+                          Step {node.stepNumber}
+                        </span>
+                        <h4 className="text-xs font-bold text-slate-900 leading-tight truncate">
+                          {node.label}
+                        </h4>
+                      </div>
                     </div>
-                    <div className="overflow-hidden">
-                      <span className="text-[9px] font-mono font-bold uppercase text-purple-700 block leading-tight">
-                        Step {node.stepNumber}
-                      </span>
-                      <h4 className="text-xs font-bold text-slate-900 leading-tight">
-                        {node.label}
-                      </h4>
-                    </div>
+
+                    <p className="text-[10px] text-slate-500 leading-snug line-clamp-1">
+                      {node.sublabel}
+                    </p>
                   </div>
 
-                  <p className="text-[10px] text-slate-500 leading-snug">
-                    {node.sublabel}
-                  </p>
-
-                  <div className="mt-2 pt-2 border-t border-slate-100 flex items-center justify-between text-[9px] font-mono">
-                    <span className="text-slate-400">{node.category}</span>
+                  {/* Node Footer: Category & Execution Status */}
+                  <div className="pt-1.5 border-t border-slate-100 flex items-center justify-between text-[9px] font-mono">
+                    <span className="text-slate-400 truncate max-w-[70px]">{node.category}</span>
                     {isNodeActive ? (
                       <span className="text-purple-600 font-bold flex items-center gap-1">
                         <span className="w-1.5 h-1.5 rounded-full bg-purple-600 animate-ping" />
