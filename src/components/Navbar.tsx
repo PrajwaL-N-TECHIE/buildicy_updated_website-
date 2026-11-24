@@ -58,6 +58,9 @@ export function Navbar({ onOpenAudit, activeRoute }: NavbarProps) {
           <img
             src="/logo.png"
             alt="Buildicy Logo"
+            width="48"
+            height="48"
+            decoding="async"
             className="h-10 md:h-12 w-auto object-contain transition-transform duration-300 group-hover:scale-105"
           />
           <div className="flex items-center gap-1.5">

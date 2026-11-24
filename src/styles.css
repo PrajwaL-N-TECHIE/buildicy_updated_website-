@@ -143,10 +143,34 @@
   ::-webkit-scrollbar-thumb { background: rgba(147,51,234,0.25); border-radius: 99px; }
   ::-webkit-scrollbar-thumb:hover { background: rgba(147,51,234,0.5); }
 
-  /* GPU-accelerate all transitions */
-  *, *::before, *::after {
+  /* Target GPU-accelerate transitions on animated layers without overloading mobile memory */
+  .reveal,
+  .reveal-left,
+  .reveal-right,
+  .reveal-scale,
+  .reveal-zoom,
+  .reveal-blur,
+  .reveal-flip,
+  .card-premium,
+  .ambient-glow {
     -webkit-backface-visibility: hidden;
     backface-visibility: hidden;
+    transform: translateZ(0);
+  }
+
+  /* Content-visibility optimization for below-the-fold sections */
+  .section-perf {
+    content-visibility: auto;
+    contain-intrinsic-size: 1px 700px;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *, ::before, ::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
   }
 
   /* Silky default transitions on interactive elements */

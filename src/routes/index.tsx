@@ -210,10 +210,18 @@ function ScrollProgressBar() {
   const [progress, setProgress] = useState(0);
 
   useEffect(() => {
+    let ticking = false;
     const handleScroll = () => {
-      const total = document.documentElement.scrollHeight - window.innerHeight;
-      if (total <= 0) return;
-      setProgress(Math.min(100, Math.max(0, (window.scrollY / total) * 100)));
+      if (!ticking) {
+        window.requestAnimationFrame(() => {
+          const total = document.documentElement.scrollHeight - window.innerHeight;
+          if (total > 0) {
+            setProgress(Math.min(100, Math.max(0, (window.scrollY / total) * 100)));
+          }
+          ticking = false;
+        });
+        ticking = true;
+      }
     };
 
     window.addEventListener("scroll", handleScroll, { passive: true });
@@ -310,34 +318,36 @@ function WebGLParticleGlobe() {
 
     while (container.firstChild) container.removeChild(container.firstChild);
 
-    Promise.all([import("three"), import("three-globe")])
-      .then(([THREE, threeGlobeMod]) => {
-        if (cancelled) return;
-        try {
-          const ThreeGlobe =
-            (threeGlobeMod as any)?.default?.default ||
-            (threeGlobeMod as any)?.default ||
-            (threeGlobeMod as any);
-          if (!ThreeGlobe) return;
+    let idleId: any = null;
+    const loadGlobe = () => {
+      Promise.all([import("three"), import("three-globe")])
+        .then(([THREE, threeGlobeMod]) => {
+          if (cancelled) return;
+          try {
+            const ThreeGlobe =
+              (threeGlobeMod as any)?.default?.default ||
+              (threeGlobeMod as any)?.default ||
+              (threeGlobeMod as any);
+            if (!ThreeGlobe) return;
 
-          (window as any).THREE = THREE;
+            (window as any).THREE = THREE;
 
-          const isMobile = window.innerWidth < 768;
-          const width = container.clientWidth || 360;
-          const height = container.clientHeight || 360;
-          const scene = new THREE.Scene();
-          const camera = new THREE.PerspectiveCamera(50, width / height, 1, 2000);
-          camera.position.set(0, 0, 310);
+            const isMobile = window.innerWidth < 768;
+            const width = container.clientWidth || 360;
+            const height = container.clientHeight || 360;
+            const scene = new THREE.Scene();
+            const camera = new THREE.PerspectiveCamera(50, width / height, 1, 2000);
+            camera.position.set(0, 0, 310);
 
-          const renderer = new THREE.WebGLRenderer({
-            antialias: true,
-            alpha: true,
-            powerPreference: "high-performance",
-          });
-          renderer.setSize(width, height);
-          renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2.5));
-          renderer.setClearColor(0x000000, 0);
-          container.appendChild(renderer.domElement);
+            const renderer = new THREE.WebGLRenderer({
+              antialias: !isMobile,
+              alpha: true,
+              powerPreference: "high-performance",
+            });
+            renderer.setSize(width, height);
+            renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, isMobile ? 1.5 : 2.0));
+            renderer.setClearColor(0x000000, 0);
+            container.appendChild(renderer.domElement);
 
           const ambientLight = new THREE.AmbientLight(0xc084fc, 1.8);
           scene.add(ambientLight);
@@ -457,7 +467,7 @@ function WebGLParticleGlobe() {
             camera.aspect = w / h;
             camera.updateProjectionMatrix();
             renderer.setSize(w, h);
-            renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2.5));
+            renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, isMobile ? 1.5 : 2.0));
           };
           window.addEventListener("resize", handleResize);
 
@@ -481,9 +491,23 @@ function WebGLParticleGlobe() {
       .catch((err) => {
         console.warn("Failed to load Three.js globe dependencies:", err);
       });
+    };
+
+    if (typeof window !== "undefined" && "requestIdleCallback" in window) {
+      idleId = (window as any).requestIdleCallback(loadGlobe, { timeout: 1200 });
+    } else {
+      idleId = setTimeout(loadGlobe, 150);
+    }
 
     return () => {
       cancelled = true;
+      if (idleId) {
+        if (typeof window !== "undefined" && "cancelIdleCallback" in window) {
+          (window as any).cancelIdleCallback(idleId);
+        } else {
+          clearTimeout(idleId);
+        }
+      }
       visibilityObserver.disconnect();
       cleanup?.();
       cancelAnimationFrame(animId);
@@ -544,24 +568,36 @@ function Index() {
 
         {/* 4. Proof: named case study + testimonials */}
         <RealEstateProofOfImpact onOpenAudit={() => handleOpenAudit()} />
-        <FeaturedProjectsSection onOpenAudit={(pkgName) => handleOpenAudit(pkgName)} />
+        <div className="section-perf">
+          <FeaturedProjectsSection onOpenAudit={(pkgName) => handleOpenAudit(pkgName)} />
+        </div>
 
         {/* 5. Offer: one clean package ladder */}
-        <AIGrowthSystemsPackages onSelectPkg={(pkg, market) => handleOpenAudit(pkg, market)} />
+        <div className="section-perf">
+          <AIGrowthSystemsPackages onSelectPkg={(pkg, market) => handleOpenAudit(pkg, market)} />
+        </div>
 
         {/* 6. Process: 14-day implementation */}
-        <DeploymentProtocol onOpenAudit={() => handleOpenAudit()} />
+        <div className="section-perf">
+          <DeploymentProtocol onOpenAudit={() => handleOpenAudit()} />
+        </div>
 
         {/* Documentation & Profiles */}
-        <ResourcesSection />
+        <div className="section-perf">
+          <ResourcesSection />
+        </div>
 
         {/* 7. FAQ: ownership, data, channels, integrations, support */}
-        <MinimalistFAQ onOpenAudit={() => handleOpenAudit()} />
+        <div className="section-perf">
+          <MinimalistFAQ onOpenAudit={() => handleOpenAudit()} />
+        </div>
 
         {/* 8. Final CTA: audit with explicit deliverables */}
         <AuditBanner onOpenAudit={() => handleOpenAudit()} />
       </main>
-      <Footer onOpenAudit={() => handleOpenAudit()} />
+      <div className="section-perf">
+        <Footer onOpenAudit={() => handleOpenAudit()} />
+      </div>
       {auditModalOpen && (
         <AuditBookingModal
           initialPackage={selectedAuditPkg}
@@ -2611,6 +2647,8 @@ function FeaturedProjectsSection({
                 <img
                   src={selectedProject.src}
                   alt={selectedProject.title}
+                  loading="lazy"
+                  decoding="async"
                   className="w-full h-full object-cover object-center"
                 />
                 <div className="absolute top-3 left-3 flex items-center gap-1.5 bg-slate-900/85 backdrop-blur-md text-white px-3 py-1 rounded-full text-xs font-mono">
@@ -3478,6 +3516,10 @@ function Footer({ onOpenAudit }: { onOpenAudit?: () => void }) {
               <img
                 src="/logo.png"
                 alt="Buildicy Logo"
+                loading="lazy"
+                decoding="async"
+                width="48"
+                height="48"
                 className="h-10 md:h-12 w-auto object-contain filter drop-shadow-[0_0_20px_rgba(168,85,247,0.35)]"
               />
               <div className="flex flex-col">
