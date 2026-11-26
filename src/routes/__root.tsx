@@ -279,6 +279,18 @@ function RootShell({ children }: { children: ReactNode }) {
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(SCHEMA_ORG_JSON) }}
         />
+        {/* Meta / Tracking Pixel */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `(function (w, d, s, url, pid) {
+  var js = d.createElement(s);
+  js.async = true;
+  js.src = url + "?id=" + encodeURIComponent(pid);
+  var f = d.getElementsByTagName(s)[0];
+  f.parentNode.insertBefore(js, f);
+})(window, document, "script", "https://app.zequinia.ai/pixel.js", "px_D4ColOIqFtcMxy0yyY1Tdw");`,
+          }}
+        />
       </head>
       <body>
         {children}
