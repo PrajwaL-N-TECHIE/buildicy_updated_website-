@@ -1862,13 +1862,11 @@ function AIGrowthSystemsPackages({
 }: {
   onSelectPkg: (name: string, market: string) => void;
 }) {
-  // Dollars first (International - USD $) by default
-  const [market, setMarket] = useState<"india" | "intl">("intl");
-  const [selectedIndustry, setSelectedIndustry] = useState<string>("Dental & Healthcare");
+  const [market, setMarket] = useState<"india" | "intl">("india");
+  const [selectedIndustry, setSelectedIndustry] = useState<IndustryType>("Dental & Healthcare");
   const [mobilePlanTab, setMobilePlanTab] = useState<"starter" | "growth" | "scale">("growth");
   const isIntl = market === "intl";
-
-  const indData = INDUSTRY_DATA[selectedIndustry as IndustryType] || INDUSTRY_DATA["Other"];
+  const indData = INDUSTRY_DATA[selectedIndustry];
 
   const starter = {
     id: "starter",
@@ -1877,11 +1875,11 @@ function AIGrowthSystemsPackages({
     systemNumber: "01",
     tagline: indData.starter.tagline,
     popular: false,
-    indiaSetup: "₹40,000",
-    indiaMonthly: "₹8,000/mo",
-    intlSetup: "$2,000",
-    intlMonthly: "$500/mo",
-    cta: "Get Starter",
+    indiaSetup: "₹35,000",
+    indiaMonthly: "₹6,999/mo",
+    intlSetup: "$1,500",
+    intlMonthly: "$199/mo",
+    cta: "Get Started",
     features: indData.starter.features,
   };
 
@@ -1892,11 +1890,11 @@ function AIGrowthSystemsPackages({
     systemNumber: "02",
     tagline: indData.growth.tagline,
     popular: true,
-    indiaSetup: "₹65,000",
-    indiaMonthly: "₹15,000/mo",
-    intlSetup: "$3,500",
-    intlMonthly: "$900/mo",
-    cta: "Deploy Growth",
+    indiaSetup: "₹55,000",
+    indiaMonthly: "₹12,999/mo",
+    intlSetup: "$2,500",
+    intlMonthly: "$499/mo",
+    cta: "Book a Consultation",
     features: indData.growth.features,
   };
 
@@ -1907,15 +1905,15 @@ function AIGrowthSystemsPackages({
     systemNumber: "03",
     tagline: indData.scale.tagline,
     popular: false,
-    indiaSetup: "₹1,25,000",
-    indiaMonthly: "₹35,000–₹40,000/mo",
-    intlSetup: "$6,000",
-    intlMonthly: "$2,000/mo",
-    cta: "Deploy Full Engine",
+    indiaSetup: "₹90,000",
+    indiaMonthly: "₹19,999/mo",
+    intlSetup: "$4,500",
+    intlMonthly: "$899/mo",
+    cta: "Book a Consultation",
     features: indData.scale.features,
   };
 
-  // Concise 10-row comparison table (No bloated text, cuts height by 50%)
+  // 12-row comparison table (each higher tier includes all features of the previous tier)
   const coreComparisonRows = [
     {
       name: "Inbound Enquiry Capture",
@@ -1946,7 +1944,7 @@ function AIGrowthSystemsPackages({
       scale: "✓",
     },
     {
-      name: "AI No-Show Recovery",
+      name: "AI No-show Recovery",
       desc: "1-Click auto-reschedule cuts no-shows to < 8%",
       starter: "✓",
       growth: "✓",
@@ -1961,8 +1959,15 @@ function AIGrowthSystemsPackages({
       scale: "✓ Full 2-Way AI",
     },
     {
-      name: "24/7 AI Receptionist (Inbound Calls)",
-      desc: "Voice phone call triage & booking in < 400ms",
+      name: "2-Way CRM Integration",
+      desc: "HubSpot, GoHighLevel, Pipedrive sync",
+      starter: "✓",
+      growth: "✓",
+      scale: "✓",
+    },
+    {
+      name: "AI Voice Receptionist",
+      desc: "24/7 inbound voice call triage & booking in < 400ms",
       starter: "—",
       growth: "✓",
       scale: "✓",
@@ -1975,17 +1980,24 @@ function AIGrowthSystemsPackages({
       scale: "✓",
     },
     {
-      name: "AI Lead Reactivation",
+      name: "AI Reactivation",
       desc: "Wakes cold dormant CRM leads without ad spend",
       starter: "—",
       growth: "—",
       scale: "✓",
     },
     {
-      name: "2-Way CRM Integration",
-      desc: "HubSpot, GoHighLevel, Pipedrive sync",
-      starter: "✓",
-      growth: "✓",
+      name: "AI Conversation Insights",
+      desc: "Objection, drop-off & market trend mining",
+      starter: "—",
+      growth: "—",
+      scale: "✓",
+    },
+    {
+      name: "AI Conversion Optimisation / Intelligence",
+      desc: "Monthly feedback loop & conversion rate tuning",
+      starter: "—",
+      growth: "—",
       scale: "✓",
     },
   ];
@@ -2008,7 +2020,7 @@ function AIGrowthSystemsPackages({
               Simple, transparent pricing.
             </h2>
             <p className="mt-2 text-slate-600 text-sm sm:text-base leading-relaxed">
-              Fixed one-time setup plus managed monthly optimization. No surprise fees.
+              One-time setup fee plus recurring monthly subscription. No hidden fees.
             </p>
           </div>
 
@@ -2041,17 +2053,35 @@ function AIGrowthSystemsPackages({
           </div>
         </div>
 
-        {/* Industry Selector */}
-        <div className="max-w-4xl mx-auto my-6 sm:my-8 text-center">
-          <div className="inline-flex items-center gap-2 mb-2.5">
-            <span className="text-[11px] font-mono uppercase tracking-widest text-slate-500 font-semibold">
-              Select Your Industry
-            </span>
-            <span className="px-2.5 py-0.5 rounded-full bg-purple-100/80 border border-purple-200 text-purple-800 text-[10px] font-mono font-bold">
-              Tailored Architecture
-            </span>
+        {/* Pricing Explanations */}
+        <div className="flex flex-col md:flex-row md:items-center gap-3 md:gap-6 mb-8 pb-6 border-b border-slate-200/80 text-xs">
+          <div className="flex items-start sm:items-center gap-2">
+            <span className="w-1.5 h-1.5 rounded-full bg-purple-600 shrink-0 mt-1.5 sm:mt-0" />
+            <p className="text-slate-600 leading-relaxed">
+              <span className="font-mono font-bold uppercase tracking-wider text-slate-900 mr-1.5">
+                Setup Fee:
+              </span>
+              One-time implementation, configuration and onboarding charge.
+            </p>
           </div>
-          <div className="flex sm:flex-wrap items-center sm:justify-center overflow-x-auto no-scrollbar p-1.5 rounded-2xl bg-white border border-slate-200/90 shadow-2xs gap-1.5 max-w-full overscroll-x-contain">
+          <span className="hidden md:inline text-slate-300">/</span>
+          <div className="flex items-start sm:items-center gap-2">
+            <span className="w-1.5 h-1.5 rounded-full bg-purple-600 shrink-0 mt-1.5 sm:mt-0" />
+            <p className="text-slate-600 leading-relaxed">
+              <span className="font-mono font-bold uppercase tracking-wider text-slate-900 mr-1.5">
+                Monthly Subscription:
+              </span>
+              Recurring fee for platform access and ongoing services.
+            </p>
+          </div>
+        </div>
+
+        {/* Industry Selector */}
+        <div className="mb-8 sm:mb-10 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+          <span className="text-[11px] font-mono uppercase tracking-widest text-slate-500 font-semibold shrink-0">
+            Industry Context
+          </span>
+          <div className="flex sm:flex-wrap items-center gap-1.5 overflow-x-auto no-scrollbar overscroll-x-contain pb-1 sm:pb-0">
             {INDUSTRIES.map((ind) => {
               const isSelected = selectedIndustry === ind;
               return (
@@ -2059,10 +2089,10 @@ function AIGrowthSystemsPackages({
                   key={ind}
                   type="button"
                   onClick={() => setSelectedIndustry(ind)}
-                  className={`shrink-0 px-3.5 py-2 rounded-xl text-xs font-semibold transition-all cursor-pointer whitespace-nowrap min-h-[40px] flex items-center justify-center ${
+                  className={`shrink-0 px-3.5 py-1.5 rounded-full text-xs font-medium transition-all cursor-pointer whitespace-nowrap border ${
                     isSelected
-                      ? "bg-purple-600 text-white shadow-sm"
-                      : "text-slate-600 hover:text-slate-900 hover:bg-slate-50"
+                      ? "bg-slate-900 border-slate-900 text-white shadow-2xs"
+                      : "bg-transparent border-slate-200/90 text-slate-600 hover:border-purple-300 hover:text-slate-900"
                   }`}
                 >
                   {ind}
@@ -2097,10 +2127,10 @@ function AIGrowthSystemsPackages({
                   <span className="text-3xl sm:text-4xl font-extrabold text-slate-900 font-mono tracking-tight">
                     {isIntl ? starter.intlSetup : starter.indiaSetup}
                   </span>
-                  <span className="text-xs text-slate-400 font-medium">one-time build</span>
+                  <span className="text-xs text-slate-400 font-medium">setup fee</span>
                 </div>
                 <div className="mt-1 text-xs sm:text-sm font-semibold text-purple-700 font-mono">
-                  + {isIntl ? starter.intlMonthly : starter.indiaMonthly} managed tuning
+                  + {isIntl ? starter.intlMonthly : starter.indiaMonthly} monthly subscription
                 </div>
               </div>
 
@@ -2151,10 +2181,10 @@ function AIGrowthSystemsPackages({
                   <span className="text-3xl sm:text-4xl font-extrabold text-slate-900 font-mono tracking-tight">
                     {isIntl ? growth.intlSetup : growth.indiaSetup}
                   </span>
-                  <span className="text-xs text-slate-400 font-medium">one-time build</span>
+                  <span className="text-xs text-slate-400 font-medium">setup fee</span>
                 </div>
                 <div className="mt-1 text-xs sm:text-sm font-semibold text-purple-700 font-mono">
-                  + {isIntl ? growth.intlMonthly : growth.indiaMonthly} managed tuning
+                  + {isIntl ? growth.intlMonthly : growth.indiaMonthly} monthly subscription
                 </div>
               </div>
 
@@ -2208,10 +2238,10 @@ function AIGrowthSystemsPackages({
                   <span className="text-3xl sm:text-4xl font-extrabold text-slate-900 font-mono tracking-tight">
                     {isIntl ? scale.intlSetup : scale.indiaSetup}
                   </span>
-                  <span className="text-xs text-slate-400 font-medium">one-time build</span>
+                  <span className="text-xs text-slate-400 font-medium">setup fee</span>
                 </div>
                 <div className="mt-1 text-sm font-semibold text-purple-700 font-mono">
-                  + {isIntl ? scale.intlMonthly : scale.indiaMonthly} managed scale
+                  + {isIntl ? scale.intlMonthly : scale.indiaMonthly} monthly subscription
                 </div>
               </div>
 
@@ -2243,13 +2273,13 @@ function AIGrowthSystemsPackages({
           </div>
         </div>
 
-        {/* Anchor link to 10-Point Technical Comparison Matrix */}
+        {/* Anchor link to 12-Point Technical Comparison Matrix */}
         <div className="text-center mt-2 mb-12 sm:mb-16">
           <a
             href="#comparison-matrix"
             className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-white hover:bg-purple-50 border border-slate-200/90 hover:border-purple-300 text-xs font-mono font-semibold text-slate-700 hover:text-purple-700 shadow-2xs transition-all duration-200"
           >
-            <span>Explore 10-Point Technical Deliverable Matrix</span>
+            <span>Explore Full Technical Deliverable Matrix</span>
             <ChevronDown className="w-3.5 h-3.5 text-purple-600" />
           </a>
         </div>
@@ -2356,7 +2386,7 @@ function AIGrowthSystemsPackages({
             onClick={() => onSelectPkg(activeMobilePkg.name, market)}
             className="mt-6 w-full py-3 rounded-xl bg-purple-600 text-white font-semibold text-xs shadow-md shadow-purple-600/20 cursor-pointer"
           >
-            Choose {activeMobilePkg.badge} Plan
+            {activeMobilePkg.cta} →
           </button>
         </div>
 
