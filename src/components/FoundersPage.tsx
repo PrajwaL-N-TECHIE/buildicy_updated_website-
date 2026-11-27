@@ -72,14 +72,14 @@ export function FoundersPage() {
                     onError={() => setPortraitLoaded(true)}
                     className={`w-full max-w-3xl max-h-[560px] object-contain rounded-3xl transition-all duration-[1200ms] ease-[cubic-bezier(0.22,1,0.36,1)] ${
                       portraitRevealed
-                        ? "scale-100 blur-0 saturate-100 opacity-100"
+                        ? "scale-100 opacity-100"
                         : "scale-105 blur-md saturate-75 opacity-0"
                     }`}
                     style={{
                       maskImage:
-                        "radial-gradient(ellipse 92% 88% at 50% 50%, black 72%, transparent 100%)",
+                        "radial-gradient(ellipse 98% 96% at 50% 50%, black 88%, transparent 100%)",
                       WebkitMaskImage:
-                        "radial-gradient(ellipse 92% 88% at 50% 50%, black 72%, transparent 100%)",
+                        "radial-gradient(ellipse 98% 96% at 50% 50%, black 88%, transparent 100%)",
                     }}
                   />
 
@@ -181,7 +181,7 @@ export function FoundersPage() {
               <div className="group rounded-2xl bg-white/95 border border-slate-200/70 p-7 shadow-[0_8px_30px_rgba(15,23,42,0.04)] hover:shadow-[0_14px_36px_rgba(124,58,237,0.08)] hover:border-purple-300/80 transition-all duration-300">
                 <div className="flex items-start justify-between">
                   <img
-                    src="/prajwal.png"
+                    src="/prajwal-avatar.png"
                     alt="Prajwal N — Buildicy CEO & Founder"
                     className="w-16 h-16 rounded-2xl object-cover object-top transition-transform duration-300 group-hover:scale-105"
                   />
@@ -224,7 +224,7 @@ export function FoundersPage() {
               <div className="group rounded-2xl bg-white/95 border border-slate-200/70 p-7 shadow-[0_8px_30px_rgba(15,23,42,0.04)] hover:shadow-[0_14px_36px_rgba(124,58,237,0.08)] hover:border-purple-300/80 transition-all duration-300">
                 <div className="flex items-start justify-between">
                   <img
-                    src="/mayur.png"
+                    src="/mayur-avatar.png"
                     alt="Mayur P — Buildicy CTO & Co-founder"
                     className="w-16 h-16 rounded-2xl object-cover object-top transition-transform duration-300 group-hover:scale-105"
                   />

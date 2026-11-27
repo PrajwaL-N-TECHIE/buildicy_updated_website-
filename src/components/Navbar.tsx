@@ -156,7 +156,7 @@ export function Navbar({ onOpenAudit, activeRoute }: NavbarProps) {
 
       {/* Mobile Drawer */}
       {mobileMenuOpen && (
-        <div className="lg:hidden fixed inset-x-0 top-20 bottom-0 bg-[#faf8f5]/98 backdrop-blur-2xl z-50 flex flex-col justify-between p-6 overflow-y-auto border-t border-slate-200/80 animate-in fade-in slide-in-from-top-2 duration-200">
+        <div className="lg:hidden fixed inset-x-0 top-20 bottom-0 bg-[#faf8f5]/98 backdrop-blur-2xl z-[60] flex flex-col justify-between p-6 overflow-y-auto border-t border-slate-200/80 animate-in fade-in slide-in-from-top-2 duration-200">
           <nav className="flex flex-col gap-2 text-base font-semibold text-slate-800 pt-1">
             <a
               href={`${linkPrefix}#problem`}
