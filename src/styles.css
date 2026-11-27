@@ -479,3 +479,29 @@
 .page-enter {
   animation: page-enter 0.4s ease-out forwards;
 }
+
+/* ---------- Founders portrait cinematic shimmer & sheen ---------- */
+@keyframes founders-shimmer {
+  0% { transform: translateX(-120%); }
+  100% { transform: translateX(120%); }
+}
+.animate-founders-shimmer {
+  animation: founders-shimmer 1.8s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+}
+
+@keyframes founders-sheen {
+  0% {
+    transform: translateX(-140%) skewX(-18deg);
+    opacity: 0;
+  }
+  20% {
+    opacity: 0.7;
+  }
+  100% {
+    transform: translateX(220%) skewX(-18deg);
+    opacity: 0;
+  }
+}
+.animate-founders-sheen {
+  animation: founders-sheen 1.5s cubic-bezier(0.22, 1, 0.36, 1) 0.55s forwards;
+}

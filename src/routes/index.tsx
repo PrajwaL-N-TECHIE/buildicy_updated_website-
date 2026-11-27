@@ -1878,7 +1878,7 @@ function AIGrowthSystemsPackages({
     indiaSetup: "₹35,000",
     indiaMonthly: "₹6,999/mo",
     intlSetup: "$1,500",
-    intlMonthly: "$199/mo",
+    intlMonthly: "$299/mo",
     cta: "Get Started",
     features: indData.starter.features,
   };

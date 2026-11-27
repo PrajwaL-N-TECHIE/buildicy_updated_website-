@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Link } from "@tanstack/react-router";
 import { ArrowUpRight, ArrowRight, Linkedin, Mail } from "lucide-react";
 import { AuditBookingModal } from "./AuditBookingModal";
@@ -6,6 +6,23 @@ import { Navbar } from "./Navbar";
 
 export function FoundersPage() {
   const [auditModalOpen, setAuditModalOpen] = useState(false);
+  const [portraitLoaded, setPortraitLoaded] = useState(false);
+  const [portraitRevealed, setPortraitRevealed] = useState(false);
+  const portraitRef = useRef<HTMLImageElement | null>(null);
+
+  useEffect(() => {
+    if (portraitRef.current?.complete && portraitRef.current.naturalWidth > 0) {
+      setPortraitLoaded(true);
+    }
+  }, []);
+
+  useEffect(() => {
+    if (!portraitLoaded) return;
+    const timer = window.setTimeout(() => {
+      setPortraitRevealed(true);
+    }, 140);
+    return () => window.clearTimeout(timer);
+  }, [portraitLoaded]);
 
   return (
     <div className="min-h-screen bg-[#faf8f5] text-slate-900 font-sans antialiased selection:bg-purple-600 selection:text-white relative flex flex-col justify-between">
@@ -19,97 +36,134 @@ export function FoundersPage() {
       <Navbar onOpenAudit={() => setAuditModalOpen(true)} activeRoute="founders" />
 
       {/* Main Page Layout */}
-      <main className="relative z-10 pt-32 sm:pt-36 pb-20 md:pb-28">
+      <main className="relative z-10 pt-28 sm:pt-32 pb-20 md:pb-28">
         <div className="mx-auto max-w-[1300px] px-6 sm:px-8 md:px-10">
-          {/* SECTION 1: The Story of Buildicy */}
-          <section className="mb-20 md:mb-28">
-            <div className="max-w-3xl">
-              <span className="eyebrow text-purple-600 font-semibold tracking-wider block mb-3">
-                ABOUT BUILDICY // EST. FEBRUARY 2026
-              </span>
-              <h1 className="font-display text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight text-slate-900 leading-[1.12]">
-                The Story of Buildicy
-              </h1>
-            </div>
 
-            {/* Story Paragraphs & Metrics in a clean 2-column grid */}
-            <div className="mt-10 grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14 items-start">
-              {/* Left Column: Authentic Story text */}
-              <div className="lg:col-span-8 space-y-6 text-slate-700 text-base sm:text-lg leading-relaxed font-normal">
-                <p>
-                  <strong className="text-slate-900 font-semibold">Buildicy was founded in February 2026</strong>{" "}
-                  by two childhood friends who have shared a common interest in technology, engineering,
-                  and entrepreneurship since 2016. Having studied at the same school before pursuing
-                  different academic paths, both founders continued exploring their passion for technology
-                  through software development, engineering, hackathons, and collaborative initiatives.
-                </p>
+          {/* Centered Borderless Transparent Portrait */}
+          <section className="mb-14 sm:mb-20 flex flex-col items-center">
+            <div className="w-full max-w-4xl mx-auto flex flex-col items-center">
+              <div className="relative w-full flex items-center justify-center">
+                {/* Subtle Ambient Radial Warmth */}
+                <div
+                  className={`pointer-events-none absolute inset-0 -top-6 rounded-full bg-[radial-gradient(ellipse_at_center,rgba(168,85,247,0.12)_0%,rgba(245,158,11,0.06)_40%,transparent_70%)] blur-2xl transition-all duration-1000 ease-out ${
+                    portraitRevealed ? "opacity-100 scale-100" : "opacity-0 scale-95"
+                  }`}
+                />
 
-                <p>
-                  With complementary technical expertise and a shared vision, they came together to
-                  establish Buildicy as a technology and product engineering company focused on helping
-                  businesses solve real-world challenges through software development, AI-powered
-                  solutions, and intelligent automation.
-                </p>
+                {/* Pre-load Shimmer Indicator */}
+                {!portraitRevealed && (
+                  <div className="absolute inset-0 z-20 flex items-center justify-center pointer-events-none">
+                    <div className="flex items-center gap-2.5 px-4 py-2 rounded-full bg-white/80 border border-slate-200/80 shadow-2xs backdrop-blur-sm">
+                      <span className="w-2 h-2 rounded-full bg-purple-600 animate-ping" />
+                      <span className="text-[11px] font-mono uppercase tracking-[0.2em] text-slate-600 font-semibold">
+                        Loading...
+                      </span>
+                    </div>
+                  </div>
+                )}
 
-                <p>
-                  What began as a shared ambition has grown into a company working with clients,
-                  developing digital solutions, building internal products, and exploring new
-                  opportunities across the technology landscape. Today, Buildicy continues to evolve
-                  with a clear focus on engineering meaningful solutions, driving business growth through
-                  technology, and transforming promising ideas into practical digital products.
-                </p>
+                {/* Pure Borderless Transparent-Blended Portrait */}
+                <div className="relative w-full flex items-center justify-center overflow-hidden py-2">
+                  <img
+                    ref={portraitRef}
+                    src="/The Founders_ Buildicy Sunset Portrait.png"
+                    alt="The Founders — Buildicy Sunset Portrait (Prajwal N and Mayur P)"
+                    onLoad={() => setPortraitLoaded(true)}
+                    onError={() => setPortraitLoaded(true)}
+                    className={`w-full max-w-3xl max-h-[560px] object-contain rounded-3xl transition-all duration-[1200ms] ease-[cubic-bezier(0.22,1,0.36,1)] ${
+                      portraitRevealed
+                        ? "scale-100 blur-0 saturate-100 opacity-100"
+                        : "scale-105 blur-md saturate-75 opacity-0"
+                    }`}
+                    style={{
+                      maskImage:
+                        "radial-gradient(ellipse 92% 88% at 50% 50%, black 72%, transparent 100%)",
+                      WebkitMaskImage:
+                        "radial-gradient(ellipse 92% 88% at 50% 50%, black 72%, transparent 100%)",
+                    }}
+                  />
 
-                <div className="pt-2">
-                  <button
-                    onClick={() => setAuditModalOpen(true)}
-                    className="inline-flex items-center gap-2 rounded-full bg-purple-600 hover:bg-purple-700 text-white px-7 py-3.5 text-sm font-semibold transition-all shadow-md shadow-purple-600/20 active:scale-95 cursor-pointer"
-                  >
-                    <span>Book Free AI Growth Audit</span>
-                    <ArrowRight className="h-4 w-4" />
-                  </button>
+                  {/* Diagonal Sheen Sweep */}
+                  {portraitRevealed && (
+                    <div className="pointer-events-none absolute inset-y-0 left-0 w-1/3 bg-gradient-to-r from-transparent via-white/20 to-transparent animate-founders-sheen" />
+                  )}
                 </div>
               </div>
 
-              {/* Right Column: Clean Telemetry Stats matching index.tsx metrics */}
-              <div className="lg:col-span-4 rounded-3xl bg-white border border-slate-200/90 p-8 shadow-xs space-y-6">
-                <div className="border-b border-slate-100 pb-4">
-                  <div className="text-xs font-mono uppercase tracking-wider text-purple-600 font-semibold">
-                    Studio Baseline
-                  </div>
-                  <div className="text-2xl font-display font-extrabold text-slate-900 mt-1">
-                    10-Year Friendship
-                  </div>
-                  <p className="text-xs text-slate-500 mt-1">
-                    Childhood schoolmates collaborating since 2016.
+              {/* Minimal Wikipedia-style Caption */}
+              <div
+                className={`mt-4 text-center text-xs text-slate-500 font-sans transition-all duration-700 delay-200 ${
+                  portraitRevealed ? "opacity-100 translate-y-0" : "opacity-0 translate-y-2"
+                }`}
+              >
+                <p>
+                  <strong className="text-slate-800 font-semibold">Prajwal N</strong> (CEO) and{" "}
+                  <strong className="text-slate-800 font-semibold">Mayur P</strong> (CTO) — Founders of Buildicy Studio.
+                </p>
+              </div>
+            </div>
+          </section>
+
+          {/* SECTION: The Story of Buildicy */}
+          <section className="border-t border-slate-200/90 pt-14 sm:pt-16 mb-20 md:mb-28">
+            <div className="max-w-3xl mx-auto text-center">
+              <span className="eyebrow text-purple-600 font-semibold tracking-wider block mb-3">
+                ABOUT BUILDICY // EST. FEBRUARY 2026
+              </span>
+              <h2 className="font-display text-2xl sm:text-3xl md:text-4xl font-extrabold tracking-tight text-slate-900 leading-[1.2] uppercase">
+                Two Friends. Different Journeys. One Bigger Vision.
+              </h2>
+
+              <div className="mt-8 space-y-6 text-slate-700 text-base sm:text-lg leading-relaxed font-normal text-center max-w-2xl mx-auto">
+                <p>
+                  Some partnerships begin in boardrooms. Ours began as schoolmates with a shared curiosity about technology and a desire to build something meaningful.
+                </p>
+
+                <p>
+                  As life took us in different academic directions, we each started building our own journeys. From software development and blockchain to hackathons, international competitions, mentoring aspiring innovators, and exploring entrepreneurship, we gained different experiences, faced challenges, and learned by doing.
+                </p>
+
+                <p>
+                  Towards the end of our college journeys, we reconnected, bringing together our knowledge, experiences, and ambitions. We realised we shared something bigger than individual goals: a vision to build a technology company of our own.
+                </p>
+
+                <p className="font-display text-xl sm:text-2xl font-extrabold text-slate-900 tracking-tight pt-2">
+                  In February 2026, Buildicy was born.
+                </p>
+
+                <p>
+                  Today, we're growing Buildicy into an AI-powered technology and product engineering company, working with businesses, onboarding international clients, developing intelligent solutions, and creating opportunities for the next generation of builders.
+                </p>
+
+                <p>
+                  We're young, ambitious, and just getting started. We believe great things aren't built by waiting for the perfect opportunity, but by having the courage to create one.
+                </p>
+
+                <div className="pt-4 pb-2 space-y-2">
+                  <p className="font-semibold text-slate-900 text-lg sm:text-xl">
+                    We didn't wait for the future to happen. We started building it.
+                  </p>
+                  <p className="font-mono font-bold tracking-widest text-purple-700 text-sm sm:text-base uppercase">
+                    BUILDICY — BUILD THE FUTURE.
                   </p>
                 </div>
 
-                <div className="grid grid-cols-2 gap-4">
-                  <div className="p-4 rounded-2xl bg-[#faf8f5] border border-slate-200/80">
-                    <div className="font-display text-3xl font-extrabold text-slate-900">2016</div>
-                    <div className="eyebrow text-slate-500 mt-1 text-[11px]">First Collab</div>
-                  </div>
-                  <div className="p-4 rounded-2xl bg-[#faf8f5] border border-slate-200/80">
-                    <div className="font-display text-3xl font-extrabold text-purple-600">Feb '26</div>
-                    <div className="eyebrow text-slate-500 mt-1 text-[11px]">Studio Inception</div>
-                  </div>
-                </div>
-
-                <div className="p-4 rounded-2xl bg-purple-50/60 border border-purple-100">
-                  <div className="text-xs font-mono text-purple-900 font-semibold">
-                    100% Founder-Led Engineering
-                  </div>
-                  <div className="text-xs text-slate-600 mt-1">
-                    Prajwal N (CEO) directs product strategy. Mayur P (CTO) architects the AI & software systems.
-                  </div>
+                <div className="pt-4">
+                  <button
+                    onClick={() => setAuditModalOpen(true)}
+                    className="inline-flex items-center gap-2 rounded-full bg-purple-600 hover:bg-purple-700 text-white px-8 py-3.5 text-sm font-semibold transition-all shadow-md shadow-purple-600/20 active:scale-95 cursor-pointer"
+                  >
+                    <span>Book Your Free AI Growth Audit</span>
+                    <ArrowRight className="h-4 w-4" />
+                  </button>
                 </div>
               </div>
             </div>
           </section>
 
           {/* SECTION 2: The Founders */}
-          <section className="border-t border-slate-200 pt-16 md:pt-20">
-            <div className="max-w-2xl mb-12">
+          <section className="border-t border-slate-200/80 pt-16 md:pt-20">
+            <div className="max-w-2xl mx-auto text-center mb-12">
               <span className="eyebrow text-purple-600 font-semibold tracking-wider block mb-2">
                 LEADERSHIP
               </span>
@@ -117,89 +171,96 @@ export function FoundersPage() {
                 Meet The Founders
               </h2>
               <p className="mt-3 text-slate-600 text-sm sm:text-base">
-                No stock photos or corporate avatars. Built on pure engineering, product vision,
-                and a decade of shared conviction.
+                Two builders doing it all together — from AI engineering and product architecture to client growth.
               </p>
             </div>
 
-            {/* The 2 Founder Cards: Clean, Professional, Minimalist, In-Theme */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-[1000px]">
+            {/* Clean, airy 2-column founder grid */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-4xl mx-auto">
               {/* Founder 1: Prajwal N */}
-              <div className="group rounded-3xl bg-white border border-slate-200/90 p-8 sm:p-10 shadow-xs hover:shadow-xl hover:border-purple-300 transition-all duration-300 flex flex-col justify-between min-h-[300px]">
-                <div>
-                  <div className="flex items-center justify-between">
-                    <div className="w-14 h-14 rounded-2xl bg-purple-50 text-purple-700 font-display font-extrabold text-xl flex items-center justify-center border border-purple-100 group-hover:scale-105 transition-transform">
-                      PN
-                    </div>
-                    <span className="text-xs font-mono font-semibold tracking-wider text-purple-700 bg-purple-50 px-3 py-1 rounded-full border border-purple-200/50 uppercase">
-                      CEO / Founder
-                    </span>
+              <div className="group rounded-2xl bg-white/95 border border-slate-200/70 p-7 shadow-[0_8px_30px_rgba(15,23,42,0.04)] hover:shadow-[0_14px_36px_rgba(124,58,237,0.08)] hover:border-purple-300/80 transition-all duration-300">
+                <div className="flex items-start justify-between">
+                  <img
+                    src="/prajwal.png"
+                    alt="Prajwal N — Buildicy CEO & Founder"
+                    className="w-16 h-16 rounded-2xl object-cover object-top transition-transform duration-300 group-hover:scale-105"
+                  />
+                  <div className="flex items-center gap-3 pt-1">
+                    <a
+                      href="mailto:hello@buildicy.com"
+                      aria-label="Email Prajwal N"
+                      className="text-slate-400 hover:text-purple-600 transition-colors"
+                    >
+                      <Mail className="h-4 w-4" />
+                    </a>
+                    <a
+                      href="https://www.linkedin.com/in/prajwal-n-dev/"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      aria-label="Prajwal N LinkedIn"
+                      className="text-slate-400 hover:text-purple-600 transition-colors"
+                    >
+                      <Linkedin className="h-4 w-4" />
+                    </a>
                   </div>
-
-                  <div className="mt-8">
-                    <h3 className="font-display text-3xl sm:text-4xl font-extrabold text-slate-900 tracking-tight">
-                      Prajwal N
-                    </h3>
-                    <p className="text-sm font-mono text-purple-600 font-semibold mt-1">
-                      CEO / Founder
-                    </p>
-                  </div>
-
-                  <p className="mt-4 text-sm sm:text-base text-slate-600 leading-relaxed font-normal">
-                    Focuses on product direction, commercial systems, client partnerships, and transforming
-                    promising ideas into high-growth, practical digital products.
-                  </p>
                 </div>
 
-                <div className="mt-8 pt-5 border-t border-slate-100 flex items-center justify-between text-xs font-mono text-slate-500">
-                  <span>School Cohort '16 • Co-Founder</span>
-                  <a
-                    href="mailto:hello@buildicy.com"
-                    className="inline-flex items-center gap-1.5 text-slate-700 hover:text-purple-600 transition-colors font-semibold"
-                  >
-                    <span>Connect</span>
-                    <ArrowUpRight className="h-3.5 w-3.5" />
-                  </a>
+                <div className="mt-5 flex flex-wrap items-baseline gap-2">
+                  <h3 className="font-display text-lg font-bold text-slate-900 tracking-tight">
+                    Prajwal N
+                  </h3>
+                  <span className="text-slate-300 font-light">|</span>
+                  <span className="text-sm text-purple-700 font-medium">
+                    CEO / Founder
+                  </span>
                 </div>
+
+                <p className="mt-2.5 text-sm text-slate-600 leading-relaxed font-normal">
+                  Co-leads everything at Buildicy — from software engineering and AI system architecture to product strategy, client growth, and turning ambitious ideas into shipped products.
+                </p>
               </div>
 
               {/* Founder 2: Mayur P */}
-              <div className="group rounded-3xl bg-white border border-slate-200/90 p-8 sm:p-10 shadow-xs hover:shadow-xl hover:border-purple-300 transition-all duration-300 flex flex-col justify-between min-h-[300px]">
-                <div>
-                  <div className="flex items-center justify-between">
-                    <div className="w-14 h-14 rounded-2xl bg-purple-50 text-purple-700 font-display font-extrabold text-xl flex items-center justify-center border border-purple-100 group-hover:scale-105 transition-transform">
-                      MP
-                    </div>
-                    <span className="text-xs font-mono font-semibold tracking-wider text-purple-700 bg-purple-50 px-3 py-1 rounded-full border border-purple-200/50 uppercase">
-                      CTO / Co-founder
-                    </span>
+              <div className="group rounded-2xl bg-white/95 border border-slate-200/70 p-7 shadow-[0_8px_30px_rgba(15,23,42,0.04)] hover:shadow-[0_14px_36px_rgba(124,58,237,0.08)] hover:border-purple-300/80 transition-all duration-300">
+                <div className="flex items-start justify-between">
+                  <img
+                    src="/mayur.png"
+                    alt="Mayur P — Buildicy CTO & Co-founder"
+                    className="w-16 h-16 rounded-2xl object-cover object-top transition-transform duration-300 group-hover:scale-105"
+                  />
+                  <div className="flex items-center gap-3 pt-1">
+                    <a
+                      href="mailto:hello@buildicy.com"
+                      aria-label="Email Mayur P"
+                      className="text-slate-400 hover:text-purple-600 transition-colors"
+                    >
+                      <Mail className="h-4 w-4" />
+                    </a>
+                    <a
+                      href="https://www.linkedin.com/in/mayurp03/"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      aria-label="Mayur P LinkedIn"
+                      className="text-slate-400 hover:text-purple-600 transition-colors"
+                    >
+                      <Linkedin className="h-4 w-4" />
+                    </a>
                   </div>
-
-                  <div className="mt-8">
-                    <h3 className="font-display text-3xl sm:text-4xl font-extrabold text-slate-900 tracking-tight">
-                      Mayur P
-                    </h3>
-                    <p className="text-sm font-mono text-purple-600 font-semibold mt-1">
-                      CTO / Co-founder
-                    </p>
-                  </div>
-
-                  <p className="mt-4 text-sm sm:text-base text-slate-600 leading-relaxed font-normal">
-                    Architects core full-stack software, autonomous AI agent pipelines, and intelligent
-                    workflow automation systems built for reliability and speed.
-                  </p>
                 </div>
 
-                <div className="mt-8 pt-5 border-t border-slate-100 flex items-center justify-between text-xs font-mono text-slate-500">
-                  <span>School Cohort '16 • Co-Founder</span>
-                  <a
-                    href="mailto:hello@buildicy.com"
-                    className="inline-flex items-center gap-1.5 text-slate-700 hover:text-purple-600 transition-colors font-semibold"
-                  >
-                    <span>Connect</span>
-                    <ArrowUpRight className="h-3.5 w-3.5" />
-                  </a>
+                <div className="mt-5 flex flex-wrap items-baseline gap-2">
+                  <h3 className="font-display text-lg font-bold text-slate-900 tracking-tight">
+                    Mayur P
+                  </h3>
+                  <span className="text-slate-300 font-light">|</span>
+                  <span className="text-sm text-purple-700 font-medium">
+                    CTO / Co-founder
+                  </span>
                 </div>
+
+                <p className="mt-2.5 text-sm text-slate-600 leading-relaxed font-normal">
+                  Co-leads everything at Buildicy — from full-stack engineering and autonomous AI pipelines to product design, client delivery, and scaling real-world systems.
+                </p>
               </div>
             </div>
           </section>

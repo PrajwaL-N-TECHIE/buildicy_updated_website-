@@ -18,7 +18,7 @@ vi.mock("@tanstack/react-router", async () => {
 import { FoundersPage } from "../components/FoundersPage";
 
 describe("FoundersPage", () => {
-  it("renders Prajwal N (CEO / Founder) and Mayur P (CTO / Co-founder) without any founder image photos", () => {
+  it("renders Prajwal N (CEO / Founder) and Mayur P (CTO / Co-founder) with their profiles and portrait", () => {
     const { container } = render(<FoundersPage />);
 
     // Verify Founder Names and Roles
@@ -27,14 +27,18 @@ describe("FoundersPage", () => {
     expect(screen.getAllByText(/CEO \/ Founder/i).length).toBeGreaterThan(0);
     expect(screen.getAllByText(/CTO \/ Co-founder/i).length).toBeGreaterThan(0);
 
-    // Verify the twist: No founder photo images!
-    // The only images should be Buildicy Logo.
+    // Verify official Buildicy images (Logo + Founders Sunset Portrait + Avatars)
     const allImages = container.querySelectorAll("img");
+    expect(allImages.length).toBeGreaterThanOrEqual(4);
     allImages.forEach((img) => {
       const alt = img.getAttribute("alt") || "";
       const src = img.getAttribute("src") || "";
-      expect(alt.toLowerCase()).toContain("buildicy");
-      expect(src.toLowerCase()).toContain("logo.png");
+      expect(
+        src.toLowerCase().includes("logo.png") ||
+          src.toLowerCase().includes("founders") ||
+          src.toLowerCase().includes("prajwal") ||
+          src.toLowerCase().includes("mayur")
+      ).toBe(true);
     });
   });
 
@@ -42,7 +46,7 @@ describe("FoundersPage", () => {
     render(<FoundersPage />);
 
     expect(screen.getAllByText(/February 2026/i).length).toBeGreaterThan(0);
-    expect(screen.getAllByText(/childhood friends/i).length).toBeGreaterThan(0);
-    expect(screen.getAllByText(/2016/i).length).toBeGreaterThan(0);
+    expect(screen.getAllByText(/Two Friends/i).length).toBeGreaterThan(0);
+    expect(screen.getAllByText(/Build the Future/i).length).toBeGreaterThan(0);
   });
 });
