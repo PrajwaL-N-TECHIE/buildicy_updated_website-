@@ -159,98 +159,54 @@ export function Navbar({ onOpenAudit, activeRoute }: NavbarProps) {
 
       {/* Mobile Drawer */}
       {mobileMenuOpen && (
-        <div className="lg:hidden fixed inset-x-0 top-20 bottom-0 bg-[#faf8f5] z-[9999] flex flex-col justify-between p-6 overflow-y-auto border-t border-slate-200/80">
-          <nav className="flex flex-col gap-2 text-base font-semibold text-slate-800 pt-1">
-            <a
-              href={`${linkPrefix}#problem`}
-              onClick={() => setMobileMenuOpen(false)}
-              className="p-3 min-h-[48px] rounded-2xl hover:bg-slate-100 transition-colors flex items-center justify-between"
-            >
-              <span>Problem</span>
-              <span className="text-xs font-mono text-purple-700">01</span>
-            </a>
-            <a
-              href={`${linkPrefix}#demo`}
-              onClick={() => setMobileMenuOpen(false)}
-              className="p-3 min-h-[48px] rounded-2xl hover:bg-slate-100 transition-colors flex items-center justify-between"
-            >
-              <span>Demo Engine</span>
-              <span className="text-xs font-mono text-purple-700">02</span>
-            </a>
-            <a
-              href={`${linkPrefix}#proof`}
-              onClick={() => setMobileMenuOpen(false)}
-              className="p-3 min-h-[48px] rounded-2xl hover:bg-slate-100 transition-colors flex items-center justify-between"
-            >
-              <span>Proof &amp; Case Study</span>
-              <span className="text-xs font-mono text-purple-700">03</span>
-            </a>
-            <a
-              href={`${linkPrefix}#systems`}
-              onClick={() => setMobileMenuOpen(false)}
-              className="p-3 min-h-[48px] rounded-2xl hover:bg-slate-100 transition-colors flex items-center justify-between"
-            >
-              <span>Offer &amp; Packages</span>
-              <span className="text-xs font-mono text-purple-700">04</span>
-            </a>
-            <a
-              href={`${linkPrefix}#protocol`}
-              onClick={() => setMobileMenuOpen(false)}
-              className="p-3 min-h-[48px] rounded-2xl hover:bg-slate-100 transition-colors flex items-center justify-between"
-            >
-              <span>Process (14-Day)</span>
-              <span className="text-xs font-mono text-purple-700">05</span>
-            </a>
-            <a
-              href={`${linkPrefix}#faq`}
-              onClick={() => setMobileMenuOpen(false)}
-              className="p-3 min-h-[48px] rounded-2xl hover:bg-slate-100 transition-colors flex items-center justify-between"
-            >
-              <span>FAQ</span>
-              <span className="text-xs font-mono text-purple-700">06</span>
-            </a>
+        <div className="lg:hidden fixed inset-x-0 top-20 bottom-0 bg-[#faf8f5] z-[9999] flex flex-col justify-between px-6 py-4 overflow-y-auto border-t border-slate-100">
+          <nav className="flex flex-col text-sm font-medium text-slate-700">
+            {([
+              ["#problem", "Problem"],
+              ["#demo", "Demo"],
+              ["#proof", "Proof"],
+              ["#systems", "Offer"],
+              ["#protocol", "Process"],
+              ["#faq", "FAQ"],
+            ] as [string, string][]).map(([hash, label]) => (
+              <a
+                key={hash}
+                href={`${linkPrefix}${hash}`}
+                onClick={() => setMobileMenuOpen(false)}
+                className="py-3.5 border-b border-slate-100 flex items-center justify-between text-slate-800 hover:text-purple-600 transition-colors"
+              >
+                {label}
+                <span className="text-slate-300">→</span>
+              </a>
+            ))}
             <Link
               to="/founders"
               onClick={() => setMobileMenuOpen(false)}
-              className={`p-3 min-h-[48px] rounded-2xl hover:bg-slate-100 transition-colors flex items-center justify-between ${
-                activeRoute === "founders" ? "bg-purple-100/60 text-purple-900 font-bold" : ""
+              className={`py-3.5 border-b border-slate-100 flex items-center justify-between hover:text-purple-600 transition-colors ${
+                activeRoute === "founders" ? "text-purple-600" : "text-slate-800"
               }`}
             >
-              <span>Founders &amp; Leadership</span>
-              <span className="text-xs font-mono font-bold text-purple-700">07</span>
+              Founders
+              <span className="text-slate-300">→</span>
             </Link>
             <Link
               to="/contact"
               onClick={() => setMobileMenuOpen(false)}
-              className="p-3 min-h-[48px] rounded-2xl bg-purple-50 text-purple-900 border border-purple-200/80 transition-colors flex items-center justify-between"
+              className="py-3.5 border-b border-slate-100 flex items-center justify-between text-purple-600 hover:text-purple-700 transition-colors"
             >
-              <span>Contact Studio &amp; Inquiries</span>
-              <span className="text-xs font-mono font-bold text-purple-700">↗</span>
-            </Link>
-            <Link
-              to="/privacy"
-              onClick={() => setMobileMenuOpen(false)}
-              className="p-3 min-h-[48px] rounded-2xl hover:bg-slate-100 text-xs font-mono text-slate-500 transition-colors flex items-center justify-between"
-            >
-              <span>Privacy Policy</span>
+              Contact
               <span>↗</span>
             </Link>
           </nav>
 
-          <div className="pt-6 border-t border-slate-200/80 space-y-3 pb-6">
+          <div className="pt-4 pb-6 space-y-2">
             <button
-              onClick={() => {
-                setMobileMenuOpen(false);
-                handleAuditClick();
-              }}
-              className="w-full flex items-center justify-center gap-2 rounded-full bg-purple-600 hover:bg-purple-700 px-6 py-3.5 text-sm font-semibold text-white transition-all shadow-md cursor-pointer"
+              onClick={() => { setMobileMenuOpen(false); handleAuditClick(); }}
+              className="w-full flex items-center justify-center gap-2 rounded-full bg-slate-900 hover:bg-purple-600 px-6 py-3 text-sm font-semibold text-white transition-all cursor-pointer"
             >
-              <span>Get Free Lead-Leak Audit</span>
-              <Arrow />
+              Free Audit <Arrow />
             </button>
-            <p className="text-[11px] font-mono text-slate-400 text-center">
-              Coimbatore, India · Worldwide Delivery
-            </p>
+            <p className="text-[10px] font-mono text-slate-400 text-center">Coimbatore · Worldwide</p>
           </div>
         </div>
       )}
