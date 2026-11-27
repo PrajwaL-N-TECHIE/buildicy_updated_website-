@@ -52,6 +52,7 @@ export function Navbar({ onOpenAudit, activeRoute }: NavbarProps) {
   const linkPrefix = isHome ? "" : "/";
 
   return (
+    <>
     <header className="fixed inset-x-0 top-0 z-50 border-b border-black/5 bg-[#faf8f5]/85 backdrop-blur-md text-slate-900">
       <div className="mx-auto flex h-20 max-w-[1400px] items-center justify-between px-6 md:px-10">
         <Link to="/" className="flex items-center gap-3 group">
@@ -154,9 +155,11 @@ export function Navbar({ onOpenAudit, activeRoute }: NavbarProps) {
         </div>
       </div>
 
+    </header>
+
       {/* Mobile Drawer */}
       {mobileMenuOpen && (
-        <div className="lg:hidden fixed inset-x-0 top-20 bottom-0 bg-[#faf8f5]/98 backdrop-blur-2xl z-[60] flex flex-col justify-between p-6 overflow-y-auto border-t border-slate-200/80 animate-in fade-in slide-in-from-top-2 duration-200">
+        <div className="lg:hidden fixed inset-x-0 top-20 bottom-0 bg-[#faf8f5] z-[9999] flex flex-col justify-between p-6 overflow-y-auto border-t border-slate-200/80">
           <nav className="flex flex-col gap-2 text-base font-semibold text-slate-800 pt-1">
             <a
               href={`${linkPrefix}#problem`}
@@ -251,6 +254,6 @@ export function Navbar({ onOpenAudit, activeRoute }: NavbarProps) {
           </div>
         </div>
       )}
-    </header>
+    </>
   );
 }
